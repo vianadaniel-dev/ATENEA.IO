@@ -13,6 +13,9 @@ venv/
 # graphify generated artifacts
 graphify-out/
 
+# Personal study material (not part of the project)
+docs/
+
 # Editor / OS
 .vscode/*
 !.vscode/extensions.json
