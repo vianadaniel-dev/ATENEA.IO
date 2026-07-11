@@ -1,0 +1,20 @@
+# Environment / secrets
+.env
+*.env
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# graphify generated artifacts
+graphify-out/
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
