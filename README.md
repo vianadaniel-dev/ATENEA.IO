@@ -1,338 +1,511 @@
 # 🎓 Atenea.io
 
-> Plataforma de Gestión Educativa desarrollada como Proyecto Integrador en Riwi.
+> **Educational Management Platform** developed as an Integrative Project at **Riwi**.
+
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)
+![Vite](https://img.shields.io/badge/Vite-Frontend-646CFF?logo=vite)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?logo=postgresql)
+![License](https://img.shields.io/badge/License-Academic-blue)
 
 ---
 
-## 📖 Descripción
+# 📖 Overview
 
-Atenea.io es un sistema de gestión educativa diseñado para facilitar la administración académica de una institución educativa mediante una aplicación desarrollada con JavaScript Vanilla y Vite.
+Atenea.io is a modern Educational Management System (EMS) built to simplify the administration of academic institutions.
 
-La plataforma permite administrar estudiantes, profesores, cursos, notas, horarios, comunicados institucionales y un sistema de gamificación que incentiva el rendimiento académico.
+The platform provides different workspaces for **Principals**, **Teachers**, and **Students**, allowing them to manage academic information securely according to their roles.
 
-El sistema está construido bajo una arquitectura modular y escalable siguiendo el modelo Multiple Page Application (MPA).
-
----
-
-# 🚀 Características
-
-## 👨‍🎓 Estudiantes
-
-- Consultar boletín de notas
-- Ver cursos matriculados
-- Consultar horarios
-- Consultar comunicados
-- Visualizar ranking de puntos
-- Canjear recompensas
-- Editar perfil
-
-## 👨‍🏫 Profesores
-
-- Gestionar notas (CRUD)
-- Consultar cursos asignados
-- Asignar puntos de gamificación
-- Ver horarios
-- Consultar comunicados
-
-## 👨‍💼 Rector
-
-- Gestión de estudiantes
-- Gestión de profesores
-- Gestión de cursos
-- Cambiar horarios
-- Publicar comunicados
-- Configurar tipos de puntos
-- Dashboard con estadísticas
+The application follows a **Layered Architecture** with a **Vanilla JavaScript SPA**, communicating with a **FastAPI REST API** backed by **PostgreSQL**.
 
 ---
 
-# 🏆 Sistema de Gamificación
+# ✨ Features
 
-El proyecto incorpora un sistema de recompensas flexible donde:
+## 👨‍🎓 Student Module
 
-- Existen múltiples tipos de puntuación.
-- Los puntos se asignan por materia.
-- Cada asignación queda registrada.
-- Se genera un ranking por curso.
-- Los estudiantes pueden canjear recompensas.
+- View Report Cards
+- Check Enrolled Courses
+- View Class Schedule
+- Read Institutional Announcements
+- View Gamification Ranking
+- Redeem Rewards
+- Edit Personal Profile
 
 ---
 
-## 🛠 Tecnologías
+## 👨‍🏫 Teacher Module
 
-### Frontend
+- Grade Management (CRUD)
+- View Assigned Courses
+- Assign Reward Points
+- View Schedule
+- Read Announcements
+
+---
+
+## 👨‍💼 Principal Module
+
+- Student Management
+- Teacher Management
+- Course Administration
+- Schedule Management
+- Publish Announcements
+- Configure Reward Types
+- Dashboard & Statistics
+
+---
+
+# 🏆 Gamification System
+
+The platform includes a flexible reward system where:
+
+- Multiple point categories are available.
+- Points are assigned by subject.
+- Every point assignment is recorded.
+- Rankings are generated automatically.
+- Students can redeem rewards.
+- Reward history is stored.
+
+---
+
+# 🛠 Tech Stack
+
+## Frontend
+
 - HTML5
-- CSS3
+- SCSS (7-1 Architecture)
 - JavaScript (ES6+)
-
-### Dependencias
 - Vite
 
-### Backend
-- Node.js
-- Express.js *(si lo utilizarán como API)*
+---
 
-### Base de Datos
-- PostgreSQL
+## Backend
 
-### Herramientas
+- FastAPI
+- Python
+- JWT Authentication
+- Pydantic
+- Psycopg2
+
+---
+
+## Database
+
+- PostgreSQL 16
+
+---
+
+## Development Tools
+
 - Git
 - GitHub
+- Docker
 - Postman
 - pgAdmin 4
 
-### Persistencia
-- LocalStorage
-- SessionStorage
 ---
 
-# 📂 Estructura del proyecto
+# 📂 Project Structure
 
 ```text
-src/
+ATENEA.IO/
 │
-├── assets/
-├── components/
-├── pages/
-├── router/
-├── services/
-├── store/
-├── styles/
-├── utils/
-└── main.js
+├── backend/
+│   ├── app/
+│   │
+│   ├── routers/
+│   │   ├── auth.py
+│   │   ├── principal.py
+│   │   ├── teacher.py
+│   │   └── student.py
+│   │
+│   ├── models.py
+│   ├── schemas.py
+│   ├── database.py
+│   ├── auth_utils.py
+│   ├── config.py
+│   └── main.py
+│
+├── frontend/
+│
+│── public/
+│
+├── src/
+│   │
+│   ├── assets/
+│   │   ├── fonts/
+│   │   ├── icons/
+│   │   ├── images/
+│   │   ├── logos/
+│   │   └── illustrations/
+│   │
+│   ├── styles/
+│   │   ├── abstracts/
+│   │   ├── base/
+│   │   ├── layouts/
+│   │   ├── pages/
+│   │   └── components/
+│   │
+│   ├── router/
+│   │   ├── routes.js
+│   │   ├── router.js
+│   │   ├── guards.js
+│   │   └── permissions.js
+│   │
+│   ├── layouts/
+│   │
+│   ├── views/
+│   │
+│   ├── controllers/
+│   │
+│   ├── services/
+│   │
+│   ├── models/
+│   │
+│   ├── helpers/
+│   │
+│   ├── constants/
+│   │
+│   ├── data/
+│   │
+│   ├── app.js
+│   └── main.js
+│
+├── docs/
+│
+├── README.md
+│
+└── atenea_schema.sql
 ```
 
 ---
 
-# 🗄️ Base de Datos
+# 🗄 Database Design
 
-El sistema utiliza PostgreSQL como gestor de base de datos relacional.
+The application uses **PostgreSQL** as its relational database management system.
 
-Las principales entidades del sistema incluyen:
+### Core Entities
 
-- Usuarios
-- Estudiantes
-- Profesores
-- Cursos
-- materia
-- Horarios
-- Inscripciones
-- Puntaje
-- Tipo_puntos
-- Comunicados
-- Calificaciones
-- Boletin
-
+- Users
+- Students
+- Teachers
+- Courses
+- Subjects
+- Enrollments
+- Schedules
+- Grades
+- Report Cards
+- Reward Types
+- Scores
+- Announcements
 
 ---
 
+# 🏛 Application Architecture
 
-# ⚙️ Instalación
+The frontend follows a lightweight MVC-inspired architecture.
 
-## 1 Clonar el repositorio
+| Layer | Responsibility |
+|---------|---------------|
+| **Views** | Render the user interface |
+| **Controllers** | Handle business logic |
+| **Services** | Communicate with the REST API |
+| **Models** | Represent domain entities |
+| **Layouts** | Shared page layouts |
+| **Router** | SPA Navigation |
+| **Helpers** | Utility functions |
+| **Constants** | Global configuration |
+
+---
+
+# 🏗 System Architecture
+
+```text
+                           ┌──────────────────────────┐
+                           │          Users           │
+                           │ Principal • Teacher • Student │
+                           └─────────────┬────────────┘
+                                         │
+                                         ▼
+                    ┌────────────────────────────────────┐
+                    │         Frontend (SPA)             │
+                    │      HTML + SCSS + JavaScript      │
+                    └─────────────┬──────────────────────┘
+                                  │
+                                  ▼
+                       Router + Route Guards (RBAC)
+                                  │
+      ┌───────────────┬────────────┼───────────────┬───────────────┐
+      ▼               ▼            ▼               ▼
+   Views         Controllers    Services       Layouts
+                                     │
+                                     ▼
+                           REST API (FastAPI)
+                                     │
+                                     ▼
+                           JWT Authentication
+                                     │
+                                     ▼
+                              PostgreSQL 16
+```
+
+---
+
+# 🔄 Application Flow
+
+```text
+Start
+ │
+ ▼
+User Login
+ │
+ ▼
+Validate Credentials
+ │
+ ├──────────────┐
+ │              │
+ ▼              ▼
+Success      Failure
+ │              │
+ ▼              ▼
+Load Dashboard  Display Error
+ │
+ ▼
+Select Module
+ │
+ ▼
+Controller
+ │
+ ▼
+Service Layer
+ │
+ ▼
+REST API
+ │
+ ▼
+PostgreSQL
+ │
+ ▼
+Return Response
+ │
+ ▼
+Update UI
+```
+
+---
+
+# 🔌 API Communication
+
+The frontend communicates **exclusively** with the REST API through the **Services Layer**.
+
+### API Modules
+
+| Endpoint | Description |
+|----------|-------------|
+| `/api/auth` | Authentication |
+| `/api/principal` | Principal Module |
+| `/api/teacher` | Teacher Module |
+| `/api/student` | Student Module |
+
+Each service is responsible for:
+
+- Sending HTTP requests
+- Handling responses
+- Processing errors
+- Token management
+
+---
+
+# 🔐 Authentication & Authorization
+
+The platform implements **JWT Authentication** together with **Role-Based Access Control (RBAC).**
+
+Features include:
+
+- Secure Login
+- JWT Tokens
+- Protected Routes
+- Session Persistence
+- User Authorization
+- Role Guards
+
+---
+
+# 👥 User Roles
+
+| Role | Responsibilities |
+|------|------------------|
+| Principal | Complete platform administration |
+| Teacher | Academic management |
+| Student | Academic consultation |
+
+---
+
+# 📚 User Stories
+
+The application is developed following Agile methodologies through User Stories.
+
+Modules include:
+
+- Authentication
+- Student Management
+- Teacher Management
+- Course Management
+- Subject Management
+- Grade CRUD
+- Schedule Management
+- Report Cards
+- Announcements
+- Gamification
+- User Profile
+- Dashboard
+- Notifications
+
+---
+
+# 📈 Scalability
+
+The project has been designed following software engineering best practices.
+
+### Current Architecture
+
+- Layered Architecture
+- MVC-inspired Structure
+- Modular Components
+- Independent Services
+- Reusable Layouts
+- Route Guards
+- Role Permissions
+- RESTful API Integration
+- PostgreSQL Relational Database
+
+Future improvements may include:
+
+- Docker Deployment
+- CI/CD Pipelines
+- Unit Testing
+- Integration Testing
+- WebSockets
+- Notifications
+- Dark Mode
+- Progressive Web App (PWA)
+
+---
+
+# ⚙ Installation
+
+## 1. Clone the repository
 
 ```bash
-git clone URL_DEL_REPOSITORIO
+git clone https://github.com/your-username/atenea.git
 ```
 
-## 2 Entrar al proyecto
+---
+
+## 2. Navigate to the project
 
 ```bash
 cd atenea
 ```
 
-## 3 Instalar dependencias
+---
+
+## 3. Install Frontend Dependencies
 
 ```bash
 npm install
 ```
 
-## 4 Ejecutar Vite
+---
+
+## 4. Start the Frontend
 
 ```bash
 npm run dev
 ```
 
 ---
-# 🏗️ Arquitectura del Sistema
 
-```text
-                        ┌───────────────────────────┐
-                        │        Usuario            │
-                        │ Rector | Profesor | Alumno│
-                        └─────────────┬─────────────┘
-                                      │
-                                      ▼
-                         ┌─────────────────────────┐
-                         │       Frontend          │
-                         │ HTML + CSS + JS + Vite  │
-                         └─────────────┬───────────┘
-                                       │
-                                       ▼
-                         ┌─────────────────────────┐
-                         │         Router          │
-                         │ Navegación entre vistas │
-                         └─────────────┬───────────┘
-                                       │
-               ┌───────────────────────┼────────────────────────┐
-               ▼                       ▼                        ▼
-      ┌────────────────┐      ┌────────────────┐      ┌────────────────┐
-      │   Components   │      │     Pages      │      │     Store      │
-      │ UI reutilizable│      │ Vistas MPA     │      │ Sesión Usuario │
-      └────────┬───────┘      └────────┬───────┘      └────────┬───────┘
-               │                       │                       │
-               └───────────────┬───────┴───────────────────────┘
-                               ▼
-                     ┌─────────────────────┐
-                     │      Services       │
-                     │ Lógica de negocio   │
-                     │ Fetch / API REST    │
-                     └──────────┬──────────┘
-                                │
-                                ▼
-                     ┌─────────────────────┐
-                     │      Backend        │
-                     │ Node.js + Express   │
-                     └──────────┬──────────┘
-                                │
-                                ▼
-                     ┌─────────────────────┐
-                     │     PostgreSQL      │
-                     │ Base de Datos       │
-                     └─────────────────────┘
+## 5. Configure the Backend
+
+```bash
+cd backend
+pip install -r requirements.txt
 ```
 
-# 🔄 Flujo General del Sistema
+---
 
-```text
-               Inicio
-                  │
-                  ▼
-          Iniciar Sesión
-                  │
-                  ▼
-      Validación de Credenciales
-                  │
-         ┌────────┴────────┐
-         │                 │
-   Credenciales      Credenciales
-    Correctas         Incorrectas
-         │                 │
-         ▼                 ▼
-  Dashboard según     Mostrar Error
-        Rol                 │
-         │                  │
-         ▼                  │
- Seleccionar Módulo ◄────────┘
-         │
-         ▼
-Consultar / Registrar Información
-         │
-         ▼
-Validación de Datos
-         │
-         ▼
-Enviar solicitud al Backend
-         │
-         ▼
-Actualizar PostgreSQL
-         │
-         ▼
-Obtener respuesta
-         │
-         ▼
-Actualizar la interfaz
-         │
-         ▼
-Fin del proceso
+## 6. Run FastAPI
+
+```bash
+python run.py
 ```
 
+---
 
-# 👥 Roles del sistema
+## 7. Database
 
-| Rol | Funciones |
-|------|-----------|
-| Rector | Administración completa |
-| Profesor | Gestión académica |
-| Estudiante | Consulta académica |
+Configure PostgreSQL and execute:
+
+```sql
+atenea_schema.sql
+```
 
 ---
 
-# 📚 Historias de Usuario
+# 📸 Screenshots
 
-El desarrollo del proyecto está basado en historias de usuario que incluyen:
-
-- Autenticación
-- Gestión de cursos
-- Gestión de estudiantes
-- Gestión de profesores
-- CRUD de notas
-- Comunicados
-- Gamificación
-- Dashboard
-- Perfil
-- Arquitectura MPA
-
----
-
-# 🔐 Autenticación
-
-El sistema implementa:
-
-- Inicio de sesión
-- Protección de rutas
-- Persistencia de sesión
-- Control de acceso por roles
-
----
-
-# 📈 Escalabilidad
-
-La aplicación fue diseñada teniendo en cuenta principios de escalabilidad vertical:
-
-- Arquitectura modular
-- Router desacoplado
-- Servicios independientes
-- Paginación
-- Gestión centralizada del estado
-- Separación por capas
-
----
-
-# 📸 Capturas
-
-Aquí se agregarán imágenes del proyecto.
-
-## ERD
+## Entity Relationship Diagram
 
 ![ERD](./docs/ERD.jpg)
+
+---
 
 ## Login
 
 ![Login](./docs/login.png)
 
+---
+
 ## Dashboard
 
 ![Dashboard](./docs/dashboard.png)
 
-## Boletín
+---
 
-![Boletín](./docs/boletin.png)
+## Report Card
+
+![Report Card](./docs/report-card.png)
 
 ---
 
-# 👨‍💻 Integrantes
+# 🚀 Future Improvements
 
-| Nombre          | Rol          |
-|-----------------|--------------|
-| Auri Valdes     |Scrum Master  |
-| Jesus Lucena    | Frontend     |
-| Adriano Gonzales| Backend      |
-| Kevin           | Base de Datos|
-| Daniel Viaña    | Documentación|
+- Email Notifications
+- Calendar Synchronization
+- Attendance Tracking
+- Parent Portal
+- Mobile Responsive Improvements
+- Analytics Dashboard
+- AI-powered Academic Recommendations
 
 ---
 
-# 📄 Licencia
+# 👨‍💻 Team
 
-Proyecto académico desarrollado para Riwi.
+| Name | Role |
+|------|------|
+| **Auri Valdes** | Scrum Master |
+| **Jesus Lucena** | Frontend Developer |
+| **Adriano Gonzales** | Backend Developer |
+| **Kevin** | Database Developer |
+| **Daniel Viaña** | Technical Documentation |
+
+---
+
+# 📄 License
+
+This project was developed for academic purposes as part of the **Riwi Integrative Project**.
+
+© 2026 Atenea.io — All Rights Reserved.
