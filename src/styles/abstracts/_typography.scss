@@ -1,0 +1,71 @@
+//==================================================
+// GOOGLE FONTS
+//==================================================
+
+@import url('https://fonts.googleapis.com/css2?family=Changa:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+//==================================================
+// FAMILIAS TIPOGRÁFICAS
+//==================================================
+
+$font-primary: "Montserrat", sans-serif;
+$font-secondary: "Changa", sans-serif;
+
+
+//==================================================
+// MIXINS DE FUENTES
+//==================================================
+
+// Fuente principal
+// Uso recomendado para párrafos, botones, formularios y contenido general.
+
+@mixin font-primary {
+    font-family: $font-primary;
+    font-style: normal;
+}
+
+// Fuente secundaria
+// Uso recomendado para títulos, encabezados y elementos destacados.
+
+@mixin font-secondary {
+    font-family: $font-secondary;
+    font-style: normal;
+}
+
+
+//==================================================
+// MIXINS DE PESO
+//==================================================
+
+@mixin font-thin {
+    font-weight: 100;
+}
+
+@mixin font-extra-light {
+    font-weight: 200;
+}
+
+@mixin font-light {
+    font-weight: 300;
+}
+
+@mixin font-regular {
+    font-weight: 400;
+}
+
+@mixin font-medium {
+    font-weight: 500;
+}
+
+@mixin font-semi-bold {
+    font-weight: 600;
+}
+
+@mixin font-bold {
+    font-weight: 700;
+}
+
+@mixin font-extra-bold {
+    font-weight: 800;
+}

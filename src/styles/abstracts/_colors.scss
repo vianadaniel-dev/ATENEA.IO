@@ -1,0 +1,213 @@
+//==================================================
+// TEMA CLARO
+//==================================================
+
+:root {
+
+    //==============================================
+    // Colores de la interfaz
+    //==============================================
+
+    --text: rgb(29, 21, 81);
+    --background: rgb(244, 246, 254);
+    --surface: rgb(238, 238, 238);
+
+    //==============================================
+    // Paleta principal (Azul)
+    //==============================================
+
+    --primary-light: rgb(99, 102, 241);
+    --primary: rgb(29, 21, 81);
+    --primary-dark: rgb(23, 17, 124);
+
+    //==============================================
+    // Escala de grises
+    //==============================================
+
+    --gray-light: rgb(245, 245, 245);
+    --gray: rgb(220, 220, 220);
+    --gray-dark: rgb(130, 130, 130);
+
+    //==============================================
+    // Azules
+    //==============================================
+
+    --blue-light: rgb(147, 197, 253);
+    --blue: rgb(59, 130, 246);
+    --blue-dark: rgb(29, 78, 216);
+
+    //==============================================
+    // Rojos
+    //==============================================
+
+    --red-light: rgb(252, 165, 165);
+    --red: rgb(239, 68, 68);
+    --red-dark: rgb(185, 28, 28);
+
+    //==============================================
+    // Verdes
+    //==============================================
+
+    --green-light: rgb(134, 239, 172);
+    --green: rgb(34, 197, 94);
+    --green-dark: rgb(21, 128, 61);
+
+    //==============================================
+    // Morados
+    //==============================================
+
+    --purple-light: rgb(196, 181, 253);
+    --purple: rgb(139, 92, 246);
+    --purple-dark: rgb(109, 40, 217);
+
+    //==============================================
+    // Amarillos
+    //==============================================
+
+    --yellow-light: rgb(253, 224, 71);
+    --yellow: rgb(250, 204, 21);
+    --yellow-dark: rgb(202, 138, 4);
+
+    //==============================================
+    // Colores de apoyo
+    //==============================================
+
+    --white: rgb(251, 251, 254);
+
+    //==============================================
+    // Gradiente institucional
+    //==============================================
+
+    --gradient-start: rgb(23, 17, 124);
+    --gradient-end: rgb(4, 3, 22);
+
+    //==============================================
+    // Gamificación
+    //==============================================
+
+    --calendar-weekend: rgb(232, 232, 232);
+    --task-pending: rgb(217, 217, 217);
+    --task-completed: rgb(250, 204, 21);
+}
+
+
+//==================================================
+// TEMA OSCURO
+//==================================================
+
+[data-theme="dark"] {
+
+    // Interfaz
+
+    --text: rgb(251, 251, 254);
+    --background: rgb(31, 31, 31);
+    --surface: rgb(43, 43, 43);
+
+    // Paleta principal
+
+    --primary-light: rgb(129, 140, 248);
+    --primary: rgb(99, 102, 241);
+    --primary-dark: rgb(67, 56, 202);
+
+    // Escala de grises
+
+    --gray-light: rgb(100, 100, 100);
+    --gray: rgb(70, 70, 70);
+    --gray-dark: rgb(45, 45, 45);
+
+    // Azules
+
+    --blue-light: rgb(96, 165, 250);
+    --blue: rgb(59, 130, 246);
+    --blue-dark: rgb(30, 64, 175);
+
+    // Rojos
+
+    --red-light: rgb(248, 113, 113);
+    --red: rgb(239, 68, 68);
+    --red-dark: rgb(153, 27, 27);
+
+    // Verdes
+
+    --green-light: rgb(74, 222, 128);
+    --green: rgb(34, 197, 94);
+    --green-dark: rgb(22, 101, 52);
+
+    // Morados
+
+    --purple-light: rgb(167, 139, 250);
+    --purple: rgb(139, 92, 246);
+    --purple-dark: rgb(91, 33, 182);
+
+    // Amarillos
+
+    --yellow-light: rgb(250, 204, 21);
+    --yellow: rgb(234, 179, 8);
+    --yellow-dark: rgb(161, 98, 7);
+
+    --white: rgb(251, 251, 254);
+
+    --gradient-start: rgb(99, 102, 241);
+    --gradient-end: rgb(29, 21, 81);
+
+    --calendar-weekend: rgb(70, 70, 70);
+    --task-pending: rgb(100, 100, 100);
+    --task-completed: rgb(234, 179, 8);
+}
+
+
+//==================================================
+// VARIABLES SCSS
+//==================================================
+
+// Interfaz
+$text: var(--text);
+$background: var(--background);
+$surface: var(--surface);
+
+// Principal
+$primary-light: var(--primary-light);
+$primary: var(--primary);
+$primary-dark: var(--primary-dark);
+
+// Grises
+$gray-light: var(--gray-light);
+$gray: var(--gray);
+$gray-dark: var(--gray-dark);
+
+// Azules
+$blue-light: var(--blue-light);
+$blue: var(--blue);
+$blue-dark: var(--blue-dark);
+
+// Rojos
+$red-light: var(--red-light);
+$red: var(--red);
+$red-dark: var(--red-dark);
+
+// Verdes
+$green-light: var(--green-light);
+$green: var(--green);
+$green-dark: var(--green-dark);
+
+// Morados
+$purple-light: var(--purple-light);
+$purple: var(--purple);
+$purple-dark: var(--purple-dark);
+
+// Amarillos
+$yellow-light: var(--yellow-light);
+$yellow: var(--yellow);
+$yellow-dark: var(--yellow-dark);
+
+// Apoyo
+$white: var(--white);
+
+// Gradiente
+$gradient-start: var(--gradient-start);
+$gradient-end: var(--gradient-end);
+
+// Gamificación
+$calendar-weekend: var(--calendar-weekend);
+$task-pending: var(--task-pending);
+$task-completed: var(--task-completed);

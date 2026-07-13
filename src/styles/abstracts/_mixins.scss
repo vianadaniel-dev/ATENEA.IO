@@ -1,0 +1,131 @@
+//==================================================
+// FLEXBOX
+//==================================================
+
+// Centra los elementos horizontal y verticalmente.
+
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+// Distribuye los elementos con espacio entre ellos.
+
+@mixin flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+// Organiza los elementos en columna.
+
+@mixin flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+// Flex personalizado.
+
+@mixin flex(
+    $direction: row,
+    $justify: flex-start,
+    $align: stretch,
+    $gap: 0
+) {
+    display: flex;
+    flex-direction: $direction;
+    justify-content: $justify;
+    align-items: $align;
+    gap: $gap;
+}
+
+
+//==================================================
+// TAMAÑOS
+//==================================================
+
+// Asigna ancho y alto.
+// Si no se especifica el alto, toma el mismo valor del ancho.
+
+@mixin size($width, $height: $width) {
+    width: $width;
+    height: $height;
+}
+
+
+//==================================================
+// TRANSICIONES
+//==================================================
+
+// Transición general.
+
+@mixin transition(
+    $property: all,
+    $duration: $transition-normal,
+    $timing: ease
+) {
+    transition: $property $duration $timing;
+}
+
+
+//==================================================
+// BORDES
+//==================================================
+
+// Radio personalizado.
+
+@mixin radius($radius) {
+    border-radius: $radius;
+}
+
+
+//==================================================
+// SOMBRAS
+//==================================================
+
+// Aplica una sombra personalizada.
+
+@mixin shadow($shadow) {
+    box-shadow: $shadow;
+}
+
+
+//==================================================
+// POSICIONAMIENTO
+//==================================================
+
+// Centrado absoluto.
+
+@mixin absolute-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+//==================================================
+// TEXTO
+//==================================================
+
+// Evita el salto de línea y agrega puntos suspensivos.
+
+@mixin text-ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+//==================================================
+// RESPONSIVE
+//==================================================
+
+// Contenedor adaptable.
+
+@mixin container($max-width: 1200px) {
+    width: 100%;
+    max-width: $max-width;
+    margin: 0 auto;
+}
