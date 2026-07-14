@@ -1,0 +1,432 @@
+//==================================================
+// IMPORTACIONES
+//==================================================
+
+@use "../abstracts/colors" as *;
+@use "../abstracts/mixins" as *;
+@use "../abstracts/typography" as *;
+@use "../abstracts/variables" as *;
+
+
+//==================================================
+// SIDEBAR PRINCIPAL
+//==================================================
+
+#main-sidebar {
+    position: fixed;
+    z-index: 1001;
+
+    display: flex;
+    flex-direction: column;
+
+    @include size(350px, 100vh);
+    max-width: 60%;
+
+    background-color: $background;
+    color: $text;
+
+    @include shadow($shadow-md);
+
+    transition: width .3s ease;
+
+    &.closed {
+        @include size(80px, 100vh);
+    }
+}
+
+
+//==================================================
+// HEADER
+//==================================================
+
+#sidebar-header {
+    position: relative;
+
+    @include flex-center;
+    @include size(100%, 10vh);
+
+    min-height: 10vh;
+
+    background-color: $background;
+    border-bottom: 1px solid $text;
+
+    @include font-primary;
+
+    //==============================================
+    // Contenedor del logo y títulos
+    //==============================================
+
+    .sidebar__header-absolut {
+        @include flex-center;
+        @include size(100%);
+
+        padding: .6rem 1rem;
+        gap: .8rem;
+    }
+
+    //==============================================
+    // Botón para expandir / contraer
+    //==============================================
+
+    .sidebar__toggle-container {
+        position: absolute;
+        left: 93%;
+
+        @include flex-center;
+        @include size(2.8rem);
+
+        background-image: linear-gradient(
+            120deg,
+            $gradient-start,
+            $gradient-end
+        );
+
+        border-radius: $radius-pill;
+        border: 5px solid $background;
+
+        color: $text;
+        cursor: pointer;
+
+        transition: left .4s ease;
+
+        #sidebar-toggle-icon {
+            @include flex-center;
+            @include size(2rem);
+
+            padding-right: .1rem;
+
+            color: $background;
+
+            transform: rotate(180deg);
+            transition: transform .5s ease;
+
+            &.closed {
+                transform: rotate(0deg);
+            }
+        }
+
+        &.closed {
+            left: 110%;
+        }
+    }
+}
+
+
+//==================================================
+// LOGO
+//==================================================
+
+.sidebar__logo-container {
+    @include flex-center;
+    @include size(48px);
+
+    padding: .5rem;
+
+    background-image: linear-gradient(
+        120deg,
+        $gradient-start,
+        $gradient-end
+    );
+
+    border-radius: $radius-sm;
+
+    svg {
+        display: flex;
+
+        @include size(24px);
+
+        color: $background;
+    }
+}
+
+
+//==================================================
+// TITULO
+//==================================================
+
+.sidebar__title-container {
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    @include size(100%, auto);
+
+    opacity: 1;
+    visibility: visible;
+
+    transition: opacity .3s ease;
+
+    .sidebar__title {
+        font-size: 18px;
+        font-weight: 600;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .sidebar__subtitle {
+        font-size: 12px;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &.closed {
+        position: absolute;
+
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+}
+
+//==================================================
+// CONTENEDOR DEL MENÚ
+//==================================================
+
+.sidebar__menu-container {
+    display: flex;
+
+    @include size(100%, 100%);
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding: 1.2rem 1rem;
+}
+
+
+//==================================================
+// LISTA DEL MENÚ
+//==================================================
+
+.sidebar__menu-list {
+    display: flex;
+    flex-direction: column;
+
+    @include size(100%, auto);
+
+    list-style: none;
+    gap: .8rem;
+}
+
+
+//==================================================
+// ITEM DEL MENÚ
+//==================================================
+
+.sidebar__menu-item {
+    display: flex;
+    flex-direction: column;
+
+    @include size(100%, auto);
+    @include flex($justify: flex-start, $align: center);
+
+    cursor: pointer;
+
+
+    //==============================================
+    // Contenedor del enlace
+    //==============================================
+
+    .sidebar__link-wrapper {
+        @include flex($justify: flex-start, $align: center);
+        @include size(100%, auto);
+
+        padding: .4rem;
+        gap: .5rem;
+
+        @include font-secondary;
+
+        font-size: 16px;
+        font-weight: 500;
+        text-transform: uppercase;
+
+        opacity: 1;
+        visibility: visible;
+
+        transition: justify-content .3s ease;
+
+
+        //==========================================
+        // Icono
+        //==========================================
+
+        .sidebar__icon {
+            line-height: 0;
+
+            svg {
+                display: flex;
+
+                @include size(20px);
+
+                color: $text;
+            }
+        }
+
+
+        //==========================================
+        // Texto del enlace
+        //==========================================
+
+        .sidebar__text {
+            @include flex($justify: flex-start, $align: center);
+
+            line-height: 1;
+
+            opacity: 1;
+            visibility: visible;
+
+            transition: opacity .3s ease;
+
+            &.closed {
+                position: absolute;
+
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+            }
+        }
+
+
+        //==========================================
+        // Sidebar contraído
+        //==========================================
+
+        &.closed {
+            @include flex-center;
+        }
+    }
+
+
+    //==============================================
+    // Línea inferior
+    //==============================================
+
+    .sidebar__link-wrapper-li {
+        @include size(0%, 2px);
+
+        background-image: linear-gradient(
+            120deg,
+            $gradient-start,
+            $gradient-end
+        );
+
+        border-radius: $radius-pill;
+
+        transition: width .3s ease;
+    }
+
+
+    //==============================================
+    // Página activa
+    //==============================================
+
+    .sidebar__link-wrapper-li.location {
+        @include size(100%, 2px);
+    }
+
+
+    //==============================================
+    // Hover
+    //==============================================
+
+    &:hover .sidebar__link-wrapper-li {
+        @include size(100%, 2px);
+    }
+}
+//==================================================
+// FOOTER
+//==================================================
+
+.sidebar__footer {
+    @include flex-center;
+
+    flex-direction: column;
+
+    @include size(100%, auto);
+
+    padding: 1rem 1rem 2rem;
+    gap: .8rem;
+
+    background-color: $background;
+    border-top: 1px solid $text;
+
+
+    //==============================================
+    // Botones
+    //==============================================
+
+    .sidebar__button {
+        @include flex-center;
+
+        @include size(100%, auto);
+
+        padding: .6rem;
+        gap: .5rem;
+
+        background-color: $text;
+        color: $background;
+
+        border: none;
+        border-radius: $radius-sm;
+
+        cursor: pointer;
+
+        transition: background-color .3s ease,
+                    color .3s ease,
+                    transform .2s ease;
+
+
+        &:hover {
+            transform: translateY(-2px);
+        }
+
+        &:active {
+            transform: scale(.98);
+        }
+
+
+        //==========================================
+        // Iconos
+        //==========================================
+
+        svg {
+            display: flex;
+
+            @include size(18px);
+
+            color: $background;
+        }
+    }
+
+
+    //==============================================
+    // Texto del botón Salir
+    //==============================================
+
+    #sidebar-btn-logout-text {
+        @include font-secondary;
+
+        font-size: 16px;
+        text-transform: uppercase;
+        line-height: 1;
+
+        opacity: 1;
+        visibility: visible;
+
+        transition: opacity .3s ease;
+
+
+        &.closed {
+            position: absolute;
+
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+    }
+}

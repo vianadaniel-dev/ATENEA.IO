@@ -1,0 +1,123 @@
+export default function sidebar(){
+    return`
+    <nav id="main-sidebar" class="sidebar">
+        <!-- Bloque Superior: Logo, Título y Botón de colapso -->
+        <div id="sidebar-header" class="sidebar__header">
+            <div class="sidebar__header-absolut">
+                <div id="sidebar-logo-container" class="sidebar__logo-container">
+                    <svg viewBox="0 0 122 175" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0.219531 115.642C-0.150545 116.366 -0.0462272 117.241 0.483479 117.857L48.2629 173.43C49.4814 174.848 51.8051 173.968 51.7793 172.099L51.3593 141.727C51.3523 141.226 51.1577 140.746 50.8138 140.382L32.7075 121.202C31.5033 119.926 32.4077 117.829 34.1619 117.829H87.0533C88.8075 117.829 89.7119 119.926 88.5077 121.202L70.4014 140.382C70.0575 140.746 69.8629 141.226 69.8559 141.727L69.4359 172.099C69.4101 173.968 71.7338 174.848 72.9523 173.43L120.732 117.857C121.261 117.241 121.366 116.366 120.996 115.642L62.3881 1.08906C61.6452 -0.363018 59.57 -0.363026 58.8271 1.08906L0.219531 115.642ZM84.3135 94.7963C84.9703 96.1256 84.0031 97.6823 82.5204 97.6823H38.6948C37.2121 97.6823 36.2449 96.1256 36.9017 94.7963L58.8145 50.4487C59.5485 48.9634 61.6667 48.9634 62.4007 50.4487L84.3135 94.7963Z"/>
+                    </svg>
+                </div>
+                <div id="sidebar-title-container" class="sidebar__title-container">
+                    <span id="sidebar-title" class="sidebar__title">Little Gold Coin School</span>
+                    <span id="sidebar-subtitle" class="sidebar__subtitle">student: Jose Ramires</span>
+                </div>
+            </div>
+            <div id="sidebar-toggle-container" class="sidebar__toggle-container">
+                <svg id="sidebar-toggle-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
+                fill="currentColor" viewBox="0 0 24 24"  
+                transform="scale(-1,1) ">
+                <path d="m14.76 6.09-6.11 5.35c-.34.3-.34.83 0 1.13l6.11 5.35c.48.42 1.24.08 1.24-.56V6.65c0-.64-.76-.99-1.24-.56"></path>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Bloque Central: Opciones del menú/slider bar -->
+        <div id="sidebar-menu-container" class="sidebar__menu-container">
+            <ul id="sidebar-menu-list" class="sidebar__menu-list">
+                <li class="sidebar__menu-item">
+                    <div class="sidebar__link-wrapper">
+                        <i class="sidebar__icon">
+                            <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
+                            fill="currentColor" viewBox="0 0 24 24"  
+                            transform="scale(-1,1) ">
+                            <!--Boxicons v3.0.8 https://boxicons.com | License  https://docs.boxicons.com/free-->
+                            <path d="M3 13h1v7c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-7h1c.4 0 .77-.24.92-.62.15-.37.07-.8-.22-1.09l-8.99-9a.996.996 0 0 0-1.41 0l-9.01 9c-.29.29-.37.72-.22 1.09s.52.62.92.62Zm9-8.59 6 6V20H6v-9.59z"></path>
+                            </svg>
+                        </i>
+                        <span class="sidebar__text">TEXT</span>
+                    </div>
+                    <div class="sidebar__link-wrapper-li"></div>
+                </li>
+                <li class="sidebar__menu-item">
+                    <div class="sidebar__link-wrapper">
+                        <i class="sidebar__icon">
+                            <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
+                            fill="currentColor" viewBox="0 0 24 24"  
+                            transform="scale(-1,1) ">
+                            <!--Boxicons v3.0.8 https://boxicons.com | License  https://docs.boxicons.com/free-->
+                            <path d="M8 21h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2M8 5h8v14H8zm12-1h2v16h-2zM2 4h2v16H2z"></path>
+                            </svg>
+                        </i>
+                        <span class="sidebar__text">TEXT</span>
+                    </div>
+                    <div class="sidebar__link-wrapper-li"></div>
+                </li>
+                <li class="sidebar__menu-item">
+                    <div class="sidebar__link-wrapper">
+                        <i class="sidebar__icon">
+                            <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
+                            fill="currentColor" viewBox="0 0 24 24" >
+                            <!--Boxicons v3.0.8 https://boxicons.com | License  https://docs.boxicons.com/free-->
+                            <path d="M12 2C6.58 2 2 6.58 2 12s4.58 10 10 10 10-4.58 10-10S17.42 2 12 2m0 18c-4.34 0-8-3.66-8-8s3.66-8 8-8 8 3.66 8 8-3.66 8-8 8"></path><path d="M13 7h-2v6h6v-2h-4z"></path>
+                            </svg>
+                        </i>
+                        <span class="sidebar__text">TEXT</span>
+                    </div>
+                    <div class="sidebar__link-wrapper-li"></div>
+                </li>
+                <li class="sidebar__menu-item">
+                    <div class="sidebar__link-wrapper">
+                        <i class="sidebar__icon">
+                            <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
+                            fill="currentColor" viewBox="0 0 24 24"  
+                            transform="scale(-1,1) ">
+                            <!--Boxicons v3.0.8 https://boxicons.com | License  https://docs.boxicons.com/free-->
+                            <path d="M5 7h5v6H5zm0 8h10v2H5zm7-4h3v2h-3zm0-4h3v2h-3z"></path><path d="M21 18c0 .55-.45 1-1 1s-1-.45-1-1V5c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v13c0 1.65 1.35 3 3 3h16c1.65 0 3-1.35 3-3V6h-2zM4 19c-.55 0-1-.45-1-1V5h14v13c0 .35.07.69.18 1z"></path>
+                            </svg>
+                        </i>
+                        <span class="sidebar__text">TEXT</span>
+                    </div>
+                    <div class="sidebar__link-wrapper-li"></div>
+                </li>
+                <li class="sidebar__menu-item">
+                    <div class="sidebar__link-wrapper">
+                        <i class="sidebar__icon">
+                            <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
+                            fill="currentColor" viewBox="0 0 24 24"  
+                            transform="scale(-1,1) ">
+                            <!--Boxicons v3.0.8 https://boxicons.com | License  https://docs.boxicons.com/free-->
+                            <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5m0-8c1.65 0 3 1.35 3 3s-1.35 3-3 3-3-1.35-3-3 1.35-3 3-3M4 22h16c.55 0 1-.45 1-1v-1c0-3.86-3.14-7-7-7h-4c-3.86 0-7 3.14-7 7v1c0 .55.45 1 1 1m6-7h4c2.76 0 5 2.24 5 5H5c0-2.76 2.24-5 5-5"></path>
+                            </svg>
+                        </i>
+                        <span class="sidebar__text">TEXT</span>
+                    </div>
+                    <div class="sidebar__link-wrapper-li"></div>
+                </li>
+
+            </ul>
+        </div>
+
+        <!-- Bloque Inferior: Cambio de modo y Salida -->
+        <div id="sidebar-footer" class="sidebar__footer">
+            <button id="sidebar-btn-theme" class="sidebar__button sidebar__button--theme" type="button">
+                <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
+                fill="currentColor" viewBox="0 0 24 24"  
+                transform="scale(-1,1) ">
+                <!--Boxicons v3.0.8 https://boxicons.com | License  https://docs.boxicons.com/free-->
+                <path d="M12 17.01c2.76 0 5.01-2.25 5.01-5.01S14.76 6.99 12 6.99 6.99 9.24 6.99 12s2.25 5.01 5.01 5.01M12 9c1.66 0 3.01 1.35 3.01 3.01s-1.35 3.01-3.01 3.01-3.01-1.35-3.01-3.01S10.34 9 12 9m1 10h-2v3h2zm0-17h-2v3h2zM2 11h3v2H2zm17 0h3v2h-3zM4.22 18.36l.71.71.71.71 1.06-1.06 1.06-1.06-.71-.71-.71-.71-1.06 1.06zM19.78 5.64l-.71-.71-.71-.71-1.06 1.06-1.06 1.06.71.71.71.71 1.06-1.06zm-12.02.7L6.7 5.28 5.64 4.22l-.71.71-.71.71L5.28 6.7l1.06 1.06.71-.71zm8.48 11.32 1.06 1.06 1.06 1.06.71-.71.71-.71-1.06-1.06-1.06-1.06-.71.71z"></path>
+                </svg>
+            </button>
+            <button id="sidebar-btn-logout" class="sidebar__button sidebar__button--logout" type="button">
+                <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
+                fill="currentColor" viewBox="0 0 24 24"  
+                transform="scale(-1,1) ">
+                <!--Boxicons v3.0.8 https://boxicons.com | License  https://docs.boxicons.com/free-->
+                <path d="M9 13h7v-2H9V7l-6 5 6 5z"></path><path d="M19 3h-7v2h7v14h-7v2h7c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2"></path>
+                </svg>
+                <span id="sidebar-btn-logout-text">Exit</span>
+            </button>
+        </div>
+    </nav>`;
+}

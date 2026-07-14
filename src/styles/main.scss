@@ -1,0 +1,17 @@
+@use "abstracts/colors";
+@use "abstracts/mixins";
+@use "abstracts/typography";
+@use "abstracts/variables";
+
+@use "layouts/sidebar";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    &::before,
+    &::after {
+        box-sizing: border-box;
+    }
+}
