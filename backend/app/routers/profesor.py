@@ -1,11 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import List, Optional
+from datetime import date
 
 from app.database import get_db, get_cursor
 from app.models import RolUsuario
 from app.schemas import (
     CursoResponse, EstudianteResponse, CalificacionCreate, CalificacionUpdate, CalificacionResponse,
-    PuntajeCreate, PuntajeResponse, AnuncioResponse, TipoPuntoResponse
+    PuntajeCreate, PuntajeResponse, AnuncioResponse, TipoPuntoResponse,
+    TareaCreate, TareaUpdate, TareaResponse, AsistenciaBulkCreate, AsistenciaResponse
 )
 from app.auth_utils import RoleChecker, get_current_usuario
 
@@ -464,5 +466,172 @@ def ver_comunicados(conn = Depends(get_db)):
                     "created_at": row["created_at"]
                 }
             })
-            
+
     return results
+
+# ==========================================
+# 5. TAREAS
+# ==========================================
+
+@router.post("/tareas", response_model=TareaResponse, dependencies=[Depends(profesor_required)])
+def crear_tarea(tarea: TareaCreate, current_user: dict = Depends(get_current_usuario), conn = Depends(get_db)):
+    with get_cursor(conn) as cur:
+        cur.execute("SELECT id FROM profesor WHERE usuario_id = %s", (current_user["id"],))
+        profesor_id = cur.fetchone()["id"]
+        verify_profesor_teaches_course(cur, profesor_id, tarea.curso_id)
+
+        cur.execute(
+            """
+            INSERT INTO tarea (curso_id, titulo, descripcion, fecha_entrega, estado)
+            VALUES (%s, %s, %s, %s, %s)
+            RETURNING id, curso_id, titulo, descripcion, fecha_entrega, estado, created_at
+            """,
+            (tarea.curso_id, tarea.titulo, tarea.descripcion, tarea.fecha_entrega, tarea.estado)
+        )
+        db_tarea = cur.fetchone()
+
+    return db_tarea
+
+@router.get("/tareas", response_model=List[TareaResponse], dependencies=[Depends(profesor_required)])
+def listar_tareas_curso(curso_id: int, current_user: dict = Depends(get_current_usuario), conn = Depends(get_db)):
+    with get_cursor(conn) as cur:
+        cur.execute("SELECT id FROM profesor WHERE usuario_id = %s", (current_user["id"],))
+        profesor_id = cur.fetchone()["id"]
+        verify_profesor_teaches_course(cur, profesor_id, curso_id)
+
+        cur.execute(
+            """
+            SELECT id, curso_id, titulo, descripcion, fecha_entrega, estado, created_at
+            FROM tarea WHERE curso_id = %s ORDER BY fecha_entrega
+            """,
+            (curso_id,)
+        )
+        rows = cur.fetchall()
+
+    return rows
+
+@router.put("/tareas/{tarea_id}", response_model=TareaResponse, dependencies=[Depends(profesor_required)])
+def editar_tarea(tarea_id: int, tarea_data: TareaUpdate, current_user: dict = Depends(get_current_usuario), conn = Depends(get_db)):
+    with get_cursor(conn) as cur:
+        cur.execute("SELECT id FROM profesor WHERE usuario_id = %s", (current_user["id"],))
+        profesor_id = cur.fetchone()["id"]
+
+        cur.execute("SELECT id, curso_id FROM tarea WHERE id = %s", (tarea_id,))
+        db_tarea = cur.fetchone()
+        if not db_tarea:
+            raise HTTPException(status_code=404, detail="Tarea no encontrada")
+
+        verify_profesor_teaches_course(cur, profesor_id, db_tarea["curso_id"])
+
+        update_fields = []
+        params = []
+        for key, val in tarea_data.model_dump(exclude_unset=True).items():
+            update_fields.append(f"{key} = %s")
+            params.append(val)
+
+        if update_fields:
+            params.append(tarea_id)
+            cur.execute(
+                f"UPDATE tarea SET {', '.join(update_fields)} WHERE id = %s "
+                "RETURNING id, curso_id, titulo, descripcion, fecha_entrega, estado, created_at",
+                tuple(params)
+            )
+            row = cur.fetchone()
+        else:
+            cur.execute(
+                "SELECT id, curso_id, titulo, descripcion, fecha_entrega, estado, created_at FROM tarea WHERE id = %s",
+                (tarea_id,)
+            )
+            row = cur.fetchone()
+
+    return row
+
+@router.delete("/tareas/{tarea_id}", dependencies=[Depends(profesor_required)])
+def eliminar_tarea(tarea_id: int, current_user: dict = Depends(get_current_usuario), conn = Depends(get_db)):
+    with get_cursor(conn) as cur:
+        cur.execute("SELECT id FROM profesor WHERE usuario_id = %s", (current_user["id"],))
+        profesor_id = cur.fetchone()["id"]
+
+        cur.execute("SELECT id, curso_id FROM tarea WHERE id = %s", (tarea_id,))
+        db_tarea = cur.fetchone()
+        if not db_tarea:
+            raise HTTPException(status_code=404, detail="Tarea no encontrada")
+
+        verify_profesor_teaches_course(cur, profesor_id, db_tarea["curso_id"])
+
+        cur.execute("DELETE FROM tarea WHERE id = %s", (tarea_id,))
+
+    return {"message": "Tarea eliminada correctamente"}
+
+# ==========================================
+# 6. ASISTENCIA
+# ==========================================
+
+@router.post("/asistencia", response_model=List[AsistenciaResponse], dependencies=[Depends(profesor_required)])
+def registrar_asistencia(asistencia: AsistenciaBulkCreate, current_user: dict = Depends(get_current_usuario), conn = Depends(get_db)):
+    with get_cursor(conn) as cur:
+        cur.execute("SELECT id FROM profesor WHERE usuario_id = %s", (current_user["id"],))
+        profesor_id = cur.fetchone()["id"]
+        verify_profesor_teaches_course(cur, profesor_id, asistencia.curso_id)
+
+        resultados = []
+        for registro in asistencia.registros:
+            cur.execute(
+                "SELECT id FROM inscripcion WHERE estudiante_id = %s AND curso_id = %s",
+                (registro.estudiante_id, asistencia.curso_id)
+            )
+            insc = cur.fetchone()
+            if not insc:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"El estudiante {registro.estudiante_id} no está inscrito en este curso"
+                )
+
+            cur.execute(
+                """
+                INSERT INTO asistencia (inscripcion_id, fecha, estado)
+                VALUES (%s, %s, %s)
+                ON CONFLICT (inscripcion_id, fecha) DO UPDATE SET estado = EXCLUDED.estado
+                RETURNING id, inscripcion_id, fecha, estado
+                """,
+                (insc["id"], asistencia.fecha, registro.estado)
+            )
+            db_asistencia = cur.fetchone()
+            resultados.append({
+                "id": db_asistencia["id"],
+                "inscripcion_id": db_asistencia["inscripcion_id"],
+                "estudiante_id": registro.estudiante_id,
+                "fecha": db_asistencia["fecha"],
+                "estado": db_asistencia["estado"]
+            })
+
+    return resultados
+
+@router.get("/asistencia", response_model=List[AsistenciaResponse], dependencies=[Depends(profesor_required)])
+def consultar_asistencia_curso(
+    curso_id: int,
+    fecha: Optional[date] = None,
+    current_user: dict = Depends(get_current_usuario),
+    conn = Depends(get_db)
+):
+    with get_cursor(conn) as cur:
+        cur.execute("SELECT id FROM profesor WHERE usuario_id = %s", (current_user["id"],))
+        profesor_id = cur.fetchone()["id"]
+        verify_profesor_teaches_course(cur, profesor_id, curso_id)
+
+        sql = """
+            SELECT a.id, a.inscripcion_id, i.estudiante_id, a.fecha, a.estado
+            FROM asistencia a
+            JOIN inscripcion i ON i.id = a.inscripcion_id
+            WHERE i.curso_id = %s
+        """
+        params = [curso_id]
+        if fecha:
+            sql += " AND a.fecha = %s"
+            params.append(fecha)
+        sql += " ORDER BY a.fecha DESC"
+
+        cur.execute(sql, tuple(params))
+        rows = cur.fetchall()
+
+    return rows

@@ -51,7 +51,7 @@ class EstudianteCreateRector(BaseModel):
     email: EmailStr
     password_temporal: str = Field(..., min_length=6)
     fecha_nacimiento: Optional[date] = None
-    curso_inicial_id: Optional[int] = None
+    grupo_id: Optional[int] = None  # matricula al estudiante en todas las materias de este grupo
 
 class EstudianteUpdateRector(BaseModel):
     nombre: Optional[str] = None
@@ -101,6 +101,30 @@ class MateriaResponse(MateriaBase):
     class Config:
         from_attributes = True
 
+# Grupo Schemas (el "curso" real donde se matricula un estudiante, ej: "9-A")
+class GrupoBase(BaseModel):
+    nombre: str
+    periodo: str
+    cupo_maximo: int = Field(default=30, ge=1)
+    estado: str = "activo"
+    sede_id: Optional[str] = None
+
+class GrupoCreate(GrupoBase):
+    pass
+
+class GrupoUpdate(BaseModel):
+    nombre: Optional[str] = None
+    periodo: Optional[str] = None
+    cupo_maximo: Optional[int] = None
+    estado: Optional[str] = None
+    sede_id: Optional[str] = None
+
+class GrupoResponse(GrupoBase):
+    id: int
+
+    class Config:
+        from_attributes = True
+
 # Horario Schemas
 class HorarioBase(BaseModel):
     dia_semana: int = Field(..., ge=1, le=7) # 1-7 (Lunes-Domingo)
@@ -118,10 +142,11 @@ class HorarioResponse(HorarioBase):
     class Config:
         from_attributes = True
 
-# Curso Schemas
+# Curso Schemas (una materia ofrecida dentro de un grupo, ej: "Matemáticas en 9-A")
 class CursoBase(BaseModel):
     materia_id: int
     profesor_id: Optional[int] = None
+    grupo_id: Optional[int] = None
     periodo: str
     nombre_seccion: Optional[str] = None
     cupo_maximo: int = Field(default=30, ge=1)
@@ -134,6 +159,7 @@ class CursoCreate(CursoBase):
 class CursoUpdate(BaseModel):
     materia_id: Optional[int] = None
     profesor_id: Optional[int] = None
+    grupo_id: Optional[int] = None
     periodo: Optional[str] = None
     nombre_seccion: Optional[str] = None
     cupo_maximo: Optional[int] = None
@@ -145,6 +171,7 @@ class CursoResponse(BaseModel):
     id: int
     materia: MateriaResponse
     profesor: Optional[ProfesorResponse] = None
+    grupo: Optional[GrupoResponse] = None
     periodo: str
     nombre_seccion: Optional[str] = None
     cupo_maximo: int
@@ -311,3 +338,54 @@ class DashboardStats(BaseModel):
     total_estudiantes_activos: int
     total_estudiantes_inactivos: int
     top_gamificacion: List[dict]
+
+# Tarea Schemas
+class TareaBase(BaseModel):
+    titulo: str
+    descripcion: Optional[str] = None
+    fecha_entrega: Optional[date] = None
+    estado: str = "abierta"  # 'abierta' | 'cerrada'
+
+class TareaCreate(TareaBase):
+    curso_id: int
+
+class TareaUpdate(BaseModel):
+    titulo: Optional[str] = None
+    descripcion: Optional[str] = None
+    fecha_entrega: Optional[date] = None
+    estado: Optional[str] = None
+
+class TareaResponse(TareaBase):
+    id: int
+    curso_id: int
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+# Asistencia Schemas
+class AsistenciaRegistroItem(BaseModel):
+    estudiante_id: int
+    estado: str  # 'presente' | 'ausente' | 'tarde' | 'justificado'
+
+    @field_validator("estado")
+    @classmethod
+    def validate_estado(cls, v: str) -> str:
+        if v not in ("presente", "ausente", "tarde", "justificado"):
+            raise ValueError("estado debe ser 'presente', 'ausente', 'tarde' o 'justificado'")
+        return v
+
+class AsistenciaBulkCreate(BaseModel):
+    curso_id: int
+    fecha: date
+    registros: List[AsistenciaRegistroItem]
+
+class AsistenciaResponse(BaseModel):
+    id: int
+    inscripcion_id: int
+    estudiante_id: int
+    fecha: date
+    estado: str
+
+    class Config:
+        from_attributes = True

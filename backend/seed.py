@@ -100,7 +100,56 @@ def seed_data():
                     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
                 );
             """)
-            
+
+            # Create grupo table: el "curso" real donde se matricula un estudiante
+            # (ej: "9-A"). La tabla `curso` original representa una materia
+            # ofrecida dentro de un grupo, no el grupo en si.
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS grupo (
+                    id SERIAL PRIMARY KEY,
+                    nombre VARCHAR(50) NOT NULL,
+                    periodo VARCHAR(20) NOT NULL,
+                    cupo_maximo INTEGER NOT NULL DEFAULT 30,
+                    estado VARCHAR(30) NOT NULL DEFAULT 'activo',
+                    sede_id VARCHAR(50),
+                    UNIQUE (nombre, periodo)
+                );
+            """)
+
+            # Link each curso (materia ofrecida) al grupo al que pertenece
+            cur.execute("""
+                ALTER TABLE curso ADD COLUMN IF NOT EXISTS grupo_id INTEGER REFERENCES grupo(id);
+            """)
+
+            # Create tarea table
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS tarea (
+                    id SERIAL PRIMARY KEY,
+                    curso_id INTEGER NOT NULL REFERENCES curso(id),
+                    titulo VARCHAR(150) NOT NULL,
+                    descripcion TEXT,
+                    fecha_entrega DATE,
+                    estado VARCHAR(20) NOT NULL DEFAULT 'abierta',
+                    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+                );
+            """)
+
+            # Create asistencia table
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS asistencia (
+                    id SERIAL PRIMARY KEY,
+                    inscripcion_id INTEGER NOT NULL REFERENCES inscripcion(id) ON DELETE CASCADE,
+                    fecha DATE NOT NULL,
+                    estado VARCHAR(20) NOT NULL,
+                    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+                    UNIQUE (inscripcion_id, fecha)
+                );
+            """)
+
+            cur.execute("CREATE INDEX IF NOT EXISTS idx_curso_grupo ON curso(grupo_id);")
+            cur.execute("CREATE INDEX IF NOT EXISTS idx_tarea_curso ON tarea(curso_id);")
+            cur.execute("CREATE INDEX IF NOT EXISTS idx_asistencia_inscripcion ON asistencia(inscripcion_id);")
+
             conn.commit()
             print("Extensiones aplicadas correctamente.")
         except Exception as e:
@@ -195,35 +244,68 @@ def seed_data():
         cur.execute("INSERT INTO materia (nombre) VALUES (%s) RETURNING id", ("Español y Literatura",))
         mat3_id = cur.fetchone()["id"]
         
-        # Insert Cursos
+        # Insert Grupo: el "curso" real donde se matricula un estudiante (ej: "Décimo A")
         cur.execute(
             """
-            INSERT INTO curso (materia_id, profesor_id, periodo, nombre_seccion, cupo_maximo, estado, sede_id)
-            VALUES (%s, %s, '2026-1', 'Décimo A', 30, 'activo', 'Sede Norte') RETURNING id
+            INSERT INTO grupo (nombre, periodo, cupo_maximo, estado, sede_id)
+            VALUES (%s, %s, %s, 'activo', %s) RETURNING id
             """,
-            (mat1_id, prof2_id)
+            ("Décimo A", "2026-1", 30, "Sede Norte")
+        )
+        grupo1_id = cur.fetchone()["id"]
+
+        # Insert Cursos (materias ofrecidas dentro del grupo "Décimo A")
+        cur.execute(
+            """
+            INSERT INTO curso (materia_id, profesor_id, grupo_id, periodo, nombre_seccion, cupo_maximo, estado, sede_id)
+            VALUES (%s, %s, %s, '2026-1', 'Décimo A', 30, 'activo', 'Sede Norte') RETURNING id
+            """,
+            (mat1_id, prof2_id, grupo1_id)
         )
         curso1_id = cur.fetchone()["id"]
-        
+
         cur.execute(
             """
-            INSERT INTO curso (materia_id, profesor_id, periodo, nombre_seccion, cupo_maximo, estado, sede_id)
-            VALUES (%s, %s, '2026-1', 'Décimo A', 30, 'activo', 'Sede Norte') RETURNING id
+            INSERT INTO curso (materia_id, profesor_id, grupo_id, periodo, nombre_seccion, cupo_maximo, estado, sede_id)
+            VALUES (%s, %s, %s, '2026-1', 'Décimo A', 30, 'activo', 'Sede Norte') RETURNING id
             """,
-            (mat2_id, prof1_id)
+            (mat2_id, prof1_id, grupo1_id)
         )
         curso2_id = cur.fetchone()["id"]
-        
+
         # Insert Horarios
         cur.execute("INSERT INTO horario (curso_id, dia_semana, hora_inicio, hora_fin, aula) VALUES (%s, 1, '08:00:00', '09:30:00', 'Salón 101')", (curso1_id,))
         cur.execute("INSERT INTO horario (curso_id, dia_semana, hora_inicio, hora_fin, aula) VALUES (%s, 3, '08:00:00', '09:30:00', 'Salón 101')", (curso1_id,))
         cur.execute("INSERT INTO horario (curso_id, dia_semana, hora_inicio, hora_fin, aula) VALUES (%s, 2, '10:00:00', '11:30:00', 'Laboratorio B')", (curso2_id,))
-        
+
         # Insert Enrollments (Inscripciones)
-        cur.execute("INSERT INTO inscripcion (estudiante_id, curso_id, fecha_inscripcion) VALUES (%s, %s, CURRENT_DATE)", (est1_id, curso1_id))
-        cur.execute("INSERT INTO inscripcion (estudiante_id, curso_id, fecha_inscripcion) VALUES (%s, %s, CURRENT_DATE)", (est1_id, curso2_id))
-        cur.execute("INSERT INTO inscripcion (estudiante_id, curso_id, fecha_inscripcion) VALUES (%s, %s, CURRENT_DATE)", (est2_id, curso1_id))
-        
+        cur.execute("INSERT INTO inscripcion (estudiante_id, curso_id, fecha_inscripcion) VALUES (%s, %s, CURRENT_DATE) RETURNING id", (est1_id, curso1_id))
+        insc_est1_curso1_id = cur.fetchone()["id"]
+        cur.execute("INSERT INTO inscripcion (estudiante_id, curso_id, fecha_inscripcion) VALUES (%s, %s, CURRENT_DATE) RETURNING id", (est1_id, curso2_id))
+        insc_est1_curso2_id = cur.fetchone()["id"]
+        cur.execute("INSERT INTO inscripcion (estudiante_id, curso_id, fecha_inscripcion) VALUES (%s, %s, CURRENT_DATE) RETURNING id", (est2_id, curso1_id))
+        insc_est2_curso1_id = cur.fetchone()["id"]
+
+        # Insert Tareas (una por curso)
+        cur.execute(
+            "INSERT INTO tarea (curso_id, titulo, descripcion, fecha_entrega, estado) VALUES (%s, %s, %s, CURRENT_DATE + 7, 'abierta')",
+            (curso1_id, "Taller de derivadas", "Resolver los ejercicios 1 a 10 de la guía.")
+        )
+        cur.execute(
+            "INSERT INTO tarea (curso_id, titulo, descripcion, fecha_entrega, estado) VALUES (%s, %s, %s, CURRENT_DATE + 10, 'abierta')",
+            (curso2_id, "Informe de laboratorio", "Redactar el informe de la práctica de células.")
+        )
+
+        # Insert Asistencia (registro de un día para el curso1)
+        cur.execute(
+            "INSERT INTO asistencia (inscripcion_id, fecha, estado) VALUES (%s, CURRENT_DATE, 'presente')",
+            (insc_est1_curso1_id,)
+        )
+        cur.execute(
+            "INSERT INTO asistencia (inscripcion_id, fecha, estado) VALUES (%s, CURRENT_DATE, 'ausente')",
+            (insc_est2_curso1_id,)
+        )
+
         # Insert Tipos de Punto
         cur.execute(
             """

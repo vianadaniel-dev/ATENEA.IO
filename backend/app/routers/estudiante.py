@@ -518,5 +518,77 @@ def actualizar_perfil(
             
         cur.execute("SELECT id, email, nombre, rol, foto_url, created_at FROM usuario WHERE id = %s", (user_id,))
         updated_user = cur.fetchone()
-        
+
     return updated_user
+
+# ==========================================
+# 6. TAREAS
+# ==========================================
+
+@router.get("/tareas", dependencies=[Depends(estudiante_required)])
+def ver_mis_tareas(current_user: dict = Depends(get_current_usuario), conn = Depends(get_db)):
+    with get_cursor(conn) as cur:
+        cur.execute("SELECT id FROM estudiante WHERE usuario_id = %s", (current_user["id"],))
+        estudiante_id = cur.fetchone()["id"]
+
+        cur.execute(
+            """
+            SELECT t.id, t.titulo, t.descripcion, t.fecha_entrega, t.estado,
+                   m.nombre AS materia, c.nombre_seccion AS seccion
+            FROM tarea t
+            JOIN curso c ON c.id = t.curso_id
+            JOIN materia m ON m.id = c.materia_id
+            JOIN inscripcion i ON i.curso_id = c.id
+            WHERE i.estudiante_id = %s
+            ORDER BY t.fecha_entrega
+            """,
+            (estudiante_id,)
+        )
+        tareas = cur.fetchall()
+
+    return [
+        {
+            "id": t["id"],
+            "titulo": t["titulo"],
+            "descripcion": t["descripcion"],
+            "materia": t["materia"],
+            "seccion": t["seccion"],
+            "fecha_entrega": str(t["fecha_entrega"]) if t["fecha_entrega"] else None,
+            "estado": t["estado"]
+        }
+        for t in tareas
+    ]
+
+# ==========================================
+# 7. ASISTENCIA
+# ==========================================
+
+@router.get("/asistencia", dependencies=[Depends(estudiante_required)])
+def ver_mi_asistencia(periodo: str, current_user: dict = Depends(get_current_usuario), conn = Depends(get_db)):
+    with get_cursor(conn) as cur:
+        cur.execute("SELECT id FROM estudiante WHERE usuario_id = %s", (current_user["id"],))
+        estudiante_id = cur.fetchone()["id"]
+
+        cur.execute(
+            """
+            SELECT m.nombre AS materia, a.estado, COUNT(*) AS total
+            FROM asistencia a
+            JOIN inscripcion i ON i.id = a.inscripcion_id
+            JOIN curso c ON c.id = i.curso_id
+            JOIN materia m ON m.id = c.materia_id
+            WHERE i.estudiante_id = %s AND c.periodo = %s
+            GROUP BY m.nombre, a.estado
+            ORDER BY m.nombre
+            """,
+            (estudiante_id, periodo)
+        )
+        rows = cur.fetchall()
+
+    resumen = {}
+    for r in rows:
+        materia = r["materia"]
+        if materia not in resumen:
+            resumen[materia] = {"materia": materia, "presente": 0, "ausente": 0, "tarde": 0, "justificado": 0}
+        resumen[materia][r["estado"]] = r["total"]
+
+    return list(resumen.values())

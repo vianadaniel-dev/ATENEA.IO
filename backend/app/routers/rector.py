@@ -8,6 +8,7 @@ from app.schemas import (
     UsuarioResponse, EstudianteResponse, ProfesorResponse,
     EstudianteCreateRector, EstudianteUpdateRector, ProfesorCreateRector, ProfesorUpdateRector,
     CursoCreate, CursoUpdate, CursoResponse, MateriaResponse, HorarioResponse,
+    GrupoCreate, GrupoUpdate, GrupoResponse,
     AnuncioCreate, AnuncioResponse,
     TipoPuntoCreate, TipoPuntoResponse,
     RecompensaCreate, RecompensaResponse,
@@ -53,37 +54,40 @@ def check_schedule_overlap(cur, profesor_id: int, horarios_data: list, exclude_c
                     return True
     return False
 
-# Helper to fetch a single Course with nested details (Materia, Profesor, Horarios)
+# Helper to fetch a single Course with nested details (Materia, Profesor, Grupo, Horarios)
 def fetch_curso_details(cur, curso_id: int) -> dict:
     cur.execute("""
         SELECT c.id, c.periodo, c.nombre_seccion, c.cupo_maximo, c.estado, c.sede_id,
                c.materia_id, m.nombre AS materia_nombre,
                c.profesor_id, p.especialidad AS prof_especialidad, p.estado AS prof_estado,
-               pu.id AS prof_user_id, pu.email AS prof_email, pu.nombre AS prof_nombre, pu.rol AS prof_rol, pu.foto_url AS prof_foto, pu.created_at AS prof_created
+               pu.id AS prof_user_id, pu.email AS prof_email, pu.nombre AS prof_nombre, pu.rol AS prof_rol, pu.foto_url AS prof_foto, pu.created_at AS prof_created,
+               c.grupo_id, g.nombre AS grupo_nombre, g.periodo AS grupo_periodo, g.cupo_maximo AS grupo_cupo_maximo,
+               g.estado AS grupo_estado, g.sede_id AS grupo_sede_id
         FROM curso c
         JOIN materia m ON m.id = c.materia_id
         LEFT JOIN profesor p ON p.id = c.profesor_id
         LEFT JOIN usuario pu ON pu.id = p.usuario_id
+        LEFT JOIN grupo g ON g.id = c.grupo_id
         WHERE c.id = %s
     """, (curso_id,))
-    
+
     row = cur.fetchone()
     if not row:
         return None
-        
+
     # Get schedules
     cur.execute(
         "SELECT id, dia_semana, hora_inicio, hora_fin, aula FROM horario WHERE curso_id = %s",
         (curso_id,)
     )
     horarios = cur.fetchall()
-    
+
     # Structure nesting manually to match Pydantic CursoResponse schema
     materia_data = {
         "id": row["materia_id"],
         "nombre": row["materia_nombre"]
     }
-    
+
     profesor_data = None
     if row["profesor_id"]:
         profesor_data = {
@@ -99,7 +103,18 @@ def fetch_curso_details(cur, curso_id: int) -> dict:
                 "created_at": row["prof_created"]
             }
         }
-        
+
+    grupo_data = None
+    if row["grupo_id"]:
+        grupo_data = {
+            "id": row["grupo_id"],
+            "nombre": row["grupo_nombre"],
+            "periodo": row["grupo_periodo"],
+            "cupo_maximo": row["grupo_cupo_maximo"],
+            "estado": row["grupo_estado"],
+            "sede_id": row["grupo_sede_id"]
+        }
+
     horarios_data = [
         {
             "id": h["id"],
@@ -111,11 +126,12 @@ def fetch_curso_details(cur, curso_id: int) -> dict:
         }
         for h in horarios
     ]
-    
+
     return {
         "id": row["id"],
         "materia": materia_data,
         "profesor": profesor_data,
+        "grupo": grupo_data,
         "periodo": row["periodo"],
         "nombre_seccion": row["nombre_seccion"],
         "cupo_maximo": row["cupo_maximo"],
@@ -178,6 +194,69 @@ def fetch_profesor_details(cur, profesor_id: int) -> dict:
     }
 
 # ==========================================
+# 0. GESTIÓN DE GRUPOS
+# ==========================================
+# Un "grupo" es el curso real donde se matricula un estudiante (ej: "9-A").
+# La tabla `curso` representa una materia ofrecida dentro de un grupo.
+
+@router.post("/grupos", response_model=GrupoResponse, dependencies=[Depends(rector_required)])
+def crear_grupo(grupo: GrupoCreate, conn = Depends(get_db)):
+    with get_cursor(conn) as cur:
+        cur.execute("SELECT id FROM grupo WHERE nombre = %s AND periodo = %s", (grupo.nombre, grupo.periodo))
+        if cur.fetchone():
+            raise HTTPException(status_code=400, detail="Ya existe un grupo con ese nombre en ese periodo")
+
+        cur.execute(
+            """
+            INSERT INTO grupo (nombre, periodo, cupo_maximo, estado, sede_id)
+            VALUES (%s, %s, %s, %s, %s)
+            RETURNING id, nombre, periodo, cupo_maximo, estado, sede_id
+            """,
+            (grupo.nombre, grupo.periodo, grupo.cupo_maximo, grupo.estado, grupo.sede_id)
+        )
+        row = cur.fetchone()
+    return row
+
+@router.get("/grupos", response_model=List[GrupoResponse], dependencies=[Depends(rector_required)])
+def listar_grupos(periodo: Optional[str] = None, conn = Depends(get_db)):
+    with get_cursor(conn) as cur:
+        sql = "SELECT id, nombre, periodo, cupo_maximo, estado, sede_id FROM grupo"
+        params = []
+        if periodo:
+            sql += " WHERE periodo = %s"
+            params.append(periodo)
+        sql += " ORDER BY nombre"
+        cur.execute(sql, tuple(params))
+        rows = cur.fetchall()
+    return rows
+
+@router.put("/grupos/{grupo_id}", response_model=GrupoResponse, dependencies=[Depends(rector_required)])
+def actualizar_grupo(grupo_id: int, grupo_data: GrupoUpdate, conn = Depends(get_db)):
+    with get_cursor(conn) as cur:
+        cur.execute("SELECT id FROM grupo WHERE id = %s", (grupo_id,))
+        if not cur.fetchone():
+            raise HTTPException(status_code=404, detail="Grupo no encontrado")
+
+        update_fields = []
+        params = []
+        for key, val in grupo_data.model_dump(exclude_unset=True).items():
+            update_fields.append(f"{key} = %s")
+            params.append(val)
+
+        if update_fields:
+            params.append(grupo_id)
+            cur.execute(
+                f"UPDATE grupo SET {', '.join(update_fields)} WHERE id = %s "
+                "RETURNING id, nombre, periodo, cupo_maximo, estado, sede_id",
+                tuple(params)
+            )
+            row = cur.fetchone()
+        else:
+            cur.execute("SELECT id, nombre, periodo, cupo_maximo, estado, sede_id FROM grupo WHERE id = %s", (grupo_id,))
+            row = cur.fetchone()
+    return row
+
+# ==========================================
 # 1. GESTIÓN DE CURSOS (US-04)
 # ==========================================
 
@@ -213,15 +292,22 @@ def crear_curso(curso_data: CursoCreate, conn = Depends(get_db)):
                 detail="Ya existe este curso (misma materia, periodo y sección)"
             )
 
+        # Verify grupo exists, if provided
+        if curso_data.grupo_id:
+            cur.execute("SELECT id FROM grupo WHERE id = %s", (curso_data.grupo_id,))
+            if not cur.fetchone():
+                raise HTTPException(status_code=404, detail="Grupo no encontrado")
+
         # Create Curso
         cur.execute(
             """
-            INSERT INTO curso (materia_id, profesor_id, periodo, nombre_seccion, cupo_maximo, estado, sede_id)
-            VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING id
+            INSERT INTO curso (materia_id, profesor_id, grupo_id, periodo, nombre_seccion, cupo_maximo, estado, sede_id)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id
             """,
             (
                 curso_data.materia_id,
                 curso_data.profesor_id,
+                curso_data.grupo_id,
                 curso_data.periodo,
                 curso_data.nombre_seccion,
                 curso_data.cupo_maximo,
@@ -412,22 +498,34 @@ def crear_estudiante(data: EstudianteCreateRector, conn = Depends(get_db)):
         )
         estudiante_id = cur.fetchone()["id"]
 
-        # Initial Course Assignment
-        if data.curso_inicial_id:
-            cur.execute("SELECT id, cupo_maximo FROM curso WHERE id = %s AND estado = 'activo'", (data.curso_inicial_id,))
-            curso = cur.fetchone()
-            if not curso:
-                raise HTTPException(status_code=404, detail="Curso inicial no encontrado o inactivo")
-
-            cur.execute("SELECT COUNT(*) FROM inscripcion WHERE curso_id = %s", (data.curso_inicial_id,))
-            count = cur.fetchone()["count"]
-            if count >= curso["cupo_maximo"]:
-                raise HTTPException(status_code=400, detail="El curso seleccionado ya alcanzó su cupo máximo")
+        # Matricular en el grupo: se inscribe automáticamente en todas las
+        # materias (cursos) activas que pertenezcan a ese grupo
+        if data.grupo_id:
+            cur.execute("SELECT id, cupo_maximo, estado FROM grupo WHERE id = %s", (data.grupo_id,))
+            grupo = cur.fetchone()
+            if not grupo:
+                raise HTTPException(status_code=404, detail="Grupo no encontrado")
+            if grupo["estado"] != "activo":
+                raise HTTPException(status_code=400, detail="El grupo seleccionado no está activo")
 
             cur.execute(
-                "INSERT INTO inscripcion (estudiante_id, curso_id) VALUES (%s, %s)",
-                (estudiante_id, data.curso_inicial_id)
+                "SELECT COUNT(DISTINCT i.estudiante_id) FROM inscripcion i JOIN curso c ON c.id = i.curso_id WHERE c.grupo_id = %s",
+                (data.grupo_id,)
             )
+            matriculados = cur.fetchone()["count"]
+            if matriculados >= grupo["cupo_maximo"]:
+                raise HTTPException(status_code=400, detail="El grupo seleccionado ya alcanzó su cupo máximo")
+
+            cur.execute(
+                "SELECT id FROM curso WHERE grupo_id = %s AND estado = 'activo'",
+                (data.grupo_id,)
+            )
+            cursos_del_grupo = cur.fetchall()
+            for c in cursos_del_grupo:
+                cur.execute(
+                    "INSERT INTO inscripcion (estudiante_id, curso_id) VALUES (%s, %s)",
+                    (estudiante_id, c["id"])
+                )
 
         details = fetch_estudiante_details(cur, estudiante_id)
 
