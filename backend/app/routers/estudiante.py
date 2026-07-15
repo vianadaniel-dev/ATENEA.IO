@@ -5,7 +5,7 @@ from datetime import date, time, datetime
 from app.database import get_db, get_cursor
 from app.models import RolUsuario
 from app.schemas import (
-    BoletinResponse, CursoResponse, AnuncioResponse,
+    BoletinResponse, CursoMateriaResponse, AnuncioResponse,
     RecompensaResponse, CanjeResponse, CanjeCreate, UsuarioUpdate, UsuarioResponse
 )
 from app.auth_utils import RoleChecker, get_current_usuario, verify_password, get_password_hash
@@ -89,32 +89,33 @@ def ver_boletin(
         est_profile = cur.fetchone()
         if not est_profile or est_profile["estado"] != "activo":
             raise HTTPException(status_code=403, detail="Perfil de estudiante inactivo o no encontrado")
-            
+
         estudiante_id = est_profile["id"]
-        
+
         # Query published grades
         cur.execute(
             """
-            SELECT m.nombre AS materia, c.periodo, cal.valor AS nota_numerica, cal.fecha, u.nombre AS profesor_nombre
+            SELECT m.nombre AS materia, cur.periodo, cal.valor AS nota_numerica, cal.fecha, u.nombre AS profesor_nombre
             FROM calificacion cal
             JOIN inscripcion i ON i.id = cal.inscripcion_id
-            JOIN curso c ON c.id = i.curso_id
-            JOIN materia m ON m.id = c.materia_id
-            LEFT JOIN profesor p ON p.id = c.profesor_id
+            JOIN curso_materia cm ON cm.id = cal.curso_materia_id
+            JOIN curso cur ON cur.id = cm.curso_id
+            JOIN materia m ON m.id = cm.materia_id
+            LEFT JOIN profesor p ON p.id = cm.profesor_id
             LEFT JOIN usuario u ON u.id = p.usuario_id
-            WHERE i.estudiante_id = %s AND c.periodo = %s AND cal.estado = 'publicada'
+            WHERE i.estudiante_id = %s AND cur.periodo = %s AND cal.estado = 'publicada'
             """,
             (estudiante_id, periodo)
         )
         grades = cur.fetchall()
-        
+
     results = []
     totales_valor = 0.0
-    
+
     for g in grades:
         valor_float = float(g["nota_numerica"])
         totales_valor += valor_float
-        
+
         results.append({
             "materia": g["materia"],
             "periodo": g["periodo"],
@@ -123,9 +124,9 @@ def ver_boletin(
             "profesor": g["profesor_nombre"] if g["profesor_nombre"] else "Por asignar",
             "fecha": str(g["fecha"])
         })
-        
+
     gpa = (totales_valor / len(grades)) if grades else 0.0
-    
+
     return {
         "periodo": periodo,
         "promedio_general": round(gpa, 2),
@@ -142,26 +143,40 @@ def ver_mis_cursos(current_user: dict = Depends(get_current_usuario), conn = Dep
         cur.execute("SELECT id FROM estudiante WHERE usuario_id = %s", (current_user["id"],))
         est_profile = cur.fetchone()
         estudiante_id = est_profile["id"]
-        
+
+        # Get the student's curso through their single inscripcion
         cur.execute(
             """
-            SELECT c.id AS curso_id, m.nombre AS materia, c.nombre_seccion AS seccion, c.periodo, u.nombre AS profesor
+            SELECT c.id, c.nombre, c.periodo
             FROM inscripcion i
             JOIN curso c ON c.id = i.curso_id
-            JOIN materia m ON m.id = c.materia_id
-            LEFT JOIN profesor p ON p.id = c.profesor_id
-            LEFT JOIN usuario u ON u.id = p.usuario_id
             WHERE i.estudiante_id = %s AND c.estado = 'activo'
             """,
             (estudiante_id,)
         )
-        cursos = cur.fetchall()
-        
+        curso = cur.fetchone()
+        if not curso:
+            return []
+
+        # List all materias offered within that curso
+        cur.execute(
+            """
+            SELECT cm.id AS curso_materia_id, m.nombre AS materia, u.nombre AS profesor
+            FROM curso_materia cm
+            JOIN materia m ON m.id = cm.materia_id
+            LEFT JOIN profesor p ON p.id = cm.profesor_id
+            LEFT JOIN usuario u ON u.id = p.usuario_id
+            WHERE cm.curso_id = %s AND cm.estado = 'activo'
+            """,
+            (curso["id"],)
+        )
+        materias = cur.fetchall()
+
         results = []
-        for c in cursos:
-            cur.execute("SELECT id, dia_semana, hora_inicio, hora_fin, aula FROM horario WHERE curso_id = %s", (c["curso_id"],))
+        for cmr in materias:
+            cur.execute("SELECT id, dia_semana, hora_inicio, hora_fin, aula FROM horario WHERE curso_materia_id = %s", (cmr["curso_materia_id"],))
             horarios = cur.fetchall()
-            
+
             horarios_formatted = [{
                 "id": h["id"],
                 "dia_semana": h["dia_semana"],
@@ -169,16 +184,16 @@ def ver_mis_cursos(current_user: dict = Depends(get_current_usuario), conn = Dep
                 "hora_fin": str(h["hora_fin"]),
                 "aula": h["aula"]
             } for h in horarios]
-            
+
             results.append({
-                "curso_id": c["curso_id"],
-                "materia": c["materia"],
-                "seccion": c["seccion"],
-                "profesor": c["profesor"] if c["profesor"] else "Por asignar",
-                "periodo": c["periodo"],
+                "curso_materia_id": cmr["curso_materia_id"],
+                "materia": cmr["materia"],
+                "curso": curso["nombre"],
+                "profesor": cmr["profesor"] if cmr["profesor"] else "Por asignar",
+                "periodo": curso["periodo"],
                 "horarios": horarios_formatted
             })
-            
+
     return results
 
 @router.get("/anuncios", dependencies=[Depends(estudiante_required)])
@@ -187,13 +202,14 @@ def ver_anuncios(current_user: dict = Depends(get_current_usuario), conn = Depen
         cur.execute("SELECT id FROM estudiante WHERE usuario_id = %s", (current_user["id"],))
         est_profile = cur.fetchone()
         estudiante_id = est_profile["id"]
-        
+
         cur.execute(
             """
-            SELECT a.id, a.titulo, a.contenido, a.fecha_publicacion, u.nombre AS autor, a.curso_id
+            SELECT a.id, a.titulo, a.contenido, a.fecha_publicacion, u.nombre AS autor, a.curso_materia_id
             FROM anuncio a
             JOIN usuario u ON u.id = a.autor_id
-            LEFT JOIN inscripcion i ON i.curso_id = a.curso_id AND i.estudiante_id = %s
+            LEFT JOIN curso_materia cm ON cm.id = a.curso_materia_id
+            LEFT JOIN inscripcion i ON i.curso_id = cm.curso_id AND i.estudiante_id = %s
             WHERE a.estado = 'publicado'
               AND (
                 (a.rol_destinatario = 'estudiante' OR a.rol_destinatario IS NULL)
@@ -204,7 +220,7 @@ def ver_anuncios(current_user: dict = Depends(get_current_usuario), conn = Depen
             (estudiante_id,)
         )
         anuncios = cur.fetchall()
-        
+
         results = []
         for a in anuncios:
             results.append({
@@ -213,9 +229,9 @@ def ver_anuncios(current_user: dict = Depends(get_current_usuario), conn = Depen
                 "contenido": a["contenido"],
                 "fecha_publicacion": str(a["fecha_publicacion"]),
                 "autor": a["autor"],
-                "tipo": "Curso" if a["curso_id"] else "Institucional"
+                "tipo": "Curso" if a["curso_materia_id"] else "Institucional"
             })
-            
+
     return results
 
 # ==========================================
@@ -228,10 +244,10 @@ def ver_mis_puntos_resumen(current_user: dict = Depends(get_current_usuario), co
         cur.execute("SELECT id FROM estudiante WHERE usuario_id = %s", (current_user["id"],))
         est_profile = cur.fetchone()
         estudiante_id = est_profile["id"]
-        
+
         cur.execute("SELECT id, nombre, descripcion, icono, color FROM tipo_punto WHERE estado = 'activo'")
         active_types = cur.fetchall()
-        
+
         results = []
         for tp in active_types:
             # 1. Total points earned of this type
@@ -240,7 +256,7 @@ def ver_mis_puntos_resumen(current_user: dict = Depends(get_current_usuario), co
                 (estudiante_id, tp["id"])
             )
             total_earned = cur.fetchone()["sum"] or 0
-            
+
             # 2. Total points spent of this type
             cur.execute(
                 """
@@ -251,9 +267,9 @@ def ver_mis_puntos_resumen(current_user: dict = Depends(get_current_usuario), co
                 (estudiante_id, tp["id"])
             )
             total_spent = cur.fetchone()["sum"] or 0
-            
+
             balance = total_earned - total_spent
-            
+
             results.append({
                 "tipo_punto_id": tp["id"],
                 "nombre": tp["nombre"],
@@ -261,7 +277,7 @@ def ver_mis_puntos_resumen(current_user: dict = Depends(get_current_usuario), co
                 "color": tp["color"],
                 "saldo": balance
             })
-            
+
     return results
 
 @router.get("/puntos/desglose", dependencies=[Depends(estudiante_required)])
@@ -270,7 +286,7 @@ def ver_desglose_puntos(current_user: dict = Depends(get_current_usuario), conn 
         cur.execute("SELECT id FROM estudiante WHERE usuario_id = %s", (current_user["id"],))
         est_profile = cur.fetchone()
         estudiante_id = est_profile["id"]
-        
+
         cur.execute(
             """
             SELECT p.id, p.valor, tp.nombre AS tipo_punto, p.origen, p.fecha
@@ -282,7 +298,7 @@ def ver_desglose_puntos(current_user: dict = Depends(get_current_usuario), conn 
             (estudiante_id,)
         )
         puntajes = cur.fetchall()
-        
+
         results = []
         for p in puntajes:
             results.append({
@@ -292,7 +308,7 @@ def ver_desglose_puntos(current_user: dict = Depends(get_current_usuario), conn 
                 "motivo": p["origen"],
                 "fecha": str(p["fecha"])
             })
-            
+
     return results
 
 @router.get("/leaderboard", dependencies=[Depends(estudiante_required)])
@@ -305,7 +321,7 @@ def ver_tabla_clasificacion(
         cur.execute("SELECT id FROM estudiante WHERE usuario_id = %s", (current_user["id"],))
         est_profile = cur.fetchone()
         current_student_id = est_profile["id"]
-        
+
         if tipo_punto_id:
             cur.execute(
                 """
@@ -328,14 +344,14 @@ def ver_tabla_clasificacion(
                 """
             )
         query = cur.fetchall()
-        
+
     results = []
     for rank, r in enumerate(query, 1):
         is_me = (r["estudiante_id"] == current_student_id)
-        
+
         # Mask points for other students! US-15 criteria
         puntos = int(r["puntos_totales"]) if is_me else None
-        
+
         results.append({
             "rank": rank,
             "estudiante_id": r["estudiante_id"],
@@ -343,7 +359,7 @@ def ver_tabla_clasificacion(
             "puntos": puntos,
             "es_usuario_actual": is_me
         })
-        
+
     return results
 
 # ==========================================
@@ -379,9 +395,9 @@ def canjear_recompensa(
         est_profile = cur.fetchone()
         if not est_profile or est_profile["estado"] != "activo":
             raise HTTPException(status_code=403, detail="Perfil de estudiante inactivo o no encontrado")
-            
+
         estudiante_id = est_profile["id"]
-        
+
         # Get reward
         cur.execute(
             """
@@ -395,12 +411,12 @@ def canjear_recompensa(
         recompensa = cur.fetchone()
         if not recompensa:
             raise HTTPException(status_code=404, detail="Recompensa no encontrada o inactiva")
-            
+
         # Check point balance
         # 1. Earned
         cur.execute("SELECT SUM(valor) FROM puntaje WHERE estudiante_id = %s AND tipo_punto_id = %s", (estudiante_id, recompensa["tipo_punto_id"]))
         total_earned = cur.fetchone()["sum"] or 0
-        
+
         # 2. Spent
         cur.execute(
             """
@@ -411,15 +427,15 @@ def canjear_recompensa(
             (estudiante_id, recompensa["tipo_punto_id"])
         )
         total_spent = cur.fetchone()["sum"] or 0
-        
+
         balance = total_earned - total_spent
-        
+
         if balance < recompensa["costo_puntos"]:
             raise HTTPException(
                 status_code=400,
                 detail=f"Saldo insuficiente. Requiere {recompensa['costo_puntos']} puntos de '{recompensa['tp_nombre']}', tu saldo es {balance}."
             )
-            
+
         # Create redemption request
         cur.execute(
             """
@@ -429,7 +445,7 @@ def canjear_recompensa(
             (estudiante_id, recompensa["id"], recompensa["costo_puntos"])
         )
         canje_id = cur.fetchone()["id"]
-        
+
         # Get complete redemption details
         cur.execute(
             """
@@ -454,7 +470,7 @@ def listar_mis_canjes(current_user: dict = Depends(get_current_usuario), conn = 
         cur.execute("SELECT id FROM estudiante WHERE usuario_id = %s", (current_user["id"],))
         est_profile = cur.fetchone()
         estudiante_id = est_profile["id"]
-        
+
         cur.execute(
             """
             SELECT c.id, c.estudiante_id, c.puntos_usados, c.estado, c.created_at,
@@ -490,32 +506,32 @@ def actualizar_perfil(
 ):
     with get_cursor(conn) as cur:
         user_id = current_user["id"]
-        
+
         if perfil_data.nombre:
             cur.execute("UPDATE usuario SET nombre = %s WHERE id = %s", (perfil_data.nombre, user_id))
-            
+
         if perfil_data.foto_url is not None:
             cur.execute("UPDATE usuario SET foto_url = %s WHERE id = %s", (perfil_data.foto_url, user_id))
-            
+
         if perfil_data.password:
             if not perfil_data.confirm_password:
                 raise HTTPException(
                     status_code=400,
                     detail="Se requiere confirmar la contraseña actual para cambiar la contraseña"
                 )
-                
+
             cur.execute("SELECT password_hash FROM usuario WHERE id = %s", (user_id,))
             current_pw_hash = cur.fetchone()["password_hash"]
-            
+
             if not verify_password(perfil_data.confirm_password, current_pw_hash):
                 raise HTTPException(
                     status_code=400,
                     detail="La contraseña actual confirmada es incorrecta"
                 )
-                
+
             new_hash = get_password_hash(perfil_data.password)
             cur.execute("UPDATE usuario SET password_hash = %s WHERE id = %s", (new_hash, user_id))
-            
+
         cur.execute("SELECT id, email, nombre, rol, foto_url, created_at FROM usuario WHERE id = %s", (user_id,))
         updated_user = cur.fetchone()
 
@@ -534,11 +550,12 @@ def ver_mis_tareas(current_user: dict = Depends(get_current_usuario), conn = Dep
         cur.execute(
             """
             SELECT t.id, t.titulo, t.descripcion, t.fecha_entrega, t.estado,
-                   m.nombre AS materia, c.nombre_seccion AS seccion
+                   m.nombre AS materia, cur.nombre AS curso
             FROM tarea t
-            JOIN curso c ON c.id = t.curso_id
-            JOIN materia m ON m.id = c.materia_id
-            JOIN inscripcion i ON i.curso_id = c.id
+            JOIN curso_materia cm ON cm.id = t.curso_materia_id
+            JOIN materia m ON m.id = cm.materia_id
+            JOIN curso cur ON cur.id = cm.curso_id
+            JOIN inscripcion i ON i.curso_id = cm.curso_id
             WHERE i.estudiante_id = %s
             ORDER BY t.fecha_entrega
             """,
@@ -552,7 +569,7 @@ def ver_mis_tareas(current_user: dict = Depends(get_current_usuario), conn = Dep
             "titulo": t["titulo"],
             "descripcion": t["descripcion"],
             "materia": t["materia"],
-            "seccion": t["seccion"],
+            "curso": t["curso"],
             "fecha_entrega": str(t["fecha_entrega"]) if t["fecha_entrega"] else None,
             "estado": t["estado"]
         }
@@ -574,9 +591,10 @@ def ver_mi_asistencia(periodo: str, current_user: dict = Depends(get_current_usu
             SELECT m.nombre AS materia, a.estado, COUNT(*) AS total
             FROM asistencia a
             JOIN inscripcion i ON i.id = a.inscripcion_id
-            JOIN curso c ON c.id = i.curso_id
-            JOIN materia m ON m.id = c.materia_id
-            WHERE i.estudiante_id = %s AND c.periodo = %s
+            JOIN curso_materia cm ON cm.id = a.curso_materia_id
+            JOIN curso cur ON cur.id = cm.curso_id
+            JOIN materia m ON m.id = cm.materia_id
+            WHERE i.estudiante_id = %s AND cur.periodo = %s
             GROUP BY m.nombre, a.estado
             ORDER BY m.nombre
             """,

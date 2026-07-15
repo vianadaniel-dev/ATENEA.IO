@@ -51,7 +51,7 @@ class EstudianteCreateRector(BaseModel):
     email: EmailStr
     password_temporal: str = Field(..., min_length=6)
     fecha_nacimiento: Optional[date] = None
-    grupo_id: Optional[int] = None  # matricula al estudiante en todas las materias de este grupo
+    curso_id: Optional[int] = None  # matricula al estudiante en este curso
 
 class EstudianteUpdateRector(BaseModel):
     nombre: Optional[str] = None
@@ -101,25 +101,25 @@ class MateriaResponse(MateriaBase):
     class Config:
         from_attributes = True
 
-# Grupo Schemas (el "curso" real donde se matricula un estudiante, ej: "9-A")
-class GrupoBase(BaseModel):
+# Curso Schemas (donde se matricula un estudiante, ej: "9-A")
+class CursoBase(BaseModel):
     nombre: str
     periodo: str
     cupo_maximo: int = Field(default=30, ge=1)
     estado: str = "activo"
     sede_id: Optional[str] = None
 
-class GrupoCreate(GrupoBase):
+class CursoCreate(CursoBase):
     pass
 
-class GrupoUpdate(BaseModel):
+class CursoUpdate(BaseModel):
     nombre: Optional[str] = None
     periodo: Optional[str] = None
     cupo_maximo: Optional[int] = None
     estado: Optional[str] = None
     sede_id: Optional[str] = None
 
-class GrupoResponse(GrupoBase):
+class CursoResponse(CursoBase):
     id: int
 
     class Config:
@@ -137,46 +137,34 @@ class HorarioCreate(HorarioBase):
 
 class HorarioResponse(HorarioBase):
     id: int
-    curso_id: int
+    curso_materia_id: int
 
     class Config:
         from_attributes = True
 
-# Curso Schemas (una materia ofrecida dentro de un grupo, ej: "Matemáticas en 9-A")
-class CursoBase(BaseModel):
+# CursoMateria Schemas (una materia ofrecida dentro de un curso, ej: "Matemáticas en 9-A")
+class CursoMateriaBase(BaseModel):
     materia_id: int
     profesor_id: Optional[int] = None
-    grupo_id: Optional[int] = None
-    periodo: str
-    nombre_seccion: Optional[str] = None
-    cupo_maximo: int = Field(default=30, ge=1)
+    curso_id: int
     estado: str = "activo"
-    sede_id: Optional[str] = None
 
-class CursoCreate(CursoBase):
+class CursoMateriaCreate(CursoMateriaBase):
     horarios: List[HorarioCreate] = []
 
-class CursoUpdate(BaseModel):
+class CursoMateriaUpdate(BaseModel):
     materia_id: Optional[int] = None
     profesor_id: Optional[int] = None
-    grupo_id: Optional[int] = None
-    periodo: Optional[str] = None
-    nombre_seccion: Optional[str] = None
-    cupo_maximo: Optional[int] = None
+    curso_id: Optional[int] = None
     estado: Optional[str] = None
-    sede_id: Optional[str] = None
     horarios: Optional[List[HorarioCreate]] = None
 
-class CursoResponse(BaseModel):
+class CursoMateriaResponse(BaseModel):
     id: int
     materia: MateriaResponse
     profesor: Optional[ProfesorResponse] = None
-    grupo: Optional[GrupoResponse] = None
-    periodo: str
-    nombre_seccion: Optional[str] = None
-    cupo_maximo: int
+    curso: Optional[CursoResponse] = None
     estado: str
-    sede_id: Optional[str] = None
     horarios: List[HorarioResponse] = []
 
     class Config:
@@ -190,6 +178,7 @@ class CalificacionBase(BaseModel):
 
 class CalificacionCreate(CalificacionBase):
     inscripcion_id: int
+    curso_materia_id: int
 
 class CalificacionUpdate(BaseModel):
     tipo_evaluacion: Optional[str] = None
@@ -199,6 +188,7 @@ class CalificacionUpdate(BaseModel):
 class CalificacionResponse(CalificacionBase):
     id: int
     inscripcion_id: int
+    curso_materia_id: int
     fecha: date
     desempeno: Optional[str] = None
 
@@ -223,11 +213,11 @@ class InscripcionResponse(BaseModel):
 class BoletinResponse(BaseModel):
     id: int
     estudiante_id: int
-    curso_id: int
+    curso_materia_id: int
     periodo: str
     promedio_final: float
     fecha_generacion: date
-    curso: Optional[CursoResponse] = None
+    curso_materia: Optional[CursoMateriaResponse] = None
 
     class Config:
         from_attributes = True
@@ -237,7 +227,7 @@ class AnuncioBase(BaseModel):
     titulo: str
     contenido: str
     rol_destinatario: Optional[RolUsuario] = None
-    curso_id: Optional[int] = None
+    curso_materia_id: Optional[int] = None
     estado: str = "publicado"
 
 class AnuncioCreate(AnuncioBase):
@@ -275,7 +265,7 @@ class PuntajeCreate(BaseModel):
     tipo_punto_id: int
     valor: int = Field(..., gt=0)
     origen: Optional[str] = None
-    curso_id: int # To validate the teacher has them in class
+    curso_materia_id: int # To validate the teacher has them in class
 
 class PuntajeResponse(BaseModel):
     id: int
@@ -347,7 +337,7 @@ class TareaBase(BaseModel):
     estado: str = "abierta"  # 'abierta' | 'cerrada'
 
 class TareaCreate(TareaBase):
-    curso_id: int
+    curso_materia_id: int
 
 class TareaUpdate(BaseModel):
     titulo: Optional[str] = None
@@ -357,7 +347,7 @@ class TareaUpdate(BaseModel):
 
 class TareaResponse(TareaBase):
     id: int
-    curso_id: int
+    curso_materia_id: int
     created_at: datetime
 
     class Config:
@@ -376,13 +366,14 @@ class AsistenciaRegistroItem(BaseModel):
         return v
 
 class AsistenciaBulkCreate(BaseModel):
-    curso_id: int
+    curso_materia_id: int
     fecha: date
     registros: List[AsistenciaRegistroItem]
 
 class AsistenciaResponse(BaseModel):
     id: int
     inscripcion_id: int
+    curso_materia_id: int
     estudiante_id: int
     fecha: date
     estado: str

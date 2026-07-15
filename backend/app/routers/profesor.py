@@ -5,7 +5,7 @@ from datetime import date
 from app.database import get_db, get_cursor
 from app.models import RolUsuario
 from app.schemas import (
-    CursoResponse, EstudianteResponse, CalificacionCreate, CalificacionUpdate, CalificacionResponse,
+    CursoMateriaResponse, EstudianteResponse, CalificacionCreate, CalificacionUpdate, CalificacionResponse,
     PuntajeCreate, PuntajeResponse, AnuncioResponse, TipoPuntoResponse,
     TareaCreate, TareaUpdate, TareaResponse, AsistenciaBulkCreate, AsistenciaResponse
 )
@@ -16,13 +16,13 @@ router = APIRouter()
 # Dependency to check if current user is Profesor
 profesor_required = RoleChecker(allowed_roles=["profesor"])
 
-# Helper to verify professor teaches the course
-def verify_profesor_teaches_course(cur, profesor_id: int, curso_id: int):
-    cur.execute("SELECT id FROM curso WHERE id = %s AND profesor_id = %s", (curso_id, profesor_id))
+# Helper to verify professor teaches the curso_materia
+def verify_profesor_teaches_course(cur, profesor_id: int, curso_materia_id: int):
+    cur.execute("SELECT id FROM curso_materia WHERE id = %s AND profesor_id = %s", (curso_materia_id, profesor_id))
     if not cur.fetchone():
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="No tienes permiso sobre este curso o el curso no existe"
+            detail="No tienes permiso sobre esta materia o no existe"
         )
 
 # Helper to calculate performance tier
@@ -36,37 +36,47 @@ def calculate_desempeno(valor: float) -> str:
     else:
         return "Avanzado"
 
-# Helper to recalculate boletin average for a student in a course
-def recalculate_boletin_raw(cur, estudiante_id: int, curso_id: int, periodo: str):
-    # Get student enrollment ID
-    cur.execute("SELECT id FROM inscripcion WHERE estudiante_id = %s AND curso_id = %s", (estudiante_id, curso_id))
+# Helper to recalculate boletin average for a student in a curso_materia
+def recalculate_boletin_raw(cur, estudiante_id: int, curso_materia_id: int, periodo: str):
+    # Get student enrollment ID (inscripcion belongs to the curso that owns this curso_materia)
+    cur.execute(
+        """
+        SELECT i.id FROM inscripcion i
+        JOIN curso_materia cm ON cm.curso_id = i.curso_id
+        WHERE i.estudiante_id = %s AND cm.id = %s
+        """,
+        (estudiante_id, curso_materia_id)
+    )
     insc = cur.fetchone()
     if not insc:
         return
-        
+
     insc_id = insc["id"]
-    
-    # Get published grades
-    cur.execute("SELECT valor FROM calificacion WHERE inscripcion_id = %s AND estado = 'publicada'", (insc_id,))
+
+    # Get published grades for this student in this specific materia
+    cur.execute(
+        "SELECT valor FROM calificacion WHERE inscripcion_id = %s AND curso_materia_id = %s AND estado = 'publicada'",
+        (insc_id, curso_materia_id)
+    )
     grades = cur.fetchall()
-    
+
     if not grades:
         # Delete boletin if exists
         cur.execute(
-            "DELETE FROM boletin WHERE estudiante_id = %s AND curso_id = %s AND periodo = %s",
-            (estudiante_id, curso_id, periodo)
+            "DELETE FROM boletin WHERE estudiante_id = %s AND curso_materia_id = %s AND periodo = %s",
+            (estudiante_id, curso_materia_id, periodo)
         )
         return
 
     avg = sum(float(g["valor"]) for g in grades) / len(grades)
-    
+
     # Upsert Boletin
     cur.execute(
-        "SELECT id FROM boletin WHERE estudiante_id = %s AND curso_id = %s AND periodo = %s",
-        (estudiante_id, curso_id, periodo)
+        "SELECT id FROM boletin WHERE estudiante_id = %s AND curso_materia_id = %s AND periodo = %s",
+        (estudiante_id, curso_materia_id, periodo)
     )
     boletin = cur.fetchone()
-    
+
     if boletin:
         cur.execute(
             "UPDATE boletin SET promedio_final = %s, fecha_generacion = CURRENT_DATE WHERE id = %s",
@@ -75,10 +85,10 @@ def recalculate_boletin_raw(cur, estudiante_id: int, curso_id: int, periodo: str
     else:
         cur.execute(
             """
-            INSERT INTO boletin (estudiante_id, curso_id, periodo, promedio_final, fecha_generacion)
+            INSERT INTO boletin (estudiante_id, curso_materia_id, periodo, promedio_final, fecha_generacion)
             VALUES (%s, %s, %s, %s, CURRENT_DATE)
             """,
-            (estudiante_id, curso_id, periodo, avg)
+            (estudiante_id, curso_materia_id, periodo, avg)
         )
 
 # ==========================================
@@ -93,26 +103,32 @@ def listar_cursos_asignados(current_user: dict = Depends(get_current_usuario), c
         prof_profile = cur.fetchone()
         if not prof_profile or prof_profile["estado"] != "activo":
             raise HTTPException(status_code=403, detail="Perfil de profesor inactivo o no encontrado")
-            
+
         profesor_id = prof_profile["id"]
-        
-        # Get courses
+
+        # Get curso_materia assigned to this professor
         cur.execute(
-            "SELECT c.id, m.nombre AS materia, c.periodo, c.nombre_seccion FROM curso c JOIN materia m ON m.id = c.materia_id WHERE c.profesor_id = %s AND c.estado = 'activo'",
+            """
+            SELECT cm.id, m.nombre AS materia, cur.id AS curso_id, cur.nombre AS curso_nombre, cur.periodo
+            FROM curso_materia cm
+            JOIN materia m ON m.id = cm.materia_id
+            JOIN curso cur ON cur.id = cm.curso_id
+            WHERE cm.profesor_id = %s AND cm.estado = 'activo' AND cur.estado = 'activo'
+            """,
             (profesor_id,)
         )
         cursos = cur.fetchall()
-        
+
         results = []
         for c in cursos:
-            # Count enrolled students
-            cur.execute("SELECT COUNT(*) FROM inscripcion WHERE curso_id = %s", (c["id"],))
+            # Count enrolled students (matriculados en el curso, no en la materia)
+            cur.execute("SELECT COUNT(*) FROM inscripcion WHERE curso_id = %s", (c["curso_id"],))
             student_count = cur.fetchone()["count"]
-            
+
             # Format horarios
-            cur.execute("SELECT id, dia_semana, hora_inicio, hora_fin, aula FROM horario WHERE curso_id = %s", (c["id"],))
+            cur.execute("SELECT id, dia_semana, hora_inicio, hora_fin, aula FROM horario WHERE curso_materia_id = %s", (c["id"],))
             horarios = cur.fetchall()
-            
+
             horarios_formatted = [{
                 "id": h["id"],
                 "dia_semana": h["dia_semana"],
@@ -120,39 +136,40 @@ def listar_cursos_asignados(current_user: dict = Depends(get_current_usuario), c
                 "hora_fin": str(h["hora_fin"]),
                 "aula": h["aula"]
             } for h in horarios]
-            
+
             results.append({
                 "id": c["id"],
                 "materia": c["materia"],
+                "curso": c["curso_nombre"],
                 "periodo": c["periodo"],
-                "nombre_seccion": c["nombre_seccion"],
                 "estudiantes_matriculados": student_count,
                 "horarios": horarios_formatted
             })
-            
+
     return results
 
-@router.get("/cursos/{curso_id}/estudiantes", dependencies=[Depends(profesor_required)])
-def ver_estudiantes_curso(curso_id: int, current_user: dict = Depends(get_current_usuario), conn = Depends(get_db)):
+@router.get("/cursos/{curso_materia_id}/estudiantes", dependencies=[Depends(profesor_required)])
+def ver_estudiantes_curso(curso_materia_id: int, current_user: dict = Depends(get_current_usuario), conn = Depends(get_db)):
     with get_cursor(conn) as cur:
         # Get professor profile
         cur.execute("SELECT id FROM profesor WHERE usuario_id = %s", (current_user["id"],))
         profesor_id = cur.fetchone()["id"]
-        verify_profesor_teaches_course(cur, profesor_id, curso_id)
-        
-        # Get all enrolled students
+        verify_profesor_teaches_course(cur, profesor_id, curso_materia_id)
+
+        # Get all students enrolled in the curso this materia belongs to
         cur.execute(
             """
             SELECT e.id AS estudiante_id, u.nombre, u.email, enc.fecha_inscripcion, e.total_puntos
-            FROM inscripcion enc
+            FROM curso_materia cm
+            JOIN inscripcion enc ON enc.curso_id = cm.curso_id
             JOIN estudiante e ON e.id = enc.estudiante_id
             JOIN usuario u ON u.id = e.usuario_id
-            WHERE enc.curso_id = %s
+            WHERE cm.id = %s
             """,
-            (curso_id,)
+            (curso_materia_id,)
         )
         enrollments = cur.fetchall()
-        
+
         results = []
         for enc in enrollments:
             results.append({
@@ -170,20 +187,21 @@ def ver_mi_horario(current_user: dict = Depends(get_current_usuario), conn = Dep
         # Get professor profile
         cur.execute("SELECT id FROM profesor WHERE usuario_id = %s", (current_user["id"],))
         profesor_id = cur.fetchone()["id"]
-        
+
         cur.execute(
             """
-            SELECT h.dia_semana, h.hora_inicio, h.hora_fin, h.aula, m.nombre AS materia, c.nombre_seccion AS seccion
+            SELECT h.dia_semana, h.hora_inicio, h.hora_fin, h.aula, m.nombre AS materia, cur.nombre AS curso
             FROM horario h
-            JOIN curso c ON c.id = h.curso_id
-            JOIN materia m ON m.id = c.materia_id
-            WHERE c.profesor_id = %s AND c.estado = 'activo'
+            JOIN curso_materia cm ON cm.id = h.curso_materia_id
+            JOIN materia m ON m.id = cm.materia_id
+            JOIN curso cur ON cur.id = cm.curso_id
+            WHERE cm.profesor_id = %s AND cm.estado = 'activo'
             ORDER BY h.dia_semana, h.hora_inicio
             """,
             (profesor_id,)
         )
         horarios = cur.fetchall()
-        
+
         results = []
         for h in horarios:
             results.append({
@@ -192,7 +210,7 @@ def ver_mi_horario(current_user: dict = Depends(get_current_usuario), conn = Dep
                 "hora_fin": str(h["hora_fin"]),
                 "aula": h["aula"],
                 "materia": h["materia"],
-                "seccion": h["seccion"]
+                "curso": h["curso"]
             })
     return results
 
@@ -205,33 +223,40 @@ def registrar_nota(calificacion: CalificacionCreate, current_user: dict = Depend
     with get_cursor(conn) as cur:
         cur.execute("SELECT id FROM profesor WHERE usuario_id = %s", (current_user["id"],))
         profesor_id = cur.fetchone()["id"]
-        
+
+        # Verify the professor teaches this materia
+        verify_profesor_teaches_course(cur, profesor_id, calificacion.curso_materia_id)
+
         # Find enrollment
         cur.execute("SELECT id, estudiante_id, curso_id FROM inscripcion WHERE id = %s", (calificacion.inscripcion_id,))
         insc = cur.fetchone()
         if not insc:
             raise HTTPException(status_code=404, detail="Inscripción no encontrada")
-            
-        # Verify course belongs to this professor
-        verify_profesor_teaches_course(cur, profesor_id, insc["curso_id"])
-        
+
+        # Verify the materia belongs to the student's curso
+        cur.execute("SELECT curso_id FROM curso_materia WHERE id = %s", (calificacion.curso_materia_id,))
+        cm_curso_id = cur.fetchone()["curso_id"]
+        if cm_curso_id != insc["curso_id"]:
+            raise HTTPException(status_code=400, detail="La materia indicada no pertenece al curso del estudiante")
+
         cur.execute("SELECT periodo FROM curso WHERE id = %s", (insc["curso_id"],))
         periodo = cur.fetchone()["periodo"]
 
         # Create grade
         cur.execute(
             """
-            INSERT INTO calificacion (inscripcion_id, tipo_evaluacion, valor, estado, fecha)
-            VALUES (%s, %s, %s, %s, CURRENT_DATE) RETURNING id, inscripcion_id, tipo_evaluacion, valor, estado, fecha
+            INSERT INTO calificacion (inscripcion_id, curso_materia_id, tipo_evaluacion, valor, estado, fecha)
+            VALUES (%s, %s, %s, %s, %s, CURRENT_DATE)
+            RETURNING id, inscripcion_id, curso_materia_id, tipo_evaluacion, valor, estado, fecha
             """,
-            (calificacion.inscripcion_id, calificacion.tipo_evaluacion, calificacion.valor, calificacion.estado)
+            (calificacion.inscripcion_id, calificacion.curso_materia_id, calificacion.tipo_evaluacion, calificacion.valor, calificacion.estado)
         )
         db_cal = dict(cur.fetchone())
         db_cal["desempeno"] = calculate_desempeno(float(db_cal["valor"]))
 
         # If published, recalculate boletin
         if db_cal["estado"] == "publicada":
-            recalculate_boletin_raw(cur, insc["estudiante_id"], insc["curso_id"], periodo)
+            recalculate_boletin_raw(cur, insc["estudiante_id"], calificacion.curso_materia_id, periodo)
 
     return db_cal
 
@@ -240,31 +265,35 @@ def editar_nota(calificacion_id: int, cal_data: CalificacionUpdate, current_user
     with get_cursor(conn) as cur:
         cur.execute("SELECT id FROM profesor WHERE usuario_id = %s", (current_user["id"],))
         profesor_id = cur.fetchone()["id"]
-        
-        cur.execute("SELECT id, inscripcion_id, tipo_evaluacion, valor, estado, fecha FROM calificacion WHERE id = %s", (calificacion_id,))
+
+        cur.execute(
+            "SELECT id, inscripcion_id, curso_materia_id, tipo_evaluacion, valor, estado, fecha FROM calificacion WHERE id = %s",
+            (calificacion_id,)
+        )
         db_cal = cur.fetchone()
         if not db_cal:
             raise HTTPException(status_code=404, detail="Calificación no encontrada")
 
         cur.execute("SELECT estudiante_id, curso_id FROM inscripcion WHERE id = %s", (db_cal["inscripcion_id"],))
         insc = cur.fetchone()
-        
-        verify_profesor_teaches_course(cur, profesor_id, insc["curso_id"])
-        
+
+        verify_profesor_teaches_course(cur, profesor_id, db_cal["curso_materia_id"])
+
         cur.execute("SELECT periodo FROM curso WHERE id = %s", (insc["curso_id"],))
         periodo = cur.fetchone()["periodo"]
-        
+
         # Update fields dynamically
         update_fields = []
         params = []
         for key, val in cal_data.model_dump(exclude_unset=True).items():
             update_fields.append(f"{key} = %s")
             params.append(val)
-            
+
         if update_fields:
             params.append(calificacion_id)
             cur.execute(
-                f"UPDATE calificacion SET {', '.join(update_fields)} WHERE id = %s RETURNING id, inscripcion_id, tipo_evaluacion, valor, estado, fecha",
+                f"UPDATE calificacion SET {', '.join(update_fields)} WHERE id = %s "
+                "RETURNING id, inscripcion_id, curso_materia_id, tipo_evaluacion, valor, estado, fecha",
                 tuple(params)
             )
             updated_cal = dict(cur.fetchone())
@@ -273,7 +302,7 @@ def editar_nota(calificacion_id: int, cal_data: CalificacionUpdate, current_user
         updated_cal["desempeno"] = calculate_desempeno(float(updated_cal["valor"]))
 
         # Recalculate boletin
-        recalculate_boletin_raw(cur, insc["estudiante_id"], insc["curso_id"], periodo)
+        recalculate_boletin_raw(cur, insc["estudiante_id"], db_cal["curso_materia_id"], periodo)
 
     return updated_cal
 
@@ -282,37 +311,37 @@ def eliminar_nota(calificacion_id: int, current_user: dict = Depends(get_current
     with get_cursor(conn) as cur:
         cur.execute("SELECT id FROM profesor WHERE usuario_id = %s", (current_user["id"],))
         profesor_id = cur.fetchone()["id"]
-        
-        cur.execute("SELECT id, inscripcion_id, estado FROM calificacion WHERE id = %s", (calificacion_id,))
+
+        cur.execute("SELECT id, inscripcion_id, curso_materia_id, estado FROM calificacion WHERE id = %s", (calificacion_id,))
         db_cal = cur.fetchone()
         if not db_cal:
             raise HTTPException(status_code=404, detail="Calificación no encontrada")
-            
+
         # US-10: "Se puede eliminar una nota propia solo si está en estado 'Borrador'."
         if db_cal["estado"] != "borrador":
             raise HTTPException(
                 status_code=400,
                 detail="Solo se pueden eliminar calificaciones que estén en estado 'Borrador'"
             )
-            
+
         cur.execute("SELECT estudiante_id, curso_id FROM inscripcion WHERE id = %s", (db_cal["inscripcion_id"],))
         insc = cur.fetchone()
-        
-        verify_profesor_teaches_course(cur, profesor_id, insc["curso_id"])
-        
+
+        verify_profesor_teaches_course(cur, profesor_id, db_cal["curso_materia_id"])
+
         cur.execute("SELECT periodo FROM curso WHERE id = %s", (insc["curso_id"],))
         periodo = cur.fetchone()["periodo"]
-        
+
         cur.execute("DELETE FROM calificacion WHERE id = %s", (calificacion_id,))
-        
+
         # Recalculate boletin
-        recalculate_boletin_raw(cur, insc["estudiante_id"], insc["curso_id"], periodo)
-        
+        recalculate_boletin_raw(cur, insc["estudiante_id"], db_cal["curso_materia_id"], periodo)
+
     return {"message": "Calificación eliminada correctamente"}
 
 @router.get("/calificaciones", dependencies=[Depends(profesor_required)])
 def consultar_notas(
-    curso_id: int,
+    curso_materia_id: int,
     estudiante_id: Optional[int] = None,
     current_user: dict = Depends(get_current_usuario),
     conn = Depends(get_db)
@@ -320,24 +349,24 @@ def consultar_notas(
     with get_cursor(conn) as cur:
         cur.execute("SELECT id FROM profesor WHERE usuario_id = %s", (current_user["id"],))
         profesor_id = cur.fetchone()["id"]
-        verify_profesor_teaches_course(cur, profesor_id, curso_id)
-        
+        verify_profesor_teaches_course(cur, profesor_id, curso_materia_id)
+
         sql = """
             SELECT g.id, i.estudiante_id, u.nombre AS estudiante_nombre, g.tipo_evaluacion, g.valor, g.fecha, g.estado
             FROM calificacion g
             JOIN inscripcion i ON i.id = g.inscripcion_id
             JOIN estudiante e ON e.id = i.estudiante_id
             JOIN usuario u ON u.id = e.usuario_id
-            WHERE i.curso_id = %s
+            WHERE g.curso_materia_id = %s
         """
-        params = [curso_id]
+        params = [curso_materia_id]
         if estudiante_id:
             sql += " AND i.estudiante_id = %s"
             params.append(estudiante_id)
-            
+
         cur.execute(sql, tuple(params))
         grades = cur.fetchall()
-        
+
         results = []
         for g in grades:
             results.append({
@@ -350,7 +379,7 @@ def consultar_notas(
                 "fecha": str(g["fecha"]),
                 "estado": g["estado"]
             })
-            
+
     return results
 
 # ==========================================
@@ -371,29 +400,35 @@ def asignar_puntos(puntaje: PuntajeCreate, current_user: dict = Depends(get_curr
     with get_cursor(conn) as cur:
         cur.execute("SELECT id FROM profesor WHERE usuario_id = %s", (current_user["id"],))
         profesor_id = cur.fetchone()["id"]
-        
-        # Verify professor teaches course
-        verify_profesor_teaches_course(cur, profesor_id, puntaje.curso_id)
-        
-        # Verify student is enrolled
-        cur.execute("SELECT id FROM inscripcion WHERE estudiante_id = %s AND curso_id = %s", (puntaje.estudiante_id, puntaje.curso_id))
+
+        # Verify professor teaches this materia
+        verify_profesor_teaches_course(cur, profesor_id, puntaje.curso_materia_id)
+
+        cur.execute("SELECT curso_id FROM curso_materia WHERE id = %s", (puntaje.curso_materia_id,))
+        curso_id = cur.fetchone()["curso_id"]
+
+        # Verify student is enrolled in the curso
+        cur.execute("SELECT id FROM inscripcion WHERE estudiante_id = %s AND curso_id = %s", (puntaje.estudiante_id, curso_id))
         is_enrolled = cur.fetchone()
         if not is_enrolled:
             raise HTTPException(
                 status_code=400,
                 detail="El estudiante seleccionado no está inscrito en este curso"
             )
-            
-        # Get course name
-        cur.execute("SELECT m.nombre FROM curso c JOIN materia m ON m.id = c.materia_id WHERE c.id = %s", (puntaje.curso_id,))
+
+        # Get materia name
+        cur.execute(
+            "SELECT m.nombre FROM curso_materia cm JOIN materia m ON m.id = cm.materia_id WHERE cm.id = %s",
+            (puntaje.curso_materia_id,)
+        )
         materia_nombre = cur.fetchone()["nombre"]
-            
+
         # Verify point type is active
         cur.execute("SELECT id, nombre, descripcion, icono, color, estado FROM tipo_punto WHERE id = %s AND estado = 'activo'", (puntaje.tipo_punto_id,))
         tp = cur.fetchone()
         if not tp:
             raise HTTPException(status_code=404, detail="Tipo de punto no encontrado o inactivo")
-            
+
         # Create points transaction
         cur.execute(
             """
@@ -408,10 +443,10 @@ def asignar_puntos(puntaje: PuntajeCreate, current_user: dict = Depends(get_curr
             )
         )
         db_puntaje = cur.fetchone()
-        
+
         # Update student total points cache
         cur.execute("UPDATE estudiante SET total_puntos = total_puntos + %s WHERE id = %s", (puntaje.valor, puntaje.estudiante_id))
-        
+
     return {
         "id": db_puntaje["id"],
         "estudiante_id": db_puntaje["estudiante_id"],
@@ -437,7 +472,7 @@ def ver_comunicados(conn = Depends(get_db)):
     with get_cursor(conn) as cur:
         cur.execute(
             """
-            SELECT a.id, a.autor_id, a.titulo, a.contenido, a.rol_destinatario, a.curso_id, a.fecha_publicacion,
+            SELECT a.id, a.autor_id, a.titulo, a.contenido, a.rol_destinatario, a.curso_materia_id, a.fecha_publicacion,
                    u.id AS user_id, u.email, u.nombre, u.rol, u.foto_url, u.created_at
             FROM anuncio a
             JOIN usuario u ON u.id = a.autor_id
@@ -446,7 +481,7 @@ def ver_comunicados(conn = Depends(get_db)):
             """
         )
         anuncios = cur.fetchall()
-        
+
         results = []
         for row in anuncios:
             results.append({
@@ -455,7 +490,7 @@ def ver_comunicados(conn = Depends(get_db)):
                 "titulo": row["titulo"],
                 "contenido": row["contenido"],
                 "rol_destinatario": row["rol_destinatario"],
-                "curso_id": row["curso_id"],
+                "curso_materia_id": row["curso_materia_id"],
                 "fecha_publicacion": row["fecha_publicacion"],
                 "autor": {
                     "id": row["user_id"],
@@ -478,33 +513,33 @@ def crear_tarea(tarea: TareaCreate, current_user: dict = Depends(get_current_usu
     with get_cursor(conn) as cur:
         cur.execute("SELECT id FROM profesor WHERE usuario_id = %s", (current_user["id"],))
         profesor_id = cur.fetchone()["id"]
-        verify_profesor_teaches_course(cur, profesor_id, tarea.curso_id)
+        verify_profesor_teaches_course(cur, profesor_id, tarea.curso_materia_id)
 
         cur.execute(
             """
-            INSERT INTO tarea (curso_id, titulo, descripcion, fecha_entrega, estado)
+            INSERT INTO tarea (curso_materia_id, titulo, descripcion, fecha_entrega, estado)
             VALUES (%s, %s, %s, %s, %s)
-            RETURNING id, curso_id, titulo, descripcion, fecha_entrega, estado, created_at
+            RETURNING id, curso_materia_id, titulo, descripcion, fecha_entrega, estado, created_at
             """,
-            (tarea.curso_id, tarea.titulo, tarea.descripcion, tarea.fecha_entrega, tarea.estado)
+            (tarea.curso_materia_id, tarea.titulo, tarea.descripcion, tarea.fecha_entrega, tarea.estado)
         )
         db_tarea = cur.fetchone()
 
     return db_tarea
 
 @router.get("/tareas", response_model=List[TareaResponse], dependencies=[Depends(profesor_required)])
-def listar_tareas_curso(curso_id: int, current_user: dict = Depends(get_current_usuario), conn = Depends(get_db)):
+def listar_tareas_curso(curso_materia_id: int, current_user: dict = Depends(get_current_usuario), conn = Depends(get_db)):
     with get_cursor(conn) as cur:
         cur.execute("SELECT id FROM profesor WHERE usuario_id = %s", (current_user["id"],))
         profesor_id = cur.fetchone()["id"]
-        verify_profesor_teaches_course(cur, profesor_id, curso_id)
+        verify_profesor_teaches_course(cur, profesor_id, curso_materia_id)
 
         cur.execute(
             """
-            SELECT id, curso_id, titulo, descripcion, fecha_entrega, estado, created_at
-            FROM tarea WHERE curso_id = %s ORDER BY fecha_entrega
+            SELECT id, curso_materia_id, titulo, descripcion, fecha_entrega, estado, created_at
+            FROM tarea WHERE curso_materia_id = %s ORDER BY fecha_entrega
             """,
-            (curso_id,)
+            (curso_materia_id,)
         )
         rows = cur.fetchall()
 
@@ -516,12 +551,12 @@ def editar_tarea(tarea_id: int, tarea_data: TareaUpdate, current_user: dict = De
         cur.execute("SELECT id FROM profesor WHERE usuario_id = %s", (current_user["id"],))
         profesor_id = cur.fetchone()["id"]
 
-        cur.execute("SELECT id, curso_id FROM tarea WHERE id = %s", (tarea_id,))
+        cur.execute("SELECT id, curso_materia_id FROM tarea WHERE id = %s", (tarea_id,))
         db_tarea = cur.fetchone()
         if not db_tarea:
             raise HTTPException(status_code=404, detail="Tarea no encontrada")
 
-        verify_profesor_teaches_course(cur, profesor_id, db_tarea["curso_id"])
+        verify_profesor_teaches_course(cur, profesor_id, db_tarea["curso_materia_id"])
 
         update_fields = []
         params = []
@@ -533,13 +568,13 @@ def editar_tarea(tarea_id: int, tarea_data: TareaUpdate, current_user: dict = De
             params.append(tarea_id)
             cur.execute(
                 f"UPDATE tarea SET {', '.join(update_fields)} WHERE id = %s "
-                "RETURNING id, curso_id, titulo, descripcion, fecha_entrega, estado, created_at",
+                "RETURNING id, curso_materia_id, titulo, descripcion, fecha_entrega, estado, created_at",
                 tuple(params)
             )
             row = cur.fetchone()
         else:
             cur.execute(
-                "SELECT id, curso_id, titulo, descripcion, fecha_entrega, estado, created_at FROM tarea WHERE id = %s",
+                "SELECT id, curso_materia_id, titulo, descripcion, fecha_entrega, estado, created_at FROM tarea WHERE id = %s",
                 (tarea_id,)
             )
             row = cur.fetchone()
@@ -552,12 +587,12 @@ def eliminar_tarea(tarea_id: int, current_user: dict = Depends(get_current_usuar
         cur.execute("SELECT id FROM profesor WHERE usuario_id = %s", (current_user["id"],))
         profesor_id = cur.fetchone()["id"]
 
-        cur.execute("SELECT id, curso_id FROM tarea WHERE id = %s", (tarea_id,))
+        cur.execute("SELECT id, curso_materia_id FROM tarea WHERE id = %s", (tarea_id,))
         db_tarea = cur.fetchone()
         if not db_tarea:
             raise HTTPException(status_code=404, detail="Tarea no encontrada")
 
-        verify_profesor_teaches_course(cur, profesor_id, db_tarea["curso_id"])
+        verify_profesor_teaches_course(cur, profesor_id, db_tarea["curso_materia_id"])
 
         cur.execute("DELETE FROM tarea WHERE id = %s", (tarea_id,))
 
@@ -572,13 +607,16 @@ def registrar_asistencia(asistencia: AsistenciaBulkCreate, current_user: dict = 
     with get_cursor(conn) as cur:
         cur.execute("SELECT id FROM profesor WHERE usuario_id = %s", (current_user["id"],))
         profesor_id = cur.fetchone()["id"]
-        verify_profesor_teaches_course(cur, profesor_id, asistencia.curso_id)
+        verify_profesor_teaches_course(cur, profesor_id, asistencia.curso_materia_id)
+
+        cur.execute("SELECT curso_id FROM curso_materia WHERE id = %s", (asistencia.curso_materia_id,))
+        curso_id = cur.fetchone()["curso_id"]
 
         resultados = []
         for registro in asistencia.registros:
             cur.execute(
                 "SELECT id FROM inscripcion WHERE estudiante_id = %s AND curso_id = %s",
-                (registro.estudiante_id, asistencia.curso_id)
+                (registro.estudiante_id, curso_id)
             )
             insc = cur.fetchone()
             if not insc:
@@ -589,17 +627,18 @@ def registrar_asistencia(asistencia: AsistenciaBulkCreate, current_user: dict = 
 
             cur.execute(
                 """
-                INSERT INTO asistencia (inscripcion_id, fecha, estado)
-                VALUES (%s, %s, %s)
-                ON CONFLICT (inscripcion_id, fecha) DO UPDATE SET estado = EXCLUDED.estado
-                RETURNING id, inscripcion_id, fecha, estado
+                INSERT INTO asistencia (inscripcion_id, curso_materia_id, fecha, estado)
+                VALUES (%s, %s, %s, %s)
+                ON CONFLICT (inscripcion_id, curso_materia_id, fecha) DO UPDATE SET estado = EXCLUDED.estado
+                RETURNING id, inscripcion_id, curso_materia_id, fecha, estado
                 """,
-                (insc["id"], asistencia.fecha, registro.estado)
+                (insc["id"], asistencia.curso_materia_id, asistencia.fecha, registro.estado)
             )
             db_asistencia = cur.fetchone()
             resultados.append({
                 "id": db_asistencia["id"],
                 "inscripcion_id": db_asistencia["inscripcion_id"],
+                "curso_materia_id": db_asistencia["curso_materia_id"],
                 "estudiante_id": registro.estudiante_id,
                 "fecha": db_asistencia["fecha"],
                 "estado": db_asistencia["estado"]
@@ -609,7 +648,7 @@ def registrar_asistencia(asistencia: AsistenciaBulkCreate, current_user: dict = 
 
 @router.get("/asistencia", response_model=List[AsistenciaResponse], dependencies=[Depends(profesor_required)])
 def consultar_asistencia_curso(
-    curso_id: int,
+    curso_materia_id: int,
     fecha: Optional[date] = None,
     current_user: dict = Depends(get_current_usuario),
     conn = Depends(get_db)
@@ -617,15 +656,15 @@ def consultar_asistencia_curso(
     with get_cursor(conn) as cur:
         cur.execute("SELECT id FROM profesor WHERE usuario_id = %s", (current_user["id"],))
         profesor_id = cur.fetchone()["id"]
-        verify_profesor_teaches_course(cur, profesor_id, curso_id)
+        verify_profesor_teaches_course(cur, profesor_id, curso_materia_id)
 
         sql = """
-            SELECT a.id, a.inscripcion_id, i.estudiante_id, a.fecha, a.estado
+            SELECT a.id, a.inscripcion_id, a.curso_materia_id, i.estudiante_id, a.fecha, a.estado
             FROM asistencia a
             JOIN inscripcion i ON i.id = a.inscripcion_id
-            WHERE i.curso_id = %s
+            WHERE a.curso_materia_id = %s
         """
-        params = [curso_id]
+        params = [curso_materia_id]
         if fecha:
             sql += " AND a.fecha = %s"
             params.append(fecha)
