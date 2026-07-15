@@ -1,0 +1,131 @@
+//==================================================
+// IMPORTACIONES
+//==================================================
+
+@use "../abstracts/colors" as *;
+@use "../abstracts/mixins" as *;
+@use "../abstracts/typography" as *;
+@use "../abstracts/variables" as *;
+
+@mixin button(
+    $padding,
+    $gap,
+    $background,
+    $color,
+    $radius,
+    $icon-size,
+    $font-size,
+    $flex_icon : block,
+    $flex_spann : block
+) {
+    @include flex-center;
+
+    padding: $padding;
+    gap: $gap;
+
+    background: $background;
+    color: $color;
+
+    border: none;
+    border-radius: $radius;
+
+    cursor: pointer;
+
+    i {
+        display: $flex_icon;
+        font-size: $icon-size;
+        line-height: 1;
+    }
+
+    span {
+        display: $flex_spann;
+        @include font-montserrat;
+        font-size: $font-size;
+        font-weight: $font-medium;
+        line-height: 1;
+    }
+}
+
+@mixin button-border(
+    $padding,
+    $gap,
+    $background,
+    $color,
+    $border-size,
+    $border-color,
+    $radius,
+    $icon-size,
+    $font-size,
+    $icon-display: block,
+    $text-display: block
+) {
+    @include flex-center;
+
+    padding: $padding;
+    gap: $gap;
+
+    background: $background;
+    color: $color;
+
+    border: $border-size solid $border-color;
+    border-radius: $radius;
+
+    cursor: pointer;
+
+    i {
+        display: $icon-display;
+        font-size: $icon-size;
+        line-height: 1;
+    }
+
+    span {
+        display: $text-display;
+        @include font-montserrat;
+        font-size: $font-size;
+        font-weight: $font-medium;
+        line-height: 1;
+    }
+}
+
+@mixin button-size(
+    $width,
+    $padding,
+    $gap,
+    $background,
+    $color,
+    $border-size,
+    $border-color,
+    $radius,
+    $icon-size,
+    $font-size,
+    $icon-display: block,
+    $text-display: block
+) {
+    @include flex-center;
+    @include size($width,auto);
+
+    padding: $padding;
+    gap: $gap;
+
+    background: $background;
+    color: $color;
+
+    border: $border-size solid $border-color;
+    border-radius: $radius;
+
+    cursor: pointer;
+
+    i {
+        display: $icon-display;
+        font-size: $icon-size;
+        line-height: 1;
+    }
+
+    span {
+        display: $text-display;
+        @include font-montserrat;
+        font-size: $font-size;
+        font-weight: $font-medium;
+        line-height: 1;
+    }
+}

@@ -1,0 +1,134 @@
+//==================================================
+// IMPORTACIONES
+//==================================================
+
+@use "../abstracts/colors" as *;
+@use "../abstracts/mixins" as *;
+@use "../abstracts/typography" as *;
+@use "../abstracts/variables" as *;
+
+@mixin select(
+    $border-color,
+    $background,
+    $text-color,
+    $hover-background,
+    $hover-color,
+    $radius,
+    $padding,
+    $font-size,
+    $icon-size,
+    $max-height: 150px
+) {
+
+    z-index: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    @include size(100%, auto);
+
+    .select-trigger{
+        position: relative;
+        z-index: 2;
+
+        @include flex-between;
+        @include size(100%, auto);
+
+        padding: $padding;
+
+        border: 1px solid $border-color;
+        border-radius: $radius;
+
+        background: $background;
+        color: $text-color;
+
+        cursor: pointer;
+
+        transition: all $transition-normal ease;
+
+        i{
+            font-size: $icon-size;
+            line-height: 1;
+            transition: transform $transition-normal ease;
+        }
+
+        span{
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            @include font-montserrat;
+            font-size: $font-size;
+            font-weight: $font-medium;
+        }
+    }
+
+    .select-menu{
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 0;
+
+        overflow: hidden;
+
+        display: flex;
+        flex-direction: column;
+
+        width: 100%;
+        max-height: 0;
+
+        opacity: 0;
+        visibility: hidden;
+
+        background: $background;
+
+        border: 1px solid $border-color;
+        border-radius: $radius-sm;
+
+        transition:
+            max-height $transition-normal ease,
+            opacity $transition-normal ease;
+
+        .select-item{
+            @include flex-between;
+            @include size(100%, auto);
+
+            padding: $padding;
+            gap: 8px;
+
+            cursor: pointer;
+            user-select: none;
+
+            @include font-montserrat;
+            font-size: $font-size;
+            font-weight: $font-regular;
+
+            transition: background $transition-fast ease;
+
+            &:hover{
+                background: $hover-background;
+                color: $hover-color;
+            }
+
+            span{
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+        }
+    }
+
+    &.active{
+
+        z-index: 100;
+
+        .select-menu{
+            overflow-y: auto;
+            max-height: $max-height;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .select-trigger > i{
+            transform: rotate(180deg);
+        }
+    }
+}

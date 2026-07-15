@@ -1,0 +1,191 @@
+//==================================================
+// IMPORTACIONES
+//==================================================
+
+@use "../abstracts/colors" as *;
+@use "../abstracts/mixins" as *;
+@use "../abstracts/typography" as *;
+@use "../abstracts/variables" as *;
+
+@mixin Table(
+    // Tamaños
+    $width: 100%,
+    $height: 600px,
+    $min-width: 1200px,
+    $max-width: 100%,
+    $max-height: 600px,
+
+    // Tabla
+    $table-bg: $primary-100,
+    $table-border-color: $purple,
+    $table-border-width: 1px,
+    $table-radius: $radius-md,
+
+    // Header
+    $header-bg: $white,
+    $header-color: inherit,
+    $header-border-color: $purple,
+    $header-font-size: $font-md,
+    $header-font-weight: $font-medium,
+    $header-text-transform: uppercase,
+
+    // Body
+    $body-bg: transparent,
+    $body-color: inherit,
+    $body-border-color: $purple,
+    $body-font-size: $font-sm,
+    $body-font-weight: $font-medium,
+    $body-text-transform: capitalize,
+
+    // Hover
+    $row-hover-bg: $purple-light
+) {
+
+    .table{
+        overflow: hidden;
+        @include flex-center;
+        @include size($width, $height);
+
+        border: $table-border-width solid $table-border-color;
+        border-radius: $table-radius;
+
+        background: $table-bg;
+
+        .table-container{
+            overflow: auto;
+            @include size(100%);
+
+            max-width: $max-width;
+            max-height: $max-height;
+
+            table{
+                width: 100%;
+                min-width: $min-width;
+
+                border-collapse: collapse;
+                table-layout: fixed;
+
+                thead{
+                    position: sticky;
+                    z-index: 5;
+
+                    background: $header-bg;
+                    border-bottom: 1px solid $header-border-color;
+                }
+
+                thead th{
+                    text-align: center;
+
+                    color: $header-color;
+
+                    text-transform: $header-text-transform;
+
+                    @include font-montserrat;
+                    font-size: $header-font-size;
+                    font-weight: $header-font-weight;
+
+                    padding: 12px 24px;
+                    white-space: nowrap;
+                }
+
+                tbody{
+                    background: $body-bg;
+                }
+
+                tbody td{
+                    overflow: hidden;
+
+                    text-align: center;
+
+                    color: $body-color;
+
+                    text-transform: $body-text-transform;
+
+                    @include font-montserrat;
+                    font-size: $body-font-size;
+                    font-weight: $body-font-weight;
+
+                    padding: 10px 20px;
+                    white-space: nowrap;
+                }
+
+                tbody tr{
+                    user-select: none;
+                    cursor: pointer;
+
+                    border-bottom: 1px solid $body-border-color;
+
+                    &:hover{
+                        background: $row-hover-bg;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@mixin category(
+    $color: $primary,
+    $background: $secondary,
+    $padding: 16px,
+    $font-size: $font-sm,
+    $font-weight: $font-regular
+) {
+    @include flex-center;
+
+    padding: calc(#{$padding} / 2) $padding;
+    gap: 6px;
+
+    background-color: $background;
+    border: 1px solid $color;
+    border-radius: $radius-pill;
+
+    @include font-montserrat;
+    font-size: $font-size;
+    font-weight: $font-weight;
+    color: $color;
+
+    user-select: none;
+
+    i {
+        line-height: 1;
+    }
+}
+
+@mixin progress-track(
+    $width: 200px,
+    $height: 4px,
+    $track-color: rgb(214, 214, 214),
+    $progress-color: $primary,
+    $font-size: $font-sm,
+    $font-weight: $font-regular,
+    $gap: 8px
+) {
+    @include flex-center;
+    height: 20px;
+    gap: $gap;
+
+    .bar {
+        display: flex;
+        @include size($width, auto);
+
+        background-color: $track-color;
+        border-radius: $radius-pill;
+
+        .progress-bar {
+            @include size(0%, $height);
+
+            background-color: $progress-color;
+            border-radius: $radius-pill;
+
+            transition: all $transition-slow ease;
+        }
+    }
+
+    .value-progress {
+        @include font-montserrat;
+        font-size: $font-size;
+        font-weight: $font-weight;
+        color: $progress-color;
+    }
+}

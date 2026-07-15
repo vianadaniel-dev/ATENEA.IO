@@ -3,6 +3,37 @@
 @use "abstracts/typography";
 @use "abstracts/variables";
 
+@use "components/botones";
+@use "components/selector";
+@use "components/tablas";
+
+@use "pages/index";
+
+@use "pages/estudiante/anuncios";
+@use "pages/estudiante/boletin";
+@use "pages/estudiante/cursos";
+@use "pages/estudiante/dashboard";
+@use "pages/estudiante/leaderboard";
+@use "pages/estudiante/perfil";
+@use "pages/estudiante/tienda";
+
+@use "pages/profesor/calificaciones";
+@use "pages/profesor/comunicados";
+@use "pages/profesor/curso-estudiantes";
+@use "pages/profesor/cursos";
+@use "pages/profesor/horario";
+@use "pages/profesor/perfil";
+
+@use "pages/rector/anuncios";
+@use "pages/rector/auditoria";
+@use "pages/rector/canjes";
+@use "pages/rector/cursos";
+@use "pages/rector/dashboard";
+@use "pages/rector/estudiantes";
+@use "pages/rector/perfil";
+@use "pages/rector/profesores";
+
+@use "layouts/header";
 @use "layouts/sidebar";
 
 * {

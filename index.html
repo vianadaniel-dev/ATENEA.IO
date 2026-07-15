@@ -7,7 +7,109 @@
     <link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
 </head>
 <body>
-    <a href="/src/partials/sidebar-estudiante.html">123</a>
+      <section id="login" class="login">
+        <div id="login-container" class="login__container">
+            <div id="login-header" class="login__header">
+                <img
+                    id="login-logo"
+                    class="login__logo"
+                    src="../../assents/Logos/logo-white.svg"
+                    alt="Logo Atenea">
+                <a
+                    id="login-home-link"
+                    class="login__home-link"
+                    href="">
+                    Home
+                    <span class="input-highlight"></span>
+                </a>
+            </div>
+            <div id="login-card" class="login__card">
+                <form
+                    id="login-form"
+                    class="login__form">
+                    <h2
+                        id="login-title"
+                        class="login__title">
+                        Sign In
+                    </h2>
+                    <p
+                        id="login-description"
+                        class="login__description">
+                        Welcome back! Please sign in to continue.
+                    </p>
+                    <div
+                        id="login-username-group"
+                        class="login__input-group">
+                        <i
+                            id="login-username-icon"
+                            class="login__icon"><svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
+                            fill="currentColor" viewBox="0 0 24 24" >
+                            <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5m0-8c1.65 0 3 1.35 3 3s-1.35 3-3 3-3-1.35-3-3 1.35-3 3-3M4 22h16c.55 0 1-.45 1-1v-1c0-3.86-3.14-7-7-7h-4c-3.86 0-7 3.14-7 7v1c0 .55.45 1 1 1m6-7h4c2.76 0 5 2.24 5 5H5c0-2.76 2.24-5 5-5"></path>
+                            </svg></i>
+                        <input
+                            id="login-username"
+                            class="login__input"
+                            type="email"
+                            placeholder="Email"
+                            autocomplete="off"
+                            required>
+                    </div>
+                    <div
+                        id="login-password-group"
+                        class="login__input-group">
+                        <i
+                            id="login-password-icon"
+                            class="login__icon"><svg  xmlns="http://www.w3.org/2000/svg" 
+                            fill="currentColor" viewBox="0 0 24 24" >
+                            <path d="M6 22h12c1.1 0 2-.9 2-2v-9c0-1.1-.9-2-2-2h-1V7c0-2.76-2.24-5-5-5S7 4.24 7 7v2H6c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2M9 7c0-1.65 1.35-3 3-3s3 1.35 3 3v2H9zm-3 4h12v9H6z"></path>
+                            </svg></i>
+                        <input
+                            id="login-password"
+                            class="login__input"
+                            type="password"
+                            placeholder="Password"
+                            autocomplete="off"
+                            required>
+                    </div>
+                    <select
+                        id="login-role"
+                        class="login__select">
+                        <option value="">All</option>
+                        <option value="student">Student</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="admin">Administrator</option>
+                    </select>
+                    <div
+                        id="login-options"
+                        class="login__options">
+                        <input
+                            id="login-remember"
+                            class="login__checkbox"
+                            type="checkbox">
+                        <label
+                            for="login-remember"
+                            id="login-remember-label"
+                            class="login__checkbox-label">
+                            Remember me
+                        </label>
+                    </div>
+                    <button
+                        id="login-button"
+                        class="login__button">
+                        Login
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <a href="src/partials/sidebar-estudiante.html">1</a>
+    <a href="src/partials/sidebar-profesor.html">2</a>
+    <a href="src/partials/sidebar-rector.html">3</a>
+
+    <a href="/estudiante/anuncios.html">anuncios</a>
+    <a href="/profesor/comunicados.html">comunicados</a>
+    <a href="/rector/anuncios.html">anuncios</a>
     
     <script src="/src/pages/index.js"></script>
 </body>

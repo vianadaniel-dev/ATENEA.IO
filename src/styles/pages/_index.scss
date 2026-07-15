@@ -1,0 +1,169 @@
+//==================================================
+// IMPORTACIONES
+//==================================================
+
+@use "../abstracts/colors" as *;
+@use "../abstracts/mixins" as *;
+@use "../abstracts/typography" as *;
+@use "../abstracts/variables" as *;
+
+#login{
+    display: flex;
+    @include size(100vw, 100vh);
+
+    background-image: url();
+    @include bg-cover;
+
+    transform: $transition-normal;
+
+    #login-container{
+        display: flex;
+        flex-direction: column;
+        @include size(42vw, 100vh);
+
+        @include linear-gradient(125deg, $gradient-start, $gradient-end);
+        @include shadow(4px, 0, 12px, 0, rgba($gradient-end, .20));
+        @include padding(1rem);
+
+        #login-header{
+            display: flex;
+            @include justify-align(space-between, flex-end);
+            @include size(100%, 10vh);
+
+            @include padding(0.5rem, 3rem)
+        }
+
+        #login-card{
+            display: flex;
+            @include justify-align;
+            @include size(100%, 100%);
+        }
+
+        @media (max-width: 768px) {
+            @include size(100vw, 100vh);
+            @include linear-gradient(125deg, $gradient-start, $gradient-end);
+        }
+    }
+}
+
+#login-logo{
+    display: flex;
+
+    @include size(auto, 90%);
+    object-fit: cover;
+}
+
+#login-home-link{
+    display: flex;
+    flex-direction: column;
+
+    text-decoration: none;
+    text-align: center;
+    text-transform: uppercase;
+    line-height: 1;
+
+    @include font-changa;
+    font-size: $font-28;
+    color: $white;
+
+    .input-highlight {
+        height: 2px;
+        width: 0;
+        background-color: $gray;
+        transition: $transition-fast;
+    }        
+    &:hover .input-highlight{
+        width: 100%;
+    }
+}
+
+#login-form{
+    display: flex;
+    flex-direction: column;
+    @include size(60%, 100%);
+
+    @include justify-align;
+    gap: 18px;
+
+    transform: $transition-normal;
+
+    #login-title{
+        @include size(100%, auto);
+        
+        text-align: center;
+        text-transform: uppercase;
+        line-height: 1;
+
+        @include font-changa;
+        font-weight:500;
+        font-size: $font-32;
+        color: $gray;
+    }
+
+    #login-description{
+        @include size(100%, auto);
+        
+        text-align: center;
+        text-transform: capitalize;
+
+        @include font-montserrat;
+        font-size: $font-18;
+        font-weight:400;
+        color: $gray;
+    }
+
+    #login-role{
+        width: 100%;
+        @include padding(0.65rem);
+
+        border-radius: $radius-sm;
+        border: 2px solid $gray;
+        outline: none;
+
+        background-color: $gradient-end;
+        color: $gray;
+
+        @include font-montserrat;
+        font-size: $font-14;
+    }
+
+    #login-options{
+        display: flex;
+        @include size(100%, auto);
+        @include justify-align(none, center);
+
+        gap: 10px;
+
+        @include font-montserrat;
+        text-transform: capitalize;
+        font-size: $font-14;
+        color: $gray;
+
+        #login-remember {
+            appearance: none;
+            -webkit-appearance: none;
+
+            @include size(20px, 20px);
+
+            background-color: $gradient-end;
+            border: 2px solid $gray;
+            border-radius: 4px;
+
+            @include bg-cover;
+
+            cursor: pointer;
+            transition: $transition-fast;
+        }
+
+        #login-remember:checked {
+            background-color: $gray;
+
+            color: $gradient-end;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='$black'%3E%3Cpath d='M9 15.59 4.71 11.3 3.3 12.71l5 5c.2.2.45.29.71.29s.51-.1.71-.29l11-11-1.41-1.41L9.02 15.59Z'/%3E%3C/svg%3E");
+        }
+    }
+
+    @media (max-width: 768px) {    
+        @include size(60%, 100%);
+    }
+}
