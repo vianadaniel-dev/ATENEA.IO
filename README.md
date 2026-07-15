@@ -1,4 +1,4 @@
-# 🎓 Atenea.io
+#  Atenea.io
 
 > **Educational Management Platform** developed as an Integrative Project at **Riwi**.
 
@@ -10,7 +10,7 @@
 
 ---
 
-# 📖 Overview
+# Overview
 
 Atenea.io is a modern Educational Management System (EMS) built to simplify the administration of academic institutions.
 
@@ -20,9 +20,9 @@ The application follows a **Layered Architecture** with a **Vanilla JavaScript S
 
 ---
 
-# ✨ Features
+# Features
 
-## 👨‍🎓 Student Module
+## Student Module
 
 - View Report Cards
 - Check Enrolled Courses
@@ -34,7 +34,7 @@ The application follows a **Layered Architecture** with a **Vanilla JavaScript S
 
 ---
 
-## 👨‍🏫 Teacher Module
+##  Teacher Module
 
 - Grade Management (CRUD)
 - View Assigned Courses
@@ -44,7 +44,7 @@ The application follows a **Layered Architecture** with a **Vanilla JavaScript S
 
 ---
 
-## 👨‍💼 Principal Module
+## Principal Module
 
 - Student Management
 - Teacher Management
@@ -56,7 +56,7 @@ The application follows a **Layered Architecture** with a **Vanilla JavaScript S
 
 ---
 
-# 🏆 Gamification System
+#  Gamification System
 
 The platform includes a flexible reward system where:
 
@@ -69,7 +69,7 @@ The platform includes a flexible reward system where:
 
 ---
 
-# 🛠 Tech Stack
+# Tech Stack
 
 ## Frontend
 
@@ -106,7 +106,7 @@ The platform includes a flexible reward system where:
 
 ---
 
-# 📂 Project Structure
+# Project Structure
 
 ```text
 ATENEA.IO/
@@ -219,7 +219,7 @@ The frontend follows a lightweight MVC-inspired architecture.
 
 ---
 
-# 🏗 System Architecture
+#  System Architecture
 
 ```text
                            ┌──────────────────────────┐
@@ -295,7 +295,7 @@ Update UI
 
 ---
 
-# 🔌 API Communication
+#  API Communication
 
 The frontend communicates **exclusively** with the REST API through the **Services Layer**.
 
@@ -317,7 +317,7 @@ Each service is responsible for:
 
 ---
 
-# 🔐 Authentication & Authorization
+#  Authentication & Authorization
 
 The platform implements **JWT Authentication** together with **Role-Based Access Control (RBAC).**
 
@@ -332,7 +332,7 @@ Features include:
 
 ---
 
-# 👥 User Roles
+#  User Roles
 
 | Role | Responsibilities |
 |------|------------------|
@@ -342,7 +342,7 @@ Features include:
 
 ---
 
-# 📚 User Stories
+# User Stories
 
 The application is developed following Agile methodologies through User Stories.
 
@@ -364,7 +364,7 @@ Modules include:
 
 ---
 
-# 📈 Scalability
+#  Scalability
 
 The project has been designed following software engineering best practices.
 
@@ -393,7 +393,7 @@ Future improvements may include:
 
 ---
 
-# ⚙ Installation
+#  Installation
 
 ## 1. Clone the repository
 
@@ -454,7 +454,7 @@ atenea_schema.sql
 
 ---
 
-# 📸 Screenshots
+# Screenshots
 
 ## Entity Relationship Diagram
 
@@ -492,7 +492,7 @@ atenea_schema.sql
 
 ---
 
-# 👨‍💻 Team
+#  Team
 
 | Name | Role |
 |------|------|
@@ -504,7 +504,7 @@ atenea_schema.sql
 
 ---
 
-# 📄 License
+#  License
 
 This project was developed for academic purposes as part of the **Riwi Integrative Project**.
 
