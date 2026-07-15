@@ -21,3 +21,9 @@ docs/
 !.vscode/extensions.json
 .idea
 .DS_Store
+
+# frontend
+atenea-project/
+
+# IA ASSISTANCE
+.claude/
