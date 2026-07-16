@@ -8,9 +8,205 @@
     <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="header"></div>
-    <div class="sidebar"></div>
+    <div id="header"></div>
+    <div id="sidebar"></div>
     <main>
+        <section class="tasks-section">
+        <div class="tasks-section__header">
+            <h2 class="tasks-section__title">
+                <i class="bx bx-task"></i>
+                Mis tareas
+            </h2>
+            <span class="tasks-section__badge">4</span>
+        </div>
+
+        <div class="tasks-list">
+            <!-- Tarea 1 -->
+            <div class="task-item open">
+                <div class="task-item__header" onclick="this.parentElement.classList.toggle('open')">
+                    <div class="task-item__toggle">
+                        <i class="bx bx-chevron-down"></i>
+                    </div>
+                    <div class="task-item__icon task-item__icon--math">
+                        <i class="bx bx-calculator"></i>
+                    </div>
+                    <div class="task-item__info">
+                        <div class="task-item__title">Ejercicios de ecuaciones diferenciales</div>
+                        <div class="task-item__meta">
+                            <span><i class="bx bx-book"></i> Matemáticas Avanzadas</span>
+                            <span><i class="bx bx-time"></i> Vence en 2 días</span>
+                        </div>
+                    </div>
+                    <span class="task-item__status task-item__status--pending">Pendiente</span>
+                </div>
+                <div class="task-item__content">
+                    <p class="task-item__description">
+                        Resolver los ejercicios del 1 al 15 del capítulo 4. Incluir todos los procedimientos y justificar cada paso. Se evaluará la presentación y el orden.
+                    </p>
+                    <div class="task-item__details">
+                        <div class="task-detail">
+                            <span class="task-detail__label">Fecha de entrega</span>
+                            <span class="task-detail__value">18 de julio, 2026</span>
+                        </div>
+                        <div class="task-detail">
+                            <span class="task-detail__label">Profesor</span>
+                            <span class="task-detail__value">Dr. Martínez</span>
+                        </div>
+                        <div class="task-detail">
+                            <span class="task-detail__label">Puntaje</span>
+                            <span class="task-detail__value">25 puntos</span>
+                        </div>
+                    </div>
+                    <div class="task-item__actions">
+                        <button class="task-btn task-btn--primary">
+                            <i class="bx bx-upload"></i> Entregar tarea
+                        </button>
+                        <button class="task-btn task-btn--secondary">
+                            <i class="bx bx-file"></i> Ver material
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarea 2 -->
+            <div class="task-item">
+                <div class="task-item__header" onclick="this.parentElement.classList.toggle('open')">
+                    <div class="task-item__toggle">
+                        <i class="bx bx-chevron-down"></i>
+                    </div>
+                    <div class="task-item__icon task-item__icon--science">
+                        <i class="bx bx-flask"></i>
+                    </div>
+                    <div class="task-item__info">
+                        <div class="task-item__title">Informe de laboratorio: Reacciones químicas</div>
+                        <div class="task-item__meta">
+                            <span><i class="bx bx-book"></i> Química General</span>
+                            <span><i class="bx bx-time"></i> Vence en 5 días</span>
+                        </div>
+                    </div>
+                    <span class="task-item__status task-item__status--pending">Pendiente</span>
+                </div>
+                <div class="task-item__content">
+                    <p class="task-item__description">
+                        Elaborar un informe detallado sobre las reacciones de oxidación observadas en el laboratorio. Incluir fotos, tablas de resultados y conclusiones.
+                    </p>
+                    <div class="task-item__details">
+                        <div class="task-detail">
+                            <span class="task-detail__label">Fecha de entrega</span>
+                            <span class="task-detail__value">21 de julio, 2026</span>
+                        </div>
+                        <div class="task-detail">
+                            <span class="task-detail__label">Profesor</span>
+                            <span class="task-detail__value">Ing. López</span>
+                        </div>
+                        <div class="task-detail">
+                            <span class="task-detail__label">Puntaje</span>
+                            <span class="task-detail__value">30 puntos</span>
+                        </div>
+                    </div>
+                    <div class="task-item__actions">
+                        <button class="task-btn task-btn--primary">
+                            <i class="bx bx-upload"></i> Entregar tarea
+                        </button>
+                        <button class="task-btn task-btn--secondary">
+                            <i class="bx bx-file"></i> Ver material
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarea 3 -->
+            <div class="task-item">
+                <div class="task-item__header" onclick="this.parentElement.classList.toggle('open')">
+                    <div class="task-item__toggle">
+                        <i class="bx bx-chevron-down"></i>
+                    </div>
+                    <div class="task-item__icon task-item__icon--history">
+                        <i class="bx bx-map"></i>
+                    </div>
+                    <div class="task-item__info">
+                        <div class="task-item__title">Ensayo: Impacto de la Revolución Industrial</div>
+                        <div class="task-item__meta">
+                            <span><i class="bx bx-book"></i> Historia Universal</span>
+                            <span><i class="bx bx-time"></i> Vence mañana</span>
+                        </div>
+                    </div>
+                    <span class="task-item__status task-item__status--overdue">Urgente</span>
+                </div>
+                <div class="task-item__content">
+                    <p class="task-item__description">
+                        Redactar un ensayo de 3 páginas analizando el impacto social, económico y político de la Revolución Industrial en Europa. Mínimo 5 fuentes bibliográficas.
+                    </p>
+                    <div class="task-item__details">
+                        <div class="task-detail">
+                            <span class="task-detail__label">Fecha de entrega</span>
+                            <span class="task-detail__value">17 de julio, 2026</span>
+                        </div>
+                        <div class="task-detail">
+                            <span class="task-detail__label">Profesor</span>
+                            <span class="task-detail__value">Lic. Hernández</span>
+                        </div>
+                        <div class="task-detail">
+                            <span class="task-detail__label">Puntaje</span>
+                            <span class="task-detail__value">20 puntos</span>
+                        </div>
+                    </div>
+                    <div class="task-item__actions">
+                        <button class="task-btn task-btn--primary">
+                            <i class="bx bx-upload"></i> Entregar tarea
+                        </button>
+                        <button class="task-btn task-btn--secondary">
+                            <i class="bx bx-file"></i> Ver material
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarea 4 -->
+            <div class="task-item">
+                <div class="task-item__header" onclick="this.parentElement.classList.toggle('open')">
+                    <div class="task-item__toggle">
+                        <i class="bx bx-chevron-down"></i>
+                    </div>
+                    <div class="task-item__icon task-item__icon--language">
+                        <i class="bx bx-book-open"></i>
+                    </div>
+                    <div class="task-item__info">
+                        <div class="task-item__title">Análisis literario: Cien años de soledad</div>
+                        <div class="task-item__meta">
+                            <span><i class="bx bx-book"></i> Literatura Hispanoamericana</span>
+                            <span><i class="bx bx-check-circle"></i> Entregada</span>
+                        </div>
+                    </div>
+                    <span class="task-item__status task-item__status--completed">Completada</span>
+                </div>
+                <div class="task-item__content">
+                    <p class="task-item__description">
+                        Análisis de los personajes principales y el realismo mágico en la obra de Gabriel García Márquez. Incluir citas textuales y análisis crítico.
+                    </p>
+                    <div class="task-item__details">
+                        <div class="task-detail">
+                            <span class="task-detail__label">Fecha de entrega</span>
+                            <span class="task-detail__value">10 de julio, 2026</span>
+                        </div>
+                        <div class="task-detail">
+                            <span class="task-detail__label">Profesor</span>
+                            <span class="task-detail__value">Dra. Castro</span>
+                        </div>
+                        <div class="task-detail">
+                            <span class="task-detail__label">Calificación</span>
+                            <span class="task-detail__value" style="color: var(--green);">95/100</span>
+                        </div>
+                    </div>
+                    <div class="task-item__actions">
+                        <button class="task-btn task-btn--secondary">
+                            <i class="bx bx-show"></i> Ver retroalimentación
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     </main>
     
     <script type="module" src="/src/pages/estudiante/leaderboard.js"></script>

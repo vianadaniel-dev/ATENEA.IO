@@ -1,191 +1,383 @@
-//==================================================
-// IMPORTACIONES
-//==================================================
-
 @use "../abstracts/colors" as *;
 @use "../abstracts/mixins" as *;
 @use "../abstracts/typography" as *;
 @use "../abstracts/variables" as *;
 
-@mixin Table(
-    // Tamaños
-    $width: 100%,
-    $height: 600px,
-    $min-width: 1200px,
-    $max-width: 100%,
-    $max-height: 600px,
+//==================================================
+// TABLA SECTION
+//==================================================
 
-    // Tabla
-    $table-bg: $primary-100,
-    $table-border-color: $purple,
-    $table-border-width: 1px,
-    $table-radius: $radius-md,
-
-    // Header
-    $header-bg: $white,
-    $header-color: inherit,
-    $header-border-color: $purple,
-    $header-font-size: $font-md,
-    $header-font-weight: $font-medium,
-    $header-text-transform: uppercase,
-
-    // Body
-    $body-bg: transparent,
-    $body-color: inherit,
-    $body-border-color: $purple,
-    $body-font-size: $font-sm,
-    $body-font-weight: $font-medium,
-    $body-text-transform: capitalize,
-
-    // Hover
-    $row-hover-bg: $purple-light
-) {
-
-    .table{
-        overflow: hidden;
-        @include flex-center;
-        @include size($width, $height);
-
-        border: $table-border-width solid $table-border-color;
-        border-radius: $table-radius;
-
-        background: $table-bg;
-
-        .table-container{
-            overflow: auto;
-            @include size(100%);
-
-            max-width: $max-width;
-            max-height: $max-height;
-
-            table{
-                width: 100%;
-                min-width: $min-width;
-
-                border-collapse: collapse;
-                table-layout: fixed;
-
-                thead{
-                    position: sticky;
-                    z-index: 5;
-
-                    background: $header-bg;
-                    border-bottom: 1px solid $header-border-color;
-                }
-
-                thead th{
-                    text-align: center;
-
-                    color: $header-color;
-
-                    text-transform: $header-text-transform;
-
-                    @include font-montserrat;
-                    font-size: $header-font-size;
-                    font-weight: $header-font-weight;
-
-                    padding: 12px 24px;
-                    white-space: nowrap;
-                }
-
-                tbody{
-                    background: $body-bg;
-                }
-
-                tbody td{
-                    overflow: hidden;
-
-                    text-align: center;
-
-                    color: $body-color;
-
-                    text-transform: $body-text-transform;
-
-                    @include font-montserrat;
-                    font-size: $body-font-size;
-                    font-weight: $body-font-weight;
-
-                    padding: 10px 20px;
-                    white-space: nowrap;
-                }
-
-                tbody tr{
-                    user-select: none;
-                    cursor: pointer;
-
-                    border-bottom: 1px solid $body-border-color;
-
-                    &:hover{
-                        background: $row-hover-bg;
-                    }
-                }
-            }
-        }
-    }
+.table-section {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
-@mixin category(
-    $color: $primary,
-    $background: $secondary,
-    $padding: 16px,
-    $font-size: $font-sm,
-    $font-weight: $font-regular
-) {
-    @include flex-center;
+//==================================================
+// TABLA CONTENEDOR
+//==================================================
 
-    padding: calc(#{$padding} / 2) $padding;
-    gap: 6px;
-
-    background-color: $background;
-    border: 1px solid $color;
-    border-radius: $radius-pill;
-
-    @include font-montserrat;
-    font-size: $font-size;
-    font-weight: $font-weight;
-    color: $color;
-
-    user-select: none;
-
-    i {
-        line-height: 1;
-    }
+.table {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    height: auto;
+    min-height: 400px;
+    border-radius: $radius-lg;
+    background: $white;
+    box-shadow: $shadow-lg;
 }
 
-@mixin progress-track(
-    $width: 200px,
-    $height: 4px,
-    $track-color: rgb(214, 214, 214),
-    $progress-color: $primary,
-    $font-size: $font-sm,
-    $font-weight: $font-regular,
-    $gap: 8px
-) {
-    @include flex-center;
-    height: 20px;
-    gap: $gap;
+.table-container {
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 600px;
 
-    .bar {
-        display: flex;
-        @include size($width, auto);
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
 
-        background-color: $track-color;
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $gray;
         border-radius: $radius-pill;
 
-        .progress-bar {
-            @include size(0%, $height);
+        &:hover {
+            background: $gray-dark;
+        }
+    }
+}
 
-            background-color: $progress-color;
-            border-radius: $radius-pill;
+//==================================================
+// TABLA
+//==================================================
 
-            transition: all $transition-slow ease;
+.table-content {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+}
+
+//==================================================
+// HEADER
+//==================================================
+
+.table-head {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: linear-gradient(135deg, $primary, $primary-dark);
+}
+
+.table-head-row {
+    display: table-row;
+}
+
+.table-head-cell {
+    text-align: left;
+    color: $white;
+    text-transform: uppercase;
+    font-family: $font-primary;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 14px 20px;
+    white-space: nowrap;
+    border-bottom: 2px solid $purple;
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1px;
+        height: 50%;
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    &:last-child::after {
+        display: none;
+    }
+
+    &:first-child {
+        border-top-left-radius: $radius-lg;
+    }
+
+    &:last-child {
+        border-top-right-radius: $radius-lg;
+    }
+}
+
+//==================================================
+// BODY
+//==================================================
+
+.table-body {
+    background: transparent;
+}
+
+.table-body-row {
+    user-select: none;
+    cursor: pointer;
+    border-bottom: 1px solid $gray;
+    transition: all $transition-fast ease;
+
+    &:hover {
+        background: linear-gradient(90deg, rgba(196, 181, 253, 0.12), rgba(196, 181, 253, 0.04));
+        transform: scale(1.002);
+        box-shadow: 0 2px 8px rgba(139, 92, 246, 0.08);
+        position: relative;
+        z-index: 1;
+    }
+
+    td {
+        overflow: hidden;
+        text-align: left;
+        color: $text;
+        text-transform: capitalize;
+        font-family: $font-primary;
+        font-size: 0.85rem;
+        font-weight: 500;
+        padding: 14px 20px;
+        white-space: nowrap;
+        border-bottom: 1px solid $gray;
+        transition: all $transition-fast ease;
+    }
+
+    &:last-child td {
+        border-bottom: none;
+
+        &:first-child {
+            border-bottom-left-radius: $radius-lg;
+        }
+
+        &:last-child {
+            border-bottom-right-radius: $radius-lg;
         }
     }
 
-    .value-progress {
-        @include font-montserrat;
-        font-size: $font-size;
-        font-weight: $font-weight;
-        color: $progress-color;
+    td:first-child {
+        font-weight: 700;
+        color: $primary;
+        font-family: $font-secondary;
+        font-size: 0.9rem;
+    }
+}
+
+//==================================================
+// BADGES / ESTADOS
+//==================================================
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: $radius-pill;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+
+    &--active {
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.08));
+        color: $green;
+        border: 1px solid rgba(34, 197, 94, 0.25);
+    }
+
+    &--inactive {
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.12), rgba(239, 68, 68, 0.06));
+        color: $red;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    &--pending {
+        background: linear-gradient(135deg, rgba(250, 204, 21, 0.15), rgba(250, 204, 21, 0.08));
+        color: rgb(161, 98, 7);
+        border: 1px solid rgba(250, 204, 21, 0.25);
+    }
+
+    i {
+        font-size: 0.85rem;
+    }
+}
+
+//==================================================
+// BOTONES DE ACCIÓN
+//==================================================
+
+.table-actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: all $transition-fast ease;
+    background: transparent;
+    color: $gray-dark;
+    font-size: 1rem;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: $shadow-sm;
+    }
+
+    &:active {
+        transform: translateY(0) scale(0.95);
+    }
+
+    &--view:hover {
+        background: linear-gradient(135deg, $blue-light, $blue);
+        color: $white;
+    }
+
+    &--edit:hover {
+        background: linear-gradient(135deg, $purple-light, $purple);
+        color: $white;
+    }
+
+    &--delete:hover {
+        background: linear-gradient(135deg, $red-light, $red);
+        color: $white;
+    }
+}
+
+//==================================================
+// AVATAR / INICIALES
+//==================================================
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: $radius-circle;
+    background: linear-gradient(135deg, $primary-light, $primary);
+    color: $white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.user-name {
+    font-weight: 600;
+    color: $text;
+}
+
+.user-email {
+    font-size: 0.75rem;
+    color: $gray-dark;
+    font-weight: 400;
+}
+
+//==================================================
+// PROGRESO / CUPO
+//==================================================
+
+.progress-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.progress-bar-bg {
+    display: flex;
+    width: 100px;
+    height: 6px;
+    background: $gray-light;
+    border-radius: $radius-pill;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    border-radius: $radius-pill;
+    transition: width $transition-slow ease;
+
+    &--high {
+        background: linear-gradient(90deg, $green, $green-dark);
+    }
+
+    &--medium {
+        background: linear-gradient(90deg, $yellow, $yellow-dark);
+    }
+
+    &--low {
+        background: linear-gradient(90deg, $red, $red-dark);
+    }
+}
+
+.progress-value {
+    font-family: $font-primary;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: $primary;
+    min-width: 36px;
+}
+
+//==================================================
+// RESPONSIVE
+//==================================================
+
+@media (max-width: 768px) {
+    .table {
+        border-radius: $radius-md;
+    }
+
+    .table-head-cell {
+        padding: 12px 14px;
+        font-size: 0.72rem;
+    }
+
+    .table-body-row td {
+        padding: 12px 14px;
+        font-size: 0.8rem;
+    }
+
+    .badge {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+    }
+
+    .btn-action {
+        width: 30px;
+        height: 30px;
+        font-size: 0.9rem;
+    }
+
+    .user-avatar {
+        width: 28px;
+        height: 28px;
+        font-size: 0.7rem;
     }
 }

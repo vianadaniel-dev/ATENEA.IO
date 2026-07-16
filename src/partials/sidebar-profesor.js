@@ -90,19 +90,7 @@ export function profesorSidebar() {
         </div>
 
         <!-- Bloque Inferior: Cambio de modo y Salida -->
-        <div id="sidebar-footer" class="sidebar__footer">
-            <div id="button-theme" class="theme-toggle">
-                <div class="theme-toggle__icons">
-                    <span id="sun_icon" class="theme-toggle__icon">
-                        <i class="bx bx-sun"></i>
-                    </span>
-
-                    <span id="moon_icon" class="theme-toggle__icon">
-                        <i class="bx bx-moon"></i>
-                    </span>
-                </div>
-                <div id="theme-toggle__slider"></div>
-            </div>            
+        <div id="sidebar-footer" class="sidebar__footer">          
             <button id="sidebar-btn-logout" class="sidebar__button sidebar__button--logout" type="button">
                 <i class="bx bx-arrow-out-right-square-half"></i>
                 <span id="sidebar-btn-logout-text">Exit</span>

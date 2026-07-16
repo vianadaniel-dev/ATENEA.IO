@@ -1,0 +1,323 @@
+@use "../abstracts/colors" as *;
+@use "../abstracts/mixins" as *;
+@use "../abstracts/typography" as *;
+@use "../abstracts/variables" as *;
+
+//==================================================
+// TAREAS - SECTION
+//==================================================
+
+.tasks-section {
+    max-width: 1200px;
+    margin: 2rem auto 0;
+}
+
+.tasks-section__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+.tasks-section__title {
+    font-family: $font-secondary;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $primary;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    i {
+        color: $primary-light;
+        font-size: 1.3rem;
+    }
+}
+
+.tasks-section__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 8px;
+    background: linear-gradient(135deg, $red-light, $red);
+    color: $white;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: $radius-pill;
+}
+
+//==================================================
+// TAREAS - LIST
+//==================================================
+
+.tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+//==================================================
+// TAREAS - ITEM
+//==================================================
+
+.task-item {
+    background: $white;
+    border-radius: $radius-lg;
+    border: 1px solid $gray;
+    overflow: hidden;
+    box-shadow: $shadow-sm;
+    transition: all $transition-normal ease;
+
+    &:hover {
+        box-shadow: $shadow-md;
+        border-color: $purple-light;
+    }
+
+    &.open {
+        .task-item__toggle {
+            transform: rotate(180deg);
+            background: linear-gradient(135deg, $primary-light, $primary);
+            color: $white;
+        }
+
+        .task-item__content {
+            max-height: 500px;
+            padding: 0 1.25rem 1.25rem;
+        }
+    }
+}
+
+.task-item__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background $transition-fast ease;
+
+    &:hover {
+        background: rgba(99, 102, 241, 0.03);
+    }
+}
+
+.task-item__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: $radius-circle;
+    background: $gray-light;
+    color: $primary;
+    font-size: 1rem;
+    transition: all $transition-normal ease;
+    flex-shrink: 0;
+}
+
+.task-item__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: $radius-md;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+
+    &--math {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(59, 130, 246, 0.06));
+        color: $blue;
+    }
+
+    &--science {
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.12), rgba(34, 197, 94, 0.06));
+        color: $green;
+    }
+
+    &--history {
+        background: linear-gradient(135deg, rgba(250, 204, 21, 0.12), rgba(250, 204, 21, 0.06));
+        color: rgb(161, 98, 7);
+    }
+
+    &--language {
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(139, 92, 246, 0.06));
+        color: $purple;
+    }
+}
+
+.task-item__info {
+    flex: 1;
+    min-width: 0;
+}
+
+.task-item__title {
+    font-family: $font-primary;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: $primary;
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.task-item__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    color: $gray-dark;
+    font-weight: 500;
+
+    span {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+}
+
+.task-item__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 4px 10px;
+    border-radius: $radius-pill;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    flex-shrink: 0;
+
+    &--pending {
+        background: linear-gradient(135deg, rgba(250, 204, 21, 0.12), rgba(250, 204, 21, 0.06));
+        color: rgb(161, 98, 7);
+        border: 1px solid rgba(250, 204, 21, 0.25);
+    }
+
+    &--completed {
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.12), rgba(34, 197, 94, 0.06));
+        color: $green;
+        border: 1px solid rgba(34, 197, 94, 0.25);
+    }
+
+    &--overdue {
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.12), rgba(239, 68, 68, 0.06));
+        color: $red;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+}
+
+//==================================================
+// TAREAS - CONTENT (desplegable)
+//==================================================
+
+.task-item__content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height $transition-slow ease, padding $transition-slow ease;
+    padding: 0 1.25rem;
+}
+
+.task-item__description {
+    font-size: 0.9rem;
+    color: $text;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: $gray-light;
+    border-radius: $radius-md;
+    border-left: 3px solid $primary-light;
+}
+
+.task-item__details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.task-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.75rem;
+    background: $gray-light;
+    border-radius: $radius-md;
+}
+
+.task-detail__label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: $gray-dark;
+}
+
+.task-detail__value {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: $primary;
+}
+
+.task-item__actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+//==================================================
+// TAREAS - BOTONES
+//==================================================
+
+.task-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1.25rem;
+    border: none;
+    border-radius: $radius-md;
+    font-family: $font-primary;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all $transition-fast ease;
+
+    &--primary {
+        background: linear-gradient(135deg, $primary-light, $primary);
+        color: $white;
+        box-shadow: 0 2px 8px rgba(29, 21, 81, 0.2);
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(29, 21, 81, 0.3);
+        }
+    }
+
+    &--secondary {
+        background: $white;
+        color: $primary;
+        border: 1.5px solid $gray;
+
+        &:hover {
+            background: $gray-light;
+            border-color: $primary-light;
+        }
+    }
+}
+
+//==================================================
+// RESPONSIVE TAREAS
+//==================================================
+
+@media (max-width: 768px) {
+    .task-item__details {
+        grid-template-columns: 1fr;
+    }
+
+    .task-item__header {
+        padding: 0.875rem 1rem;
+    }
+}

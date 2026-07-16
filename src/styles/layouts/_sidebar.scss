@@ -7,6 +7,10 @@
 @use "../abstracts/typography" as *;
 @use "../abstracts/variables" as *;
 
+body{
+    background-color: $surface;
+}
+
 
 //==================================================
 // SIDEBAR PRINCIPAL
@@ -19,7 +23,7 @@
     display: flex;
     flex-direction: column;
 
-    @include size(350px, 100vh);
+    @include size(300px, 100vh);
     max-width: 60%;
 
     background-color: $background;
@@ -60,7 +64,7 @@
         @include flex-center;
         @include size(100%);
 
-        padding: .6rem 1rem;
+        padding: .5rem .8rem;
         gap: .8rem;
     }
 
@@ -73,40 +77,26 @@
         left: 93%;
 
         @include flex-center;
-        @include size(2.8rem);
+        @include size(3rem);
 
-        background-image: linear-gradient(
-            120deg,
-            $gradient-start,
-            $gradient-end
-        );
+        font-size: $font-xl;
+
+        background: linear-gradient(-135deg, $primary, $primary-dark);
+
 
         border-radius: $radius-pill;
-        border: 5px solid $background;
+        border: 4px solid $background;
 
-        color: $text;
+        color: $background;
         cursor: pointer;
 
-        transition: left .4s ease;
+        transition: left $transition-normal ease, transform $transition-slow ease;
 
-        #sidebar-toggle-icon {
-            @include flex-center;
-            @include size(2rem);
-
-            padding-right: .1rem;
-
-            color: $background;
-
-            transform: rotate(180deg);
-            transition: transform .5s ease;
-
-            &.closed {
-                transform: rotate(0deg);
-            }
-        }
 
         &.closed {
             left: 110%;
+            background: linear-gradient(-135deg, $primary, $primary-dark);
+            transform: rotate(180deg);
         }
     }
 }
@@ -120,20 +110,16 @@
     @include flex-center;
     @include size(48px);
 
-    padding: .5rem;
+    padding: .4rem;
 
-    background-image: linear-gradient(
-        120deg,
-        $gradient-start,
-        $gradient-end
-    );
+    background: linear-gradient(135deg, $primary, $primary-dark);
 
-    border-radius: $radius-sm;
+    border-radius: $radius-lg;
 
     svg {
         display: flex;
 
-        @include size(24px);
+        @include size(35px);
 
         color: $background;
     }
@@ -145,12 +131,12 @@
 //==================================================
 
 .sidebar__title-container {
-    display: flex;
+    @include flex($justify: center);
     flex-direction: column;
 
     overflow: hidden;
 
-    @include size(100%, auto);
+    @include size(100%, 100%);
 
     opacity: 1;
     visibility: visible;
@@ -158,7 +144,7 @@
     transition: opacity .3s ease;
 
     .sidebar__title {
-        font-size: 18px;
+        font-size: $font-md;
         font-weight: 600;
 
         white-space: nowrap;
@@ -167,7 +153,7 @@
     }
 
     .sidebar__subtitle {
-        font-size: 12px;
+        font-size: $font-sm;
 
         white-space: nowrap;
         overflow: hidden;
@@ -195,7 +181,9 @@
     overflow-y: auto;
     overflow-x: hidden;
 
-    padding: 1.2rem 1rem;
+    padding: 1rem;
+
+    user-select: none;
 }
 
 
@@ -211,6 +199,11 @@
 
     list-style: none;
     gap: .8rem;
+
+    a{
+        text-decoration: none;
+        color: $text;
+    }
 }
 
 
@@ -219,14 +212,10 @@
 //==================================================
 
 .sidebar__menu-item {
-    display: flex;
-    flex-direction: column;
-
+    @include flex($justify: flex-start, $align: center, $direction: column);
     @include size(100%, auto);
-    @include flex($justify: flex-start, $align: center);
 
     cursor: pointer;
-
 
     //==============================================
     // Contenedor del enlace
@@ -236,14 +225,14 @@
         @include flex($justify: flex-start, $align: center);
         @include size(100%, auto);
 
-        padding: .4rem;
+        padding: .6rem;
         gap: .5rem;
 
-        @include font-secondary;
+        @include font-primary;
 
-        font-size: 16px;
-        font-weight: 500;
-        text-transform: uppercase;
+        font-size: $font-sm;
+        font-weight: 600;
+        text-transform: capitalize;
 
         opacity: 1;
         visibility: visible;
@@ -255,16 +244,9 @@
         // Icono
         //==========================================
 
-        .sidebar__icon {
-            line-height: 0;
-
-            svg {
-                display: flex;
-
-                @include size(20px);
-
-                color: $text;
-            }
+        i{
+            font-size: $font-lg;
+            color: $text;
         }
 
 
@@ -307,17 +289,14 @@
     //==============================================
 
     .sidebar__link-wrapper-li {
-        @include size(0%, 2px);
+        @include size(0%, 1.5px);
+        min-height: 1.5px;
 
-        background-image: linear-gradient(
-            120deg,
-            $gradient-start,
-            $gradient-end
-        );
+        background: linear-gradient(135deg, $primary-light, $primary);
 
         border-radius: $radius-pill;
 
-        transition: width .3s ease;
+        transition: width $transition-slow ease;
     }
 
 
@@ -326,7 +305,8 @@
     //==============================================
 
     .sidebar__link-wrapper-li.location {
-        @include size(100%, 2px);
+        @include size(100%, 1.5px);
+        min-height: 1.5px;
     }
 
 
@@ -335,7 +315,8 @@
     //==============================================
 
     &:hover .sidebar__link-wrapper-li {
-        @include size(100%, 2px);
+        @include size(100%, 1.5px);
+        min-height: 1.5px;
     }
 }
 //==================================================
@@ -355,12 +336,74 @@
     background-color: $background;
     border-top: 1px solid $text;
 
+    .theme-toggle{
+        overflow: hidden;
+        position: relative;
+        @include size(100%, 2.2rem);
+
+        background-color: $background;
+        border: 1px solid $text;
+        border-radius: $radius-pill;
+
+        cursor: pointer;
+
+        .theme-toggle__icons{
+            z-index: 5;
+            position: absolute;
+            inset: 0; 
+            @include flex-between;
+            @include size(100%, 100%);
+
+            padding: 5px;
+
+            .theme-toggle__icon{
+                @include flex-center;
+                @include size(100%, auto);
+
+                line-height: 1;
+                font-size: $font-md;
+                color: $background;
+            }
+
+            #moon_icon{
+                color: $text;
+                transition: color $transition-slow ease;
+            }
+    
+            #sun_icon{
+                color: $background;
+                transition: color $transition-slow ease;
+            }
+
+            #moon_icon.theme{
+                color: $background;
+            }
+            #sun_icon.theme{
+                color: $text;
+            }
+        }
+
+        #theme-toggle__slider{
+            position: absolute;
+            inset: 0; 
+            @include size(50%,100%);
+
+            background-color: $text;
+            border-radius: $radius-pill;
+
+            transition: transform $transition-normal ease;
+        }
+        #theme-toggle__slider.theme{
+            transform: translateX(100%);
+        }
+    }
+
 
     //==============================================
     // Botones
     //==============================================
 
-    .sidebar__button {
+    .sidebar__button{
         @include flex-center;
 
         @include size(100%, auto);
@@ -368,17 +411,14 @@
         padding: .6rem;
         gap: .5rem;
 
-        background-color: $text;
-        color: $background;
+        background: $text;
 
         border: none;
-        border-radius: $radius-sm;
+        border-radius: $radius-pill;
 
         cursor: pointer;
 
-        transition: background-color .3s ease,
-                    color .3s ease,
-                    transform .2s ease;
+        transition: transform .2s ease;
 
 
         &:hover {
@@ -394,15 +434,12 @@
         // Iconos
         //==========================================
 
-        svg {
-            display: flex;
-
-            @include size(18px);
-
+        i {
+            size: $font-lg;
+            line-height: 1;
             color: $background;
         }
     }
-
 
     //==============================================
     // Texto del botón Salir
@@ -419,6 +456,7 @@
         visibility: visible;
 
         transition: opacity .3s ease;
+        color: $background;
 
 
         &.closed {
@@ -429,4 +467,55 @@
             pointer-events: none;
         }
     }
+}
+
+
+
+@media (min-width: $breakpoint-laptop) {
+
+    //==================================================
+    // SIDEBAR PRINCIPAL
+    //==================================================
+
+    #main-sidebar {
+        @include size(330px, 100vh);
+    }
+
+    //==================================================
+    // HEADER
+    //==================================================
+
+    #sidebar-header {
+        @include size(100%, 10vh);
+        min-height: 10vh;
+
+        //==============================================
+        // Botón para expandir / contraer
+        //==============================================
+
+        .sidebar__toggle-container {
+            @include size(2.8rem);
+        }
+    }
+
+    //==================================================
+    // LISTA DEL MENÚ
+    //==================================================
+
+    .sidebar__menu-list {
+        gap: .5rem;
+    }
+
+    //==================================================
+    // ITEM DEL MENÚ
+    //==================================================
+
+    .sidebar__menu-item {
+        @include flex($justify: flex-start, $align: center, $direction: column);
+        @include size(100%, auto);
+
+        cursor: pointer;
+
+    }
+
 }

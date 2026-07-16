@@ -9,27 +9,29 @@
 
 #header{
     position: fixed;
-    z-index: 1000px;
+    z-index: 1000;
     display: flex;
     @include size(100vw, 10vh);
-    @include padding(0,1rem,0,100px);
+    padding:(0,1rem,0,100px);
 
     background-color: $background;
     border-bottom: 1px solid $text;
-    @include shadow(4px, 0, 10px, 0, rgba(0, 0, 0, .20));
+    @include shadow($shadow-md);
 
-    @include justify-align(space-between,center);
+    justify-content: space-around;
+    align-items: center;
 
     .header__title{
         display: flex;
         @include size(auto, 100%);
-        @include justify-align(start,center);
-        @include padding(0.3rem,1rem,0.3rem,4rem);
+        justify-content: space-around;
+        align-items: center;
+        padding:(0.3rem,1rem,0.3rem,4rem);
         gap: 7px;
 
-        @include font-changa;
+        @include font-secondary;
         font-weight: 400;
-        font-size: $font-18;
+        font-size: $font-md;
         text-transform: uppercase;
         color: $text;
 
@@ -46,8 +48,9 @@
     }
 
     @media (max-width: 768px) {    
-        @include justify-align(flex-end,center);
-          @include padding(0,0,0,0);
+        justify-content: flex-end;
+        align-items: center;
+        padding:(0);
     }
    
 }
@@ -65,22 +68,22 @@
 .header__user{
     display: flex;
     @include size(flex-end,center);
-    @include padding(0.3rem,1rem);
+    padding:(0.3rem,1rem);
     gap: 20px;
 
     @media (max-width: 768px) {    
-        @include padding(0.2rem);
+       padding:(0.2rem);
     }
 }
 
 .header__balance{
     display: flex;
     @include size(auto,auto);
-    @include justify-align(none,center);
-    @include padding(0.3rem);
+    align-items: center;
+    padding:(0.3rem);
     gap: 5px;
 
-    border-radius: $radius-3xl;
+    border-radius: $radius-pill;
     border: 1px solid $text;
 
     background-color: $background;
@@ -101,11 +104,11 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        @include padding(0.3rem);
+        padding:(0.3rem);
 
         text-decoration: none;
-        @include font-montserrat;
-        font-size: $font-14;
+        @include font-primary;
+        font-size: $font-sm;
         font-weight: 400;
         text-transform: capitalize;
         color: $text;
@@ -119,7 +122,7 @@
 .header__profile{
     display: flex;
     @include size(auto,100%);
-    @include justify-align(none,center);
+    align-items: center;
     gap: 7px;
 
     .header__profile-image{
@@ -127,7 +130,7 @@
         @include size(2.7rem,2.7rem);
 
         border: 1px solid $text;
-        border-radius: $radius-3xl;
+        border-radius: $radius-pill;
 
         img{
             @include size(100%,100%);
@@ -143,8 +146,8 @@
         text-overflow: ellipsis;
 
         text-decoration: none;
-        @include font-montserrat;
-        font-size: $font-16;
+        @include font-secondary;
+        font-size: $font-md;
         font-weight: 400;
         text-transform: capitalize;
         color: $text;

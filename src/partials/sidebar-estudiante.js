@@ -22,72 +22,47 @@ export function estudianteSidebar() {
         <!-- Bloque Central: Opciones del menú/slider bar -->
         <div id="sidebar-menu-container" class="sidebar__menu-container">
             <ul id="sidebar-menu-list estudiante" class="sidebar__menu-list">
-                <li class="sidebar__menu-item">
-                    <div class="sidebar__link-wrapper">
-                        <i class="bx bx-home"></i>
-                        <span class="sidebar__text">home</span>
-                    </div>
-                    <div class="sidebar__link-wrapper-li"></div>
-                </li>
-                <li class="sidebar__menu-item">
-                    <div class="sidebar__link-wrapper">
-                        <i class="bx bx-community"></i>
-                        <span class="sidebar__text">group</span>
-                    </div>
-                    <div class="sidebar__link-wrapper-li"></div>
-                </li>
-                <li class="sidebar__menu-item">
-                    <div class="sidebar__link-wrapper">
-                        <i class="bx bx-file-detail"></i>
-                        <span class="sidebar__text">report card</span>
-                    </div>
-                    <div class="sidebar__link-wrapper-li"></div>
-                </li>
-                <li class="sidebar__menu-item">
-                    <div class="sidebar__link-wrapper">
-                        <i class="bx bx-laurel-wreath"></i>
-                        <span class="sidebar__text">Wall of Honor</span>
-                    </div>
-                    <div class="sidebar__link-wrapper-li"></div>
-                </li>
-                <li class="sidebar__menu-item">
-                    <div class="sidebar__link-wrapper">
-                        <i class="bx bx-news"></i>
-                        <span class="sidebar__text">student news</span>
-                    </div>
-                    <div class="sidebar__link-wrapper-li"></div>
-                </li>
-                <li class="sidebar__menu-item">
-                    <div class="sidebar__link-wrapper">
-                        <i class="bx bx-store-alt"></i>
-                        <span class="sidebar__text">shop</span>
-                    </div>
-                    <div class="sidebar__link-wrapper-li"></div>
-                </li>
-                <li class="sidebar__menu-item">
-                    <div class="sidebar__link-wrapper">
-                        <i class="bx bx-user-square"></i>
-                        <span class="sidebar__text">user profile</span>
-                    </div>
-                    <div class="sidebar__link-wrapper-li"></div>
-                </li>
+                 <a href="/estudiante/dashboard.html">
+                    <li class="sidebar__menu-item">
+                        <div class="sidebar__link-wrapper">
+                            <i class="bx bx-grid-alt"></i>
+                            <span class="sidebar__text">dashboard</span>
+                        </div>
+                        <div class="sidebar__link-wrapper-li"></div>
+                    </li>
+                </a>
+                <a href="/estudiante/cursos.html">
+                    <li class="sidebar__menu-item">
+                        <div class="sidebar__link-wrapper">
+                            <i class="bx bx-book-open"></i>
+                            <span class="sidebar__text">my courses</span>
+                        </div>
+                        <div class="sidebar__link-wrapper-li"></div>
+                    </li>
+                </a>
+                <a href="/estudiante/anuncios.html">
+                    <li class="sidebar__menu-item">
+                        <div class="sidebar__link-wrapper">
+                            <i class="bx bx-group"></i>
+                            <span class="sidebar__text">news</span>
+                        </div>
+                        <div class="sidebar__link-wrapper-li"></div>
+                    </li>
+                </a>
+                <a href="/estudiante/boletin.html">
+                    <li class="sidebar__menu-item">
+                        <div class="sidebar__link-wrapper">
+                            <i class="bx bx-clipboard"></i>
+                            <span class="sidebar__text">grades</span>
+                        </div>
+                        <div class="sidebar__link-wrapper-li"></div>
+                    </li>
+                </a>
             </ul>
         </div>
 
         <!-- Bloque Inferior: Cambio de modo y Salida -->
-        <div id="sidebar-footer" class="sidebar__footer">
-            <div id="button-theme" class="theme-toggle">
-                <div class="theme-toggle__icons">
-                    <span id="sun_icon" class="theme-toggle__icon">
-                        <i class="bx bx-sun"></i>
-                    </span>
-
-                    <span id="moon_icon" class="theme-toggle__icon">
-                        <i class="bx bx-moon"></i>
-                    </span>
-                </div>
-                <div id="theme-toggle__slider"></div>
-            </div>            
+        <div id="sidebar-footer" class="sidebar__footer">          
             <button id="sidebar-btn-logout" class="sidebar__button sidebar__button--logout" type="button">
                 <i class="bx bx-arrow-out-right-square-half"></i>
                 <span id="sidebar-btn-logout-text">Exit</span>

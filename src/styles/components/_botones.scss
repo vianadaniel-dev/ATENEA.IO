@@ -39,9 +39,9 @@
 
     span {
         display: $flex_spann;
-        @include font-montserrat;
+        @include font-primary;
         font-size: $font-size;
-        font-weight: $font-medium;
+        font-weight: 500;
         line-height: 1;
     }
 }

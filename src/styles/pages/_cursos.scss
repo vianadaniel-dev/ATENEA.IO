@@ -1,0 +1,380 @@
+@use "../abstracts/colors" as *;
+@use "../abstracts/mixins" as *;
+@use "../abstracts/typography" as *;
+@use "../abstracts/variables" as *;
+
+//==================================================
+// CURSOS - SECTION
+//==================================================
+
+.courses-section {
+    max-width: 1200px;
+    margin: 2rem auto 0;
+    padding: 0 1rem;
+}
+
+.courses-section__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.courses-section__title {
+    font-family: $font-secondary;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $primary;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    i {
+        color: $primary-light;
+        font-size: 1.3rem;
+    }
+}
+
+.courses-section__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 8px;
+    background: linear-gradient(135deg, $primary-light, $primary);
+    color: $white;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: $radius-pill;
+}
+
+//==================================================
+// CURSOS - GRID
+//==================================================
+
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+//==================================================
+// CURSOS - CARD
+//==================================================
+
+.course-card {
+    display: flex;
+    flex-direction: column;
+    background: $white;
+    border-radius: $radius-lg;
+    overflow: hidden;
+    box-shadow: $shadow-sm;
+    border: 1px solid $gray;
+    transition: all $transition-normal ease;
+    cursor: pointer;
+
+    &:hover {
+        transform: translateY(-6px);
+        box-shadow: $shadow-lg;
+        border-color: $purple-light;
+
+        .course-card__header {
+            transform: scale(1.02);
+        }
+
+        .course-card__icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+    }
+}
+
+//==================================================
+// CURSOS - HEADER (color por materia)
+//==================================================
+
+.course-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1.5rem;
+    min-height: 120px;
+    position: relative;
+    overflow: hidden;
+    transition: transform $transition-normal ease;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: -30%;
+        right: -20%;
+        width: 150px;
+        height: 150px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 50%;
+    }
+
+    &--math {
+        background: linear-gradient(135deg, $blue, $blue-dark);
+    }
+
+    &--science {
+        background: linear-gradient(135deg, $green, $green-dark);
+    }
+
+    &--history {
+        background: linear-gradient(135deg, $yellow, rgb(202, 138, 4));
+    }
+
+    &--language {
+        background: linear-gradient(135deg, $purple, $purple-dark);
+    }
+
+    &--physics {
+        background: linear-gradient(135deg, rgb(6, 182, 212), rgb(8, 145, 178));
+    }
+
+    &--english {
+        background: linear-gradient(135deg, $red, $red-dark);
+    }
+}
+
+.course-card__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    border-radius: $radius-md;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: transform $transition-normal ease;
+
+    i {
+        font-size: 1.5rem;
+        color: $white;
+    }
+}
+
+.course-card__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 4px 10px;
+    border-radius: $radius-pill;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    backdrop-filter: blur(8px);
+    z-index: 1;
+
+    &--active {
+        background: rgba(255, 255, 255, 0.9);
+        color: $green;
+    }
+
+    &--completed {
+        background: rgba(255, 255, 255, 0.9);
+        color: $primary;
+    }
+
+    &--pending {
+        background: rgba(255, 255, 255, 0.9);
+        color: rgb(161, 98, 7);
+    }
+}
+
+//==================================================
+// CURSOS - CONTENT
+//==================================================
+
+.course-card__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.25rem;
+    flex: 1;
+}
+
+.course-card__title {
+    font-family: $font-primary;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: $primary;
+    line-height: 1.3;
+}
+
+.course-card__teacher {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: $gray-dark;
+    font-weight: 500;
+
+    i {
+        font-size: 1rem;
+        color: $primary-light;
+    }
+}
+
+//==================================================
+// CURSOS - PROGRESS
+//==================================================
+
+.course-card__progress {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.course-card__progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.course-card__progress-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: $gray-dark;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.course-card__progress-value {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: $primary;
+}
+
+.course-card__progress-bar {
+    width: 100%;
+    height: 6px;
+    background: $gray-light;
+    border-radius: $radius-pill;
+    overflow: hidden;
+}
+
+.course-card__progress-fill {
+    height: 100%;
+    border-radius: $radius-pill;
+    transition: width $transition-slow ease;
+
+    &--high {
+        background: linear-gradient(90deg, $green, rgb(21, 128, 61));
+    }
+
+    &--medium {
+        background: linear-gradient(90deg, $yellow, rgb(202, 138, 4));
+    }
+
+    &--low {
+        background: linear-gradient(90deg, $red, rgb(185, 28, 28));
+    }
+
+    &--complete {
+        background: linear-gradient(90deg, $primary-light, $primary);
+    }
+}
+
+//==================================================
+// CURSOS - STATS
+//==================================================
+
+.course-card__stats {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid $gray-light;
+}
+
+.course-card__stat {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    color: $gray-dark;
+    font-weight: 500;
+
+    i {
+        font-size: 1rem;
+        color: $primary-light;
+    }
+}
+
+//==================================================
+// CURSOS - FOOTER
+//==================================================
+
+.course-card__footer {
+    padding: 0 1.25rem 1.25rem;
+    margin-top: auto;
+}
+
+.course-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: none;
+    border-radius: $radius-md;
+    font-family: $font-primary;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all $transition-fast ease;
+    text-transform: capitalize;
+
+    &--primary {
+        background: linear-gradient(135deg, $primary-light, $primary);
+        color: $white;
+        box-shadow: 0 2px 8px rgba(29, 21, 81, 0.2);
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(29, 21, 81, 0.3);
+        }
+    }
+
+    &--secondary {
+        background: $white;
+        color: $primary;
+        border: 1.5px solid $gray;
+
+        &:hover {
+            background: $gray-light;
+            border-color: $primary-light;
+        }
+    }
+
+    i {
+        font-size: 1rem;
+    }
+}
+
+//==================================================
+// RESPONSIVE CURSOS
+//==================================================
+
+@media (max-width: 1024px) {
+    .courses-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .courses-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .courses-section {
+        padding: 0 0.75rem;
+    }
+}

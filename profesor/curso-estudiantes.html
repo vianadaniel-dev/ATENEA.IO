@@ -8,11 +8,90 @@
     <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="header"></div>
-    <div class="sidebar"></div>
-    <main>
+    <div id="header"></div>
+    <div id="sidebar"></div>
+    <main class="table-page" id="table-page">
+        <div class="table-layout">
+            <div class="table-content">
+                <div class="table-header" id="table-header">
+                    <div class="table-header-title">
+                        <span class="table-title">
+                            estudiantes
+                        </span>
+
+                        <div class="table-header-action">
+                            <button class="table-add-button">
+                                <i class="bx bx-plus"></i>
+                                añadir estudiantes
+                            </button>
+                        </div>
+                    </div>
+
+                    <span class="table-total">
+                        <span class="table-total-label">
+                            <i class="bx bx-user"></i>
+                            estudiantes:
+                        </span>
+
+                        2,000
+                    </span>
+                </div>
+                <div class="table-card">
+                    <div class="table-toolbar">
+
+                        <select class="table-filter">
+                            <option>all</option>
+                        </select>
+
+                        <select class="table-filter">
+                            <option>all</option>
+                        </select>
+
+                        <select class="table-filter">
+                            <option>all</option>
+                        </select>
+
+                        <select class="table-filter">
+                            <option>all</option>
+                        </select>
+
+                    </div>
+                    <div class="table-wrapper">
+
+                        tabla
+
+                    </div>
+                <div class="table-pagination">
+                        <div class="pagination">
+                            <div class="pagination-left">
+
+                                <i class="bx bx-arrow-to-left-stroke"></i>
+                                <i class="bx bx-chevron-left"></i>
+
+                            </div>
+                            <span class="pagination-info">
+
+                                page
+
+                                <span class="pagination-current">0</span>
+
+                                of
+
+                                <span class="pagination-total">0</span>
+
+                            </span>
+                            <div class="pagination-right">
+
+                                <i class="bx bx-arrow-right-stroke"></i>
+                                <i class="bx bx-arrow-to-right-stroke"></i>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
-    
     <script type="module" src="/src/pages/profesor/curso-estudiantes.js"></script>
     <script type="module" src="/src/main.js"></script>
 </body>

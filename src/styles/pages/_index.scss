@@ -1,169 +1,394 @@
-//==================================================
-// IMPORTACIONES
-//==================================================
-
 @use "../abstracts/colors" as *;
 @use "../abstracts/mixins" as *;
 @use "../abstracts/typography" as *;
 @use "../abstracts/variables" as *;
 
-#login{
+//==================================================
+// LOGIN
+//==================================================
+
+#login {
     display: flex;
-    @include size(100vw, 100vh);
+    width: 100vw;
+    height: 100vh;
+    background-image: url('../../assets/fonts/Group\ 206.svg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    overflow: hidden;
 
-    background-image: url();
-    @include bg-cover;
-
-    transform: $transition-normal;
-
-    #login-container{
-        display: flex;
-        flex-direction: column;
-        @include size(42vw, 100vh);
-
-        @include linear-gradient(125deg, $gradient-start, $gradient-end);
-        @include shadow(4px, 0, 12px, 0, rgba($gradient-end, .20));
-        @include padding(1rem);
-
-        #login-header{
-            display: flex;
-            @include justify-align(space-between, flex-end);
-            @include size(100%, 10vh);
-
-            @include padding(0.5rem, 3rem)
-        }
-
-        #login-card{
-            display: flex;
-            @include justify-align;
-            @include size(100%, 100%);
-        }
-
-        @media (max-width: 768px) {
-            @include size(100vw, 100vh);
-            @include linear-gradient(125deg, $gradient-start, $gradient-end);
-        }
+    // Patrón decorativo sutil
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image:
+            radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
+        pointer-events: none;
     }
 }
 
-#login-logo{
-    display: flex;
+//==================================================
+// CONTENEDOR
+//==================================================
 
-    @include size(auto, 90%);
-    object-fit: cover;
-}
-
-#login-home-link{
+#login-container {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 520px;
+    height: 100vh;
+    padding: 1.5rem 2.5rem;
+    background: linear-gradient(125deg, $gradient-start, $gradient-end);
+    box-shadow: $shadow-md;
+    position: relative;
+    z-index: 1;
 
+    @media (max-width: 900px) {
+        max-width: 100%;
+        box-shadow: none;
+    }
+}
+
+//==================================================
+// CABECERA
+//==================================================
+
+#login-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
+    padding: 0.5rem 0;
+    flex-shrink: 0;
+}
+
+#login-logo {
+    height: 48px;
+    width: auto;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.95;
+}
+
+#login-home-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-decoration: none;
     text-align: center;
     text-transform: uppercase;
     line-height: 1;
-
-    @include font-changa;
-    font-size: $font-28;
+    font-family: $font-secondary;
+    font-size: 0.9rem;
+    font-weight: 600;
     color: $white;
+    letter-spacing: 0.08em;
+    position: relative;
+    padding-bottom: 4px;
 
-    .input-highlight {
-        height: 2px;
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
         width: 0;
-        background-color: $gray;
-        transition: $transition-fast;
-    }        
-    &:hover .input-highlight{
+        height: 2px;
+        background: $gray;
+        transition: width $transition-fast ease;
+    }
+
+    &:hover::after {
         width: 100%;
     }
 }
 
-#login-form{
+//==================================================
+// TARJETA / FORMULARIO
+//==================================================
+
+#login-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    width: 100%;
+    padding: 2rem 0;
+}
+
+#login-form {
     display: flex;
     flex-direction: column;
-    @include size(60%, 100%);
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 360px;
+    gap: 1.25rem;
+}
 
-    @include justify-align;
-    gap: 18px;
+#login-title {
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    line-height: 1;
+    font-family: $font-secondary;
+    font-weight: 500;
+    font-size: 2rem;
+    color: $gray;
+    letter-spacing: 0.05em;
+}
 
-    transform: $transition-normal;
+#login-description {
+    width: 100%;
+    text-align: center;
+    text-transform: capitalize;
+    font-family: $font-primary;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: $gray;
+    opacity: 0.8;
+    margin-bottom: 0.5rem;
+}
 
-    #login-title{
-        @include size(100%, auto);
-        
-        text-align: center;
-        text-transform: uppercase;
-        line-height: 1;
+//==================================================
+// INPUTS
+//==================================================
 
-        @include font-changa;
-        font-weight:500;
-        font-size: $font-32;
+.login__input-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1.5px solid rgba(220, 220, 220, 0.25);
+    border-radius: $radius-md;
+    transition: all $transition-fast ease;
+
+    &:focus-within {
+        border-color: rgba(220, 220, 220, 0.6);
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
+}
+
+.login__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: $gray;
+    opacity: 0.7;
+
+    svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.login__input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: $white;
+    font-family: $font-primary;
+    font-size: 0.9rem;
+    font-weight: 500;
+    min-height: 24px;
+
+    &::placeholder {
         color: $gray;
+        opacity: 0.5;
+        font-weight: 400;
+    }
+}
+
+//==================================================
+// SELECT DE ROL
+//==================================================
+
+#login-role {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: $radius-md;
+    border: 1.5px solid rgba(220, 220, 220, 0.25);
+    outline: none;
+    background: rgba(255, 255, 255, 0.06);
+    color: $gray;
+    font-family: $font-primary;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%23dcdcdc' viewBox='0 0 16 16'%3E%3Cpath d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+    transition: all $transition-fast ease;
+
+    &:focus {
+        border-color: rgba(220, 220, 220, 0.6);
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
     }
 
-    #login-description{
-        @include size(100%, auto);
-        
-        text-align: center;
-        text-transform: capitalize;
-
-        @include font-montserrat;
-        font-size: $font-18;
-        font-weight:400;
-        color: $gray;
+    option {
+        background: $gradient-end;
+        color: $white;
     }
+}
 
-    #login-role{
-        width: 100%;
-        @include padding(0.65rem);
+//==================================================
+// OPCIONES (Remember me)
+//==================================================
 
-        border-radius: $radius-sm;
-        border: 2px solid $gray;
-        outline: none;
+#login-options {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    font-family: $font-primary;
+    text-transform: capitalize;
+    font-size: 0.85rem;
+    color: $gray;
+}
 
-        background-color: $gradient-end;
-        color: $gray;
+#login-remember {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1.5px solid rgba(220, 220, 220, 0.35);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all $transition-fast ease;
+    position: relative;
+    flex-shrink: 0;
 
-        @include font-montserrat;
-        font-size: $font-14;
-    }
+    &:checked {
+        background: $gray;
+        border-color: $gray;
 
-    #login-options{
-        display: flex;
-        @include size(100%, auto);
-        @include justify-align(none, center);
-
-        gap: 10px;
-
-        @include font-montserrat;
-        text-transform: capitalize;
-        font-size: $font-14;
-        color: $gray;
-
-        #login-remember {
-            appearance: none;
-            -webkit-appearance: none;
-
-            @include size(20px, 20px);
-
-            background-color: $gradient-end;
-            border: 2px solid $gray;
-            border-radius: 4px;
-
-            @include bg-cover;
-
-            cursor: pointer;
-            transition: $transition-fast;
+        &::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 5px;
+            width: 5px;
+            height: 9px;
+            border: solid $gradient-end;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
         }
+    }
+}
 
-        #login-remember:checked {
-            background-color: $gray;
+#login-remember-label {
+    cursor: pointer;
+    user-select: none;
+    opacity: 0.85;
+}
 
-            color: $gradient-end;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='$black'%3E%3Cpath d='M9 15.59 4.71 11.3 3.3 12.71l5 5c.2.2.45.29.71.29s.51-.1.71-.29l11-11-1.41-1.41L9.02 15.59Z'/%3E%3C/svg%3E");
-        }
+//==================================================
+// BOTÓN LOGIN
+//==================================================
+
+#login-button {
+    width: 100%;
+    padding: 0.85rem 1.5rem;
+    background: linear-gradient(135deg, $primary-light, $primary);
+    border: none;
+    border-radius: $radius-md;
+    font-family: $font-primary;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: $white;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(29, 21, 81, 0.4);
+    transition: all $transition-normal ease;
+    margin-top: 0.5rem;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 24px rgba(29, 21, 81, 0.5);
     }
 
-    @media (max-width: 768px) {    
-        @include size(60%, 100%);
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+//==================================================
+// LADO DERECHO (ilustración / decoración)
+//==================================================
+
+.login__side {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    @media (max-width: 900px) {
+        display: none;
+    }
+}
+
+.login__side-content {
+    text-align: center;
+    color: $white;
+    padding: 2rem;
+    max-width: 500px;
+}
+
+.login__side-title {
+    font-family: $font-secondary;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+}
+
+.login__side-text {
+    font-family: $font-primary;
+    font-size: 1rem;
+    line-height: 1.7;
+    opacity: 0.7;
+}
+
+//==================================================
+// RESPONSIVE
+//==================================================
+
+@media (max-width: 480px) {
+    #login-container {
+        padding: 1rem 1.5rem;
+    }
+
+    #login-title {
+        font-size: 1.6rem;
+    }
+
+    #login-description {
+        font-size: 0.85rem;
+    }
+
+    #login-form {
+        gap: 1rem;
+    }
+
+    #login-logo {
+        height: 36px;
+    }
+
+    #login-home-link {
+        font-size: 0.8rem;
     }
 }

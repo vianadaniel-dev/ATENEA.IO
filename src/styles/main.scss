@@ -1,41 +1,21 @@
-@use "abstracts/colors";
-@use "abstracts/mixins";
-@use "abstracts/typography";
-@use "abstracts/variables";
+@use "abstracts/colors" as colors;
+@use "abstracts/mixins" as mixins;
+@use "abstracts/typography" as typography;
+@use "abstracts/variables" as variables;
 
-@use "components/botones";
-@use "components/selector";
-@use "components/tablas";
+@use "components/botones" as botones;
+@use "components/selector" as selector;
+@use "components/tablas" as tablas;
 
-@use "pages/index";
+@use "pages/index" as index;
+@use "pages/gestion-tablas" as gestion-tablas;
+@use "pages/home" as home;
+@use "pages/noticias" as noticias;
+@use "pages/tareas" as tareas;
+@use "pages/cursos" as cursos;
 
-@use "pages/estudiante/anuncios";
-@use "pages/estudiante/boletin";
-@use "pages/estudiante/cursos";
-@use "pages/estudiante/dashboard";
-@use "pages/estudiante/leaderboard";
-@use "pages/estudiante/perfil";
-@use "pages/estudiante/tienda";
-
-@use "pages/profesor/calificaciones";
-@use "pages/profesor/comunicados";
-@use "pages/profesor/curso-estudiantes";
-@use "pages/profesor/cursos";
-@use "pages/profesor/horario";
-@use "pages/profesor/perfil";
-
-@use "pages/rector/anuncios";
-@use "pages/rector/auditoria";
-@use "pages/rector/canjes";
-@use "pages/rector/cursos";
-@use "pages/rector/dashboard";
-@use "pages/rector/estudiantes";
-@use "pages/rector/perfil";
-@use "pages/rector/profesores";
-
-@use "layouts/header";
-@use "layouts/sidebar";
-
+@use "layouts/header" as header;
+@use "layouts/sidebar" as sidebar;
 * {
     margin: 0;
     padding: 0;
@@ -45,4 +25,16 @@
     &::after {
         box-sizing: border-box;
     }
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+
+    width: 100%;
+    height: auto;
+
+    padding-top: 10vh;
+    padding-left: 80px;
 }

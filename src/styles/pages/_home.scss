@@ -1,0 +1,185 @@
+@use "../abstracts/colors" as *;
+@use "../abstracts/mixins" as *;
+@use "../abstracts/typography" as *;
+@use "../abstracts/variables" as *;
+
+//==================================================
+// HOME - HERO
+//==================================================
+
+.home-hero__container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.home-hero__banner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem 2.5rem;
+    background: linear-gradient(135deg, $gradient-start, $primary-dark);
+    border-radius: $radius-xl;
+    box-shadow: $shadow-lg;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+        pointer-events: none;
+    }
+}
+
+.home-hero__image-container {
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: $radius-lg;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    z-index: 1;
+}
+
+.home-hero__image {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.9;
+}
+
+.home-hero__content {
+    flex: 1;
+    z-index: 1;
+}
+
+.home-hero__title {
+    font-family: $font-secondary;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: $white;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+}
+
+.home-hero__description {
+    font-family: $font-primary;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+//==================================================
+// HOME - ACTIONS
+//==================================================
+
+.home-hero__actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+}
+
+.home-hero__action {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    background: $white;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-sm;
+    border: 1px solid $gray;
+    cursor: pointer;
+    transition: all $transition-normal ease;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(180deg, $primary-light, $primary);
+        opacity: 0;
+        transition: opacity $transition-normal ease;
+    }
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: $shadow-md;
+        border-color: $purple-light;
+
+        &::before {
+            opacity: 1;
+        }
+    }
+}
+
+.home-hero__action-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.home-hero__action-title {
+    font-family: $font-primary;
+    font-size: 1rem;
+    font-weight: 700;
+    color: $primary;
+    text-transform: capitalize;
+}
+
+.home-hero__action-description {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
+    background: linear-gradient(135deg, $primary-light, $primary);
+    color: $white;
+    font-family: $font-secondary;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: $radius-pill;
+    box-shadow: 0 2px 8px rgba(29, 21, 81, 0.2);
+}
+
+//==================================================
+// RESPONSIVE HOME
+//==================================================
+
+@media (max-width: 768px) {
+    .home-hero__banner {
+        padding: 1.5rem;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .home-hero__image-container {
+        width: 60px;
+        height: 60px;
+    }
+
+    .home-hero__title {
+        font-size: 1.4rem;
+    }
+
+    .home-hero__actions {
+        grid-template-columns: 1fr;
+    }
+}
