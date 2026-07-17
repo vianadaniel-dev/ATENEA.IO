@@ -8,10 +8,11 @@
 //==================================================
 
 #login {
+    overflow: hidden;
     display: flex;
     width: 100vw;
     height: 100vh;
-    background-image: url('../../assets/fonts/Group\ 206.svg');
+    background-image: url('../../assets/images/index_fondo.svg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -38,7 +39,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 520px;
+    max-width: 600px;
     height: 100vh;
     padding: 1.5rem 2.5rem;
     background: linear-gradient(125deg, $gradient-start, $gradient-end);
@@ -111,32 +112,32 @@
 //==================================================
 
 #login-card {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex-center;
     flex: 1;
     width: 100%;
     padding: 2rem 0;
 }
 
 #login-form {
-    display: flex;
+    @include flex-center;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+
     width: 100%;
     max-width: 360px;
+
     gap: 1.25rem;
 }
 
 #login-title {
     width: 100%;
+
     text-align: center;
     text-transform: uppercase;
     line-height: 1;
     font-family: $font-secondary;
+
     font-weight: 500;
-    font-size: 2rem;
+    font-size: $font-2xl;
     color: $gray;
     letter-spacing: 0.05em;
 }
@@ -146,7 +147,7 @@
     text-align: center;
     text-transform: capitalize;
     font-family: $font-primary;
-    font-size: 0.95rem;
+    font-size: $font-md;
     font-weight: 400;
     color: $gray;
     opacity: 0.8;
@@ -173,21 +174,13 @@
         background: rgba(255, 255, 255, 0.1);
         box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
     }
-}
 
-.login__icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    color: $gray;
-    opacity: 0.7;
-
-    svg {
-        width: 20px;
-        height: 20px;
+    i{
+        font-size: 20px;
+        color: $gray-light;
     }
 }
+
 
 .login__input {
     flex: 1;
@@ -301,13 +294,13 @@
 #login-button {
     width: 100%;
     padding: 0.85rem 1.5rem;
-    background: linear-gradient(135deg, $primary-light, $primary);
+    background: linear-gradient(135deg, $gray-light, $white);
     border: none;
     border-radius: $radius-md;
     font-family: $font-primary;
-    font-size: 0.95rem;
+    font-size: $font-md;
     font-weight: 700;
-    color: $white;
+    color: $primary-dark;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     cursor: pointer;
@@ -324,6 +317,7 @@
         transform: translateY(0);
     }
 }
+
 
 //==================================================
 // LADO DERECHO (ilustración / decoración)
@@ -363,6 +357,41 @@
     opacity: 0.7;
 }
 
+.mensaje_error{
+    display: none;
+    top: 35px;
+    left: 100%;
+
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+
+    width: 200px;
+    padding: 10px 10px;
+    gap: 0.5rem;
+
+    background: linear-gradient(120deg, $red, $red-dark);
+    border: 1px solid $red-dark;
+    border-left: 6px solid $red-dark;
+    border-radius: $radius-md;
+
+    color: $red-light;
+    font-family: $font-primary;
+    font-weight: 600;
+
+    transition: all $transition-normal ease;
+
+    i{
+        line-height: 1;
+        font-size: 20px;
+    }
+}
+
+.mensaje_error.toast--visible{
+    display: flex;
+    left: 85%;
+}
 //==================================================
 // RESPONSIVE
 //==================================================

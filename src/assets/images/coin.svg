@@ -1,0 +1,31 @@
+<svg width="63" height="63" viewBox="0 0 63 63" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="31.5" cy="31.5" r="31.5" fill="url(#paint0_linear_298_222)"/>
+<circle cx="31.3949" cy="31.6051" r="25.515" fill="url(#paint1_radial_298_222)"/>
+<g filter="url(#filter0_d_298_222)">
+<path d="M18.9959 37.04C18.8109 37.4017 18.863 37.8393 19.1279 38.1474L27.8657 48.3106C28.475 49.0192 29.6368 48.5792 29.6239 47.6448L29.5609 43.0906C29.5574 42.8401 29.4601 42.6001 29.2882 42.4179L26.5643 39.5326C25.9622 38.8948 26.4144 37.8461 27.2915 37.8461H35.7084C36.5855 37.8461 37.0377 38.8948 36.4356 39.5326L33.7117 42.4179C33.5398 42.6001 33.4424 42.8401 33.439 43.0906L33.376 47.6448C33.3631 48.5792 34.5249 49.0192 35.1342 48.3106L43.872 38.1474C44.1369 37.8393 44.189 37.4017 44.004 37.04L32.3902 14.3399C32.0187 13.6139 30.9811 13.6139 30.6097 14.3399L18.9959 37.04ZM36.0646 32.1723C36.393 32.8369 35.9094 33.6153 35.1681 33.6153H27.8318C27.0905 33.6153 26.6069 32.8369 26.9352 32.1723L30.6034 24.7486C30.9704 24.0059 32.0295 24.0059 32.3965 24.7486L36.0646 32.1723Z" fill="url(#paint2_linear_298_222)"/>
+</g>
+<defs>
+<filter id="filter0_d_298_222" x="14.8862" y="9.79541" width="33.2275" height="42.8652" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.533333 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_298_222"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_298_222" result="shape"/>
+</filter>
+<linearGradient id="paint0_linear_298_222" x1="31.5" y1="0" x2="31.5" y2="63" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FFBF00"/>
+<stop offset="1" stop-color="#FF8C00"/>
+</linearGradient>
+<radialGradient id="paint1_radial_298_222" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(31.3949 31.6051) rotate(90) scale(25.515)">
+<stop stop-color="#FFDB6E"/>
+<stop offset="1" stop-color="#FFD043"/>
+</radialGradient>
+<linearGradient id="paint2_linear_298_222" x1="31.4999" y1="12.5999" x2="31.4999" y2="50.3999" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FFBF00"/>
+<stop offset="1" stop-color="#FF8C00"/>
+</linearGradient>
+</defs>
+</svg>

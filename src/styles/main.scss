@@ -1,21 +1,43 @@
-@use "abstracts/colors" as colors;
-@use "abstracts/mixins" as mixins;
-@use "abstracts/typography" as typography;
-@use "abstracts/variables" as variables;
+/* ==========================
+   IMPORTACIÓN DE ABSTRACTS
+   Variables, mixins, funciones y utilidades globales.
+========================== */
 
-@use "components/botones" as botones;
-@use "components/selector" as selector;
-@use "components/tablas" as tablas;
+@use "abstracts/colors";
+@use "abstracts/mixins";
+@use "abstracts/typography";
+@use "abstracts/variables";
 
-@use "pages/index" as index;
-@use "pages/gestion-tablas" as gestion-tablas;
-@use "pages/home" as home;
-@use "pages/noticias" as noticias;
-@use "pages/tareas" as tareas;
-@use "pages/cursos" as cursos;
+/* ==========================
+   IMPORTACIÓN DE COMPONENTES
+   Botones, tarjetas, tablas, formularios y elementos reutilizables.
+========================== */
 
-@use "layouts/header" as header;
-@use "layouts/sidebar" as sidebar;
+@use "components/botones";
+@use "components/selector";
+@use "components/tablas";
+
+/* ==========================
+   IMPORTACIÓN DE LAYOUTS
+   Estructura principal de la aplicación (header, sidebar, footer, etc.).
+========================== */
+
+@use "layouts/header";
+@use "layouts/sidebar";
+
+/* ==========================
+   IMPORTACIÓN DE PÁGINAS
+   Estilos específicos de cada vista o página.
+========================== */
+
+@use "pages/cursos";
+@use "pages/gestion-tablas";
+@use "pages/home";
+@use "pages/index";
+@use "pages/noticias";
+@use "pages/tareas";
+
+
 * {
     margin: 0;
     padding: 0;

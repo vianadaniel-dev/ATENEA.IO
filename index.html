@@ -5,15 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Atenea | Iniciar Sesión</title>
     <link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+
 </head>
 <body>
-      <section id="login" class="login">
+    <section id="login" class="login">
+        <div class="mensaje_error">
+            <i class="bx bx-info-octagon"></i>
+            12312
+        </div>
         <div id="login-container" class="login__container">
             <div id="login-header" class="login__header">
                 <img
                     id="login-logo"
                     class="login__logo"
-                    src="../../assents/Logos/logo-white.svg"
+                    src="src/assets/logos/logo.svg"
                     alt="Logo Atenea">
             </div>
             <div id="login-card" class="login__card">
@@ -33,12 +39,7 @@
                     <div
                         id="login-username-group"
                         class="login__input-group">
-                        <i
-                            id="login-username-icon"
-                            class="login__icon"><svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
-                            fill="currentColor" viewBox="0 0 24 24" >
-                            <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5m0-8c1.65 0 3 1.35 3 3s-1.35 3-3 3-3-1.35-3-3 1.35-3 3-3M4 22h16c.55 0 1-.45 1-1v-1c0-3.86-3.14-7-7-7h-4c-3.86 0-7 3.14-7 7v1c0 .55.45 1 1 1m6-7h4c2.76 0 5 2.24 5 5H5c0-2.76 2.24-5 5-5"></path>
-                            </svg></i>
+                        <i class="bx bx-envelope"></i>
                         <input
                             id="login-username"
                             class="login__input"
@@ -50,12 +51,7 @@
                     <div
                         id="login-password-group"
                         class="login__input-group">
-                        <i
-                            id="login-password-icon"
-                            class="login__icon"><svg  xmlns="http://www.w3.org/2000/svg" 
-                            fill="currentColor" viewBox="0 0 24 24" >
-                            <path d="M6 22h12c1.1 0 2-.9 2-2v-9c0-1.1-.9-2-2-2h-1V7c0-2.76-2.24-5-5-5S7 4.24 7 7v2H6c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2M9 7c0-1.65 1.35-3 3-3s3 1.35 3 3v2H9zm-3 4h12v9H6z"></path>
-                            </svg></i>
+                        <i class="bx bx-lock"></i>
                         <input
                             id="login-password"
                             class="login__input"
@@ -95,16 +91,7 @@
             </div>
         </div>
     </section>
-
-    <a href="src/partials/sidebar-estudiante.html">1</a>
-    <a href="src/partials/sidebar-profesor.html">2</a>
-    <a href="src/partials/sidebar-rector.html">3</a>
-
-    <a href="/estudiante/anuncios.html">anuncios</a>
-    <a href="/profesor/comunicados.html">comunicados</a>
-    <a href="/rector/anuncios.html">anuncios</a>
-    
-    <script src="/src/pages/index.js"></script>
-    <script type="module" src="/src/main.js"></script>
+    <script src="src/pages/index.js"></script>
+    <script type="module" src="src/main.js"></script>
 </body>
 </html>

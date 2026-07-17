@@ -7,26 +7,26 @@
 @use "../abstracts/typography" as *;
 @use "../abstracts/variables" as *;
 
-#header{
+#navbar{
     position: fixed;
     z-index: 1000;
     display: flex;
+
     @include size(100vw, 10vh);
-    padding:(0,1rem,0,100px);
+    padding-left: 100px;
 
     background-color: $background;
     border-bottom: 1px solid $text;
     @include shadow($shadow-md);
 
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
 
     .header__title{
         display: flex;
         @include size(auto, 100%);
-        justify-content: space-around;
+        justify-content: space-between;
         align-items: center;
-        padding:(0.3rem,1rem,0.3rem,4rem);
         gap: 7px;
 
         @include font-secondary;

@@ -9,7 +9,7 @@
 
 .news-section {
     max-width: 1200px;
-    margin: 2rem auto 0;
+    margin: 2rem;
 }
 
 .news-section__header {
@@ -20,28 +20,34 @@
 }
 
 .news-section__title {
-    font-family: $font-secondary;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: $primary;
     display: flex;
     align-items: center;
+
     gap: 0.5rem;
 
+    font-family: $font-primary;
+    font-size: $font-lg;
+    font-weight: 700;
+    color: $primary;
+
     i {
-        color: $primary-light;
-        font-size: 1.3rem;
+        color: $primary;
+        font-size: $font-xl;
     }
 }
 
 .news-section__link {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: $primary-light;
-    text-decoration: none;
     display: flex;
     align-items: center;
+
     gap: 0.3rem;
+
+    font-family: $font-primary;
+    font-size: $font-md;
+    font-weight: 600;
+    color: $primary-dark;
+    text-decoration: none;
+
     transition: gap $transition-fast ease;
 
     &:hover {
@@ -64,8 +70,7 @@
 //==================================================
 
 .news-card {
-    display: flex;
-    flex-direction: column;
+    @include flex-column;
     background: $white;
     border-radius: $radius-lg;
     overflow: hidden;

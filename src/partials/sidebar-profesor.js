@@ -26,8 +26,8 @@ export function profesorSidebar() {
                 <a href="/profesor/dashboard.html">
                     <li class="sidebar__menu-item">
                         <div class="sidebar__link-wrapper">
-                            <i class="bx bx-grid-alt"></i>
-                            <span class="sidebar__text">dashboard</span>
+                            <i class="bx bx-home"></i>
+                            <span class="sidebar__text">Home</span>
                         </div>
                         <div class="sidebar__link-wrapper-li"></div>
                     </li>
@@ -35,7 +35,7 @@ export function profesorSidebar() {
                 <a href="/profesor/cursos.html">
                     <li class="sidebar__menu-item">
                         <div class="sidebar__link-wrapper">
-                            <i class="bx bx-book-open"></i>
+                            <i class="bx bx-community"></i>
                             <span class="sidebar__text">my courses</span>
                         </div>
                         <div class="sidebar__link-wrapper-li"></div>
@@ -44,7 +44,7 @@ export function profesorSidebar() {
                 <a href="/profesor/curso-estudiantes.html">
                     <li class="sidebar__menu-item">
                         <div class="sidebar__link-wrapper">
-                            <i class="bx bx-group"></i>
+                            <i class="bx bx-reading"></i>
                             <span class="sidebar__text">students</span>
                         </div>
                         <div class="sidebar__link-wrapper-li"></div>
@@ -55,15 +55,6 @@ export function profesorSidebar() {
                         <div class="sidebar__link-wrapper">
                             <i class="bx bx-clipboard"></i>
                             <span class="sidebar__text">grades</span>
-                        </div>
-                        <div class="sidebar__link-wrapper-li"></div>
-                    </li>
-                </a>
-                <a href="/profesor/horario.html">
-                    <li class="sidebar__menu-item">
-                        <div class="sidebar__link-wrapper">
-                            <i class="bx bx-calendar"></i>
-                            <span class="sidebar__text">schedule</span>
                         </div>
                         <div class="sidebar__link-wrapper-li"></div>
                     </li>
