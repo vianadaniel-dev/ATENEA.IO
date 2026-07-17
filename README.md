@@ -3,11 +3,14 @@
 > **Educational Management Platform** developed as an Integrative Project at **Riwi**.
 
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)
+![SCSS](https://img.shields.io/badge/SCSS-Styles-CC6699?logo=sass&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-Frontend-646CFF?logo=vite)
+![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?logo=postgresql)
+![Supabase](https://img.shields.io/badge/Supabase-Hosting-3ECF8E?logo=supabase)
+![GitHub](https://img.shields.io/badge/GitHub-Repo-181717?logo=github)
 ![License](https://img.shields.io/badge/License-Academic-blue)
-
 ---
 
 # Overview
