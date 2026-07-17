@@ -87,9 +87,7 @@ The platform includes a flexible reward system where:
 
 - FastAPI
 - Python
-- JWT Authentication
-- Pydantic
-- Psycopg2
+- Psycopg3
 
 ---
 
@@ -103,8 +101,8 @@ The platform includes a flexible reward system where:
 
 - Git
 - GitHub
-- Docker
-- Postman
+- Visual Studio Code
+- Supa base
 - pgAdmin 4
 
 ---
@@ -114,72 +112,29 @@ The platform includes a flexible reward system where:
 ```text
 ATENEA.IO/
 │
-├── backend/
-│   ├── app/
-│   │
-│   ├── routers/
-│   │   ├── auth.py
-│   │   ├── principal.py
-│   │   ├── teacher.py
-│   │   └── student.py
-│   │
-│   ├── models.py
-│   ├── schemas.py
-│   ├── database.py
-│   ├── auth_utils.py
-│   ├── config.py
-│   └── main.py
+├── src/                 # Código principal (frontend)
+│   ├── assets/         # Imágenes y logos
+│   ├── constants/      
+│   ├── helpers/        
+│   ├── models/         
+│   ├── pages/           # Páginas por rol
+│   │   ├── estudiante/
+│   │   ├── profesor/
+│   │   └── rector/
+│   ├── partials/       # Componentes parciales/reusables
+│   ├── services/       # Lógica de servicios/APIs
+│   └── styles/         # Estructura de estilos
+│       ├── abstracts/
+│       ├── components/
+│       ├── layouts/
+│       └── pages/
 │
-├── frontend/
-│
-│── public/
-│
-├── src/
-│   │
-│   ├── assets/
-│   │   ├── fonts/
-│   │   ├── icons/
-│   │   ├── images/
-│   │   ├── logos/
-│   │   └── illustrations/
-│   │
-│   ├── styles/
-│   │   ├── abstracts/
-│   │   ├── base/
-│   │   ├── layouts/
-│   │   ├── pages/
-│   │   └── components/
-│   │
-│   ├── router/
-│   │   ├── routes.js
-│   │   ├── router.js
-│   │   ├── guards.js
-│   │   └── permissions.js
-│   │
-│   ├── layouts/
-│   │
-│   ├── views/
-│   │
-│   ├── controllers/
-│   │
-│   ├── services/
-│   │
-│   ├── models/
-│   │
-│   ├── helpers/
-│   │
-│   ├── constants/
-│   │
-│   ├── data/
-│   │
-│   ├── app.js
-│   └── main.js
-│
-├── docs/
-│
-├── README.md
-│
-└── atenea_schema.sql
+├── public/             # Archivos estáticos
+├── estudiante/         # (si aplica) carpeta extra por rol
+├── profesor/           # (si aplica) carpeta extra por rol
+├── rector/             # (si aplica) carpeta extra por rol
+├── node_modules/       # Dependencias (generado automáticamente)
+└── (configs)           # por ejemplo: vite config / etc.
 ```
 
 ---
@@ -232,7 +187,7 @@ The frontend follows a lightweight MVC-inspired architecture.
                                          │
                                          ▼
                     ┌────────────────────────────────────┐
-                    │         Frontend (SPA)             │
+                    │         Frontend (MPA)             │
                     │      HTML + SCSS + JavaScript      │
                     └─────────────┬──────────────────────┘
                                   │
@@ -246,8 +201,6 @@ The frontend follows a lightweight MVC-inspired architecture.
                                      ▼
                            REST API (FastAPI)
                                      │
-                                     ▼
-                           JWT Authentication
                                      │
                                      ▼
                               PostgreSQL 16
@@ -322,12 +275,11 @@ Each service is responsible for:
 
 #  Authentication & Authorization
 
-The platform implements **JWT Authentication** together with **Role-Based Access Control (RBAC).**
+The platform implements **Authentication** together with **Role-Based Access Control (RBAC).**
 
 Features include:
 
 - Secure Login
-- JWT Tokens
 - Protected Routes
 - Session Persistence
 - User Authorization
