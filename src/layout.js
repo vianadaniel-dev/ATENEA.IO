@@ -1,34 +1,37 @@
-
-document.getElementById("main-sidebar").classList.add('closed');
-document.getElementById("sidebar-toggle-container").classList.add('closed');
-document.getElementById("sidebar-title-container").classList.add('closed');
-document.querySelectorAll(".sidebar__link-wrapper").forEach(element => {
-    element.classList.add('closed');
-})
-document.querySelectorAll(".sidebar__text").forEach(element => {
-    element.classList.add('closed');
-})
-document.getElementById("sidebar-btn-logout-text").classList.add('closed');
-
 export function initSidebar() {
 
-    const sidebar_toggle_container = document.getElementById("sidebar-toggle-container");
+    const sidebar = document.getElementById("main-sidebar");
+    const toggle = document.getElementById("sidebar-toggle-container");
+    const title = document.getElementById("sidebar-title-container");
+    const logoutText = document.getElementById("sidebar-btn-logout-text");
 
-    sidebar_toggle_container.addEventListener('click', () => {
-        document.getElementById("main-sidebar").classList.toggle('closed');
+    // Si la página no tiene sidebar (ej. login), salir sin hacer nada
+    if (!sidebar || !toggle || !title || !logoutText) {
+        return;
+    }
 
-        document.getElementById("sidebar-toggle-container").classList.toggle('closed');
+    sidebar.classList.add("closed");
+    toggle.classList.add("closed");
+    title.classList.add("closed");
+    logoutText.classList.add("closed");
 
-        document.getElementById("sidebar-title-container").classList.toggle('closed');
+    document.querySelectorAll(".sidebar__link-wrapper")
+        .forEach(el => el.classList.add("closed"));
 
-        document.querySelectorAll(".sidebar__link-wrapper").forEach(element => {
-            element.classList.toggle('closed');
-        })
-        document.querySelectorAll(".sidebar__text").forEach(element => {
-            element.classList.toggle('closed');
-        })
+    document.querySelectorAll(".sidebar__text")
+        .forEach(el => el.classList.add("closed"));
 
-        document.getElementById("sidebar-btn-logout-text").classList.toggle('closed');
-    })
+    toggle.addEventListener("click", () => {
 
+        sidebar.classList.toggle("closed");
+        toggle.classList.toggle("closed");
+        title.classList.toggle("closed");
+        logoutText.classList.toggle("closed");
+
+        document.querySelectorAll(".sidebar__link-wrapper")
+            .forEach(el => el.classList.toggle("closed"));
+
+        document.querySelectorAll(".sidebar__text")
+            .forEach(el => el.classList.toggle("closed"));
+    });
 }
