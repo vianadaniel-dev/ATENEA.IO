@@ -1,5 +1,5 @@
 import "./styles/main.scss";
-import { initSidebar } from "./layout.js";
+import { navbar } from "../partials/navbar.js";
 initSidebar();
 
 import { navbar } from "../src/partials/navbar.js";
