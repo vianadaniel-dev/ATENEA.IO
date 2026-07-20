@@ -18,10 +18,10 @@ app.add_middleware(
 )
 
 # Register routers
-app.include_router(auth.router, prefix="/api/auth", tags=["Autenticación"])
-app.include_router(rector.router, prefix="/api/rector", tags=["Módulo Rector"])
-app.include_router(profesor.router, prefix="/api/profesor", tags=["Módulo Profesor"])
-app.include_router(estudiante.router, prefix="/api/estudiante", tags=["Módulo Estudiante"])
+app.include_router(auth.router, prefix="/auth_utils.py", tags=["Autenticación"])
+app.include_router(rector.router, prefix="/rector", tags=["Módulo Rector"])
+app.include_router(profesor.router, prefix="/profesor", tags=["Módulo Profesor"])
+app.include_router(estudiante.router, prefix="/estudiante", tags=["Módulo Estudiante"])
 
 @app.get("/")
 def read_root():
