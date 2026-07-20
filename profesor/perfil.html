@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atenea | My Perfil</title>
+    <title>Atenea | Perfil</title>
     <link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
     <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
 </head>
@@ -11,8 +11,186 @@
     <div id="header"></div>
     <div id="sidebar"></div>
     <main>
+        <div class="profile-layout">
+            <div class="profile-content">
+                
+                <!-- Header del perfil -->
+                <div class="profile-header">
+                    <div class="profile-header-title">
+                        <span class="profile-title">
+                            mi perfil
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Tarjeta principal -->
+                <div class="profile-card">
+                    
+                    <!-- Sección superior: Avatar + Info básica -->
+                    <div class="profile-hero">
+                        <div class="profile-avatar-section">
+                            <div class="profile-avatar-container">
+                                <img src="../src/assets/images/perfil.svg" alt="Foto de perfil" class="profile-avatar">
+                            </div>
+                            <h2 class="profile-name">Laura Martínez</h2>
+                            <span class="profile-role badge badge--active">
+                                <i class="bx bx-chalkboard"></i> Profesor
+                            </span>
+                        </div>
+
+                        <div class="profile-info-grid">
+                            <div class="profile-info-item">
+                                <i class="bx bx-envelope"></i>
+                                <div class="profile-info-content">
+                                    <span class="profile-info-label">Correo</span>
+                                    <span class="profile-info-value">laura.martinez@atenea.edu</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-item">
+                                <i class="bx bx-id-card"></i>
+                                <div class="profile-info-content">
+                                    <span class="profile-info-label">ID</span>
+                                    <span class="profile-info-value">#P101</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-item">
+                                <i class="bx bx-calendar"></i>
+                                <div class="profile-info-content">
+                                    <span class="profile-info-label">Registro</span>
+                                    <span class="profile-info-value">5 de marzo, 2022</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-item">
+                                <i class="bx bx-award"></i>
+                                <div class="profile-info-content">
+                                    <span class="profile-info-label">Especialidad</span>
+                                    <span class="profile-info-value">Matemáticas</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección de estadísticas docentes -->
+                    <div class="profile-stats-section">
+                        <h3 class="profile-section-title">
+                            <i class="bx bx-chart"></i>
+                            Estadísticas docentes
+                        </h3>
+                        <div class="profile-stats-grid">
+                            <div class="profile-stat-card">
+                                <div class="profile-stat-icon">
+                                    <i class="bx bx-group"></i>
+                                </div>
+                                <div class="profile-stat-content">
+                                    <span class="profile-stat-value">3</span>
+                                    <span class="profile-stat-label">Cursos asignados</span>
+                                </div>
+                            </div>
+                            <div class="profile-stat-card">
+                                <div class="profile-stat-icon">
+                                    <i class="bx bx-user"></i>
+                                </div>
+                                <div class="profile-stat-content">
+                                    <span class="profile-stat-value">87</span>
+                                    <span class="profile-stat-label">Estudiantes</span>
+                                </div>
+                            </div>
+                            <div class="profile-stat-card">
+                                <div class="profile-stat-icon">
+                                    <i class="bx bx-book"></i>
+                                </div>
+                                <div class="profile-stat-content">
+                                    <span class="profile-stat-value">2</span>
+                                    <span class="profile-stat-label">Materias</span>
+                                </div>
+                            </div>
+                            <div class="profile-stat-card">
+                                <div class="profile-stat-icon">
+                                    <i class="bx bx-check-circle"></i>
+                                </div>
+                                <div class="profile-stat-content">
+                                    <span class="profile-stat-value">98%</span>
+                                    <span class="profile-stat-label">Calificaciones publicadas</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección de cursos asignados -->
+                    <div class="profile-courses-section">
+                        <h3 class="profile-section-title">
+                            <i class="bx bx-group"></i>
+                            Mis cursos
+                        </h3>
+                        <div class="profile-courses-list">
+                            <div class="profile-course-item">
+                                <div class="profile-course-info">
+                                    <span class="profile-course-name">9-A</span>
+                                    <span class="profile-course-period">2026-I</span>
+                                </div>
+                                <div class="profile-course-meta">
+                                    <span class="profile-course-students">
+                                        <i class="bx bx-user"></i> 32 estudiantes
+                                    </span>
+                                    <span class="profile-course-subject">Matemáticas</span>
+                                </div>
+                                <div class="profile-course-progress">
+                                    <div class="progress-bar-bg">
+                                        <div class="progress-bar-fill progress-bar-fill--high" style="width: 90%"></div>
+                                    </div>
+                                    <span class="progress-value">90%</span>
+                                </div>
+                            </div>
+                            <div class="profile-course-item">
+                                <div class="profile-course-info">
+                                    <span class="profile-course-name">10-B</span>
+                                    <span class="profile-course-period">2026-I</span>
+                                </div>
+                                <div class="profile-course-meta">
+                                    <span class="profile-course-students">
+                                        <i class="bx bx-user"></i> 28 estudiantes
+                                    </span>
+                                    <span class="profile-course-subject">Matemáticas</span>
+                                </div>
+                                <div class="profile-course-progress">
+                                    <div class="progress-bar-bg">
+                                        <div class="progress-bar-fill progress-bar-fill--medium" style="width: 65%"></div>
+                                    </div>
+                                    <span class="progress-value">65%</span>
+                                </div>
+                            </div>
+                            <div class="profile-course-item">
+                                <div class="profile-course-info">
+                                    <span class="profile-course-name">11-A</span>
+                                    <span class="profile-course-period">2026-I</span>
+                                </div>
+                                <div class="profile-course-meta">
+                                    <span class="profile-course-students">
+                                        <i class="bx bx-user"></i> 27 estudiantes
+                                    </span>
+                                    <span class="profile-course-subject">Física</span>
+                                </div>
+                                <div class="profile-course-progress">
+                                    <div class="progress-bar-bg">
+                                        <div class="progress-bar-fill progress-bar-fill--high" style="width: 95%"></div>
+                                    </div>
+                                    <span class="progress-value">95%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección de acciones -->
+                    <div class="profile-actions">
+                        <button class="profile-btn profile-btn--edit">
+                            <i class="bx bx-edit"></i>
+                            Editar perfil
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
-    
     <script type="module" src="/src/pages/profesor/perfil.js"></script>
     <script type="module" src="/src/main.js"></script>
 </body>

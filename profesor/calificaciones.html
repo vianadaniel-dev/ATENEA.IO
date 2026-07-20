@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atenea | Calificaciones</title>
+    <title>Atenea | Calificar - Ecuaciones cuadráticas</title>
     <link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
     <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
 </head>
@@ -16,50 +16,182 @@
                 <div class="table-header" id="table-header">
                     <div class="table-header-title">
                         <span class="table-title">
-                            estudiantes
+                            Ecuaciones cuadráticas - 9-A
                         </span>
-
-                        <div class="table-header-action">
-                            <button class="table-add-button">
-                                <i class="bx bx-plus"></i>
-                                añadir estudiantes
-                            </button>
-                        </div>
                     </div>
 
                     <span class="table-total">
                         <span class="table-total-label">
-                            <i class="bx bx-user"></i>
-                            estudiantes:
+                            <i class="bx bx-check-circle"></i>
+                            calificadas:
                         </span>
-
-                        2,000
+                        <span class="table-total-value">28/32</span>
                     </span>
                 </div>
                 <div class="table-card">
                     <div class="table-toolbar">
 
                         <select class="table-filter">
-                            <option>all</option>
+                            <option>Estado</option>
+                            <option>Calificada</option>
+                            <option>Sin calificar</option>
+                            <option>No entregó</option>
                         </select>
 
                         <select class="table-filter">
-                            <option>all</option>
-                        </select>
-
-                        <select class="table-filter">
-                            <option>all</option>
-                        </select>
-
-                        <select class="table-filter">
-                            <option>all</option>
+                            <option>Nota</option>
+                            <option>Mayor a 4.0</option>
+                            <option>Entre 3.0 y 4.0</option>
+                            <option>Menor a 3.0</option>
                         </select>
 
                     </div>
                     <div class="table-wrapper">
+                        <div class="table-section">
+                            <div class="table">
+                                <div class="table-container">
+                                    <table class="data-table">
+                                        <thead class="table-head">
+                                            <tr class="table-head-row">
+                                                <th class="table-head-cell">ID</th>
+                                                <th class="table-head-cell">Estudiante</th>
+                                                <th class="table-head-cell">Entrega</th>
+                                                <th class="table-head-cell">Fecha</th>
+                                                <th class="table-head-cell">Nota</th>
+                                                <th class="table-head-cell">Estado</th>
+                                                <th class="table-head-cell">Acciones</th>
+                                            </tr>
+                                        </thead>
 
-                        tabla
+                                        <tbody class="table-body" id="table-body">
+                                            <tr class="table-body-row">
+                                                <td class="table-body-cell">#001</td>
+                                                <td class="table-body-cell">
+                                                    <div class="user-info">
+                                                        <div class="user-avatar">JP</div>
+                                                        <span class="user-name">Juan Pérez</span>
+                                                    </div>
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <a href="#" class="submission-link">
+                                                        <i class="bx bx-file"></i>
+                                                        ecuaciones_juan.pdf
+                                                    </a>
+                                                </td>
+                                                <td class="table-body-cell">17 jul, 2026</td>
+                                                <td class="table-body-cell">
+                                                    <input type="number" class="grade-input" min="0" max="5" step="0.1" value="4.5" placeholder="0.0">
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <span class="badge badge--active">Calificada</span>
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <div class="table-actions">
+                                                        <button class="btn-action btn-action--view" title="Ver entrega">
+                                                            <i class="bx bx-show"></i>
+                                                        </button>
+                                                        <button class="btn-action btn-action--edit" title="Editar nota">
+                                                            <i class="bx bx-edit"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="table-body-row">
+                                                <td class="table-body-cell">#002</td>
+                                                <td class="table-body-cell">
+                                                    <div class="user-info">
+                                                        <div class="user-avatar">MG</div>
+                                                        <span class="user-name">María García</span>
+                                                    </div>
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <a href="#" class="submission-link">
+                                                        <i class="bx bx-file"></i>
+                                                        tarea_maria.pdf
+                                                    </a>
+                                                </td>
+                                                <td class="table-body-cell">18 jul, 2026</td>
+                                                <td class="table-body-cell">
+                                                    <input type="number" class="grade-input" min="0" max="5" step="0.1" placeholder="0.0">
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <span class="badge badge--pending">Sin calificar</span>
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <div class="table-actions">
+                                                        <button class="btn-action btn-action--view" title="Ver entrega">
+                                                            <i class="bx bx-show"></i>
+                                                        </button>
+                                                        <button class="btn-action btn-action--edit" title="Guardar">
+                                                            <i class="bx bx-save"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="table-body-row">
+                                                <td class="table-body-cell">#003</td>
+                                                <td class="table-body-cell">
+                                                    <div class="user-info">
+                                                        <div class="user-avatar">CR</div>
+                                                        <span class="user-name">Carlos Rodríguez</span>
+                                                    </div>
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <span class="no-submission">—</span>
+                                                </td>
+                                                <td class="table-body-cell">—</td>
+                                                <td class="table-body-cell">
+                                                    <input type="number" class="grade-input grade-input--disabled" min="0" max="5" step="0.1" placeholder="0.0" disabled>
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <span class="badge badge--inactive">No entregó</span>
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <div class="table-actions">
+                                                        <button class="btn-action btn-action--view" title="Ver historial">
+                                                            <i class="bx bx-show"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="table-body-row">
+                                                <td class="table-body-cell">#004</td>
+                                                <td class="table-body-cell">
+                                                    <div class="user-info">
+                                                        <div class="user-avatar">AL</div>
+                                                        <span class="user-name">Ana López</span>
+                                                    </div>
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <a href="#" class="submission-link">
+                                                        <i class="bx bx-link"></i>
+                                                        Google Drive
+                                                    </a>
+                                                </td>
+                                                <td class="table-body-cell">16 jul, 2026</td>
+                                                <td class="table-body-cell">
+                                                    <input type="number" class="grade-input" min="0" max="5" step="0.1" value="2.5" placeholder="0.0">
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <span class="badge badge--active">Calificada</span>
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <div class="table-actions">
+                                                        <button class="btn-action btn-action--view" title="Ver entrega">
+                                                            <i class="bx bx-show"></i>
+                                                        </button>
+                                                        <button class="btn-action btn-action--edit" title="Editar nota">
+                                                            <i class="bx bx-edit"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
 
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 <div class="table-pagination">
                         <div class="pagination">
@@ -73,16 +205,16 @@
 
                                 page
 
-                                <span class="pagination-current">0</span>
+                                <span class="pagination-current">1</span>
 
                                 of
 
-                                <span class="pagination-total">0</span>
+                                <span class="pagination-total">4</span>
 
                             </span>
                             <div class="pagination-right">
 
-                                <i class="bx bx-arrow-right-stroke"></i>
+                                <i class="bx bx-chevron-right"></i>
                                 <i class="bx bx-arrow-to-right-stroke"></i>
 
                             </div>

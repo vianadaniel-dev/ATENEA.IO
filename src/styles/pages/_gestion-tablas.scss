@@ -1,19 +1,19 @@
-//==================================================
-// IMPORTACIONES
-//==================================================
-
 @use "../abstracts/colors" as *;
 @use "../abstracts/mixins" as *;
 @use "../abstracts/typography" as *;
 @use "../abstracts/variables" as *;
 
-.table-page{
+//==================================================
+// PÁGINA MATERIAS - LAYOUT
+//==================================================
+
+main {
     display: flex;
     width: 100%;
-
-    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+    box-sizing: border-box;
 }
-
 
 //==================================================
 // CONTENEDOR PRINCIPAL
@@ -24,6 +24,7 @@
     flex-direction: column;
     width: 100%;
     max-width: 1200px;
+    margin: 0 auto;
     padding: 2rem 0;
     gap: 1.5rem;
 }
@@ -89,7 +90,7 @@
     text-transform: capitalize;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(29, 21, 81, 0.25);
-    transition: transform $transition-normal ease,box-shadow $transition-normal ease, font-size $transition-normal ease;
+    transition: transform $transition-normal ease, box-shadow $transition-normal ease;
 
     &:hover {
         transform: translateY(-2px);
@@ -142,6 +143,8 @@
     border-radius: $radius-xl;
     box-shadow: $shadow-lg;
     border: 1px solid $gray;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 //==================================================
@@ -154,6 +157,7 @@
     align-items: center;
     gap: 0.75rem;
     padding-bottom: 0.5rem;
+    width: 100%;
 }
 
 .table-filter {
@@ -172,7 +176,7 @@
     appearance: none;
     min-width: 140px;
     box-shadow: $shadow-sm;
-    transition: border-color $transition-fast ease, box-shadow $transition-fast ease,outline $transition-fast ease;
+    transition: border-color $transition-fast ease, box-shadow $transition-fast ease;
 
     &:hover {
         border-color: $primary-light;
@@ -187,7 +191,7 @@
 }
 
 //==================================================
-// TABLA
+// TABLA WRAPPER - SCROLL HORIZONTAL RESPONSIVE
 //==================================================
 
 .table-wrapper {
@@ -197,76 +201,351 @@
     overflow-x: auto;
     border-radius: $radius-md;
     border: 1px solid $gray;
+    -webkit-overflow-scrolling: touch;
 }
+
+//==================================================
+// TABLA SECTION
+//==================================================
+
+.table-section {
+    width: 100%;
+}
+
+//==================================================
+// TABLA CONTENEDOR
+//==================================================
+
+.table {
+    width: 100%;
+    border-radius: $radius-lg;
+    background: $white;
+    overflow: hidden;
+}
+
+.table-container {
+    overflow-x: auto;
+    overflow-y: auto;
+    width: 100%;
+    max-height: 600px;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $gray;
+        border-radius: $radius-pill;
+
+        &:hover {
+            background: $gray-dark;
+        }
+    }
+}
+
+//==================================================
+// TABLA - 100% ANCHO + COLUMNAS IGUALES
+//==================================================
 
 .data-table {
     width: 100%;
+    min-width: 900px;
     border-collapse: collapse;
+    border-spacing: 0;
+    table-layout: fixed;
     font-family: $font-primary;
     font-size: 0.88rem;
+}
 
-    thead {
-        background: $primary;
-        color: $white;
+//==================================================
+// HEADER Y BODY - MISMO ANCHO Y ALINEACIÓN
+//==================================================
+
+.table-head-cell,
+.table-body-cell {
+    width: calc(100% / 7);
+    text-align: center;
+    vertical-align: middle;
+    padding: 14px 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+//==================================================
+// HEADER ESPECÍFICO
+//==================================================
+
+.table-head {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: linear-gradient(135deg, $primary, $primary-dark);
+}
+
+.table-head-row {
+    width: 100%;
+}
+
+.table-head-cell {
+    color: $white;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    border-bottom: 2px solid $purple;
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1px;
+        height: 50%;
+        background: rgba(255, 255, 255, 0.15);
     }
 
-    th {
-        padding: 0.85rem 1rem;
-        text-align: left;
-        font-weight: 600;
-        font-size: 0.82rem;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        white-space: nowrap;
+    &:last-child::after {
+        display: none;
     }
 
-    tbody {
-        tr {
-            border-bottom: 1px solid $gray;
-            transition: background $transition-fast ease;
-
-            &:last-child {
-                border-bottom: none;
-            }
-
-            &:hover {
-                background: rgba(99, 102, 241, 0.04);
-            }
-        }
+    &:first-child {
+        border-top-left-radius: $radius-lg;
     }
 
-    td {
-        padding: 0.85rem 1rem;
-        color: $text;
-        white-space: nowrap;
+    &:last-child {
+        border-top-right-radius: $radius-lg;
     }
 }
 
+//==================================================
+// BODY ESPECÍFICO
+//==================================================
 
-// --- Acciones ---
+.table-body {
+    background: transparent;
+}
 
-.actions {
-    display: flex;
-    gap: 0.4rem;
+.table-body-row {
+    width: 100%;
+    user-select: none;
+    cursor: pointer;
+    transition: all $transition-fast ease;
 
-    button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 32px;
-        height: 32px;
-        border: none;
-        border-radius: $radius-md;
-        background: transparent;
-        color: $gray-dark;
-        cursor: pointer;
-        transition: background $transition-fast ease, color $transition-fast ease;
+    &:hover {
+        background: linear-gradient(90deg, rgba(196, 181, 253, 0.12), rgba(196, 181, 253, 0.04));
+        box-shadow: 0 2px 8px rgba(139, 92, 246, 0.08);
+        position: relative;
+        z-index: 1;
+    }
 
-        &:hover {
-            background: $gray-light;
-            color: $primary;
+    &:last-child {
+        .table-body-cell:first-child {
+            border-bottom-left-radius: $radius-lg;
+        }
+
+        .table-body-cell:last-child {
+            border-bottom-right-radius: $radius-lg;
         }
     }
+}
+
+.table-body-cell {
+    color: $text;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-bottom: 1px solid $gray;
+    height: 60px;
+
+    &:first-child {
+        font-weight: 700;
+        color: $primary;
+        font-family: $font-secondary;
+        font-size: 0.9rem;
+    }
+}
+
+//==================================================
+// BADGES / ESTADOS
+//==================================================
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 5px 10px;
+    border-radius: $radius-pill;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+
+    &--active {
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.08));
+        color: $green;
+        border: 1px solid rgba(34, 197, 94, 0.25);
+    }
+
+    &--inactive {
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.12), rgba(239, 68, 68, 0.06));
+        color: $red;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    &--pending {
+        background: linear-gradient(135deg, rgba(250, 204, 21, 0.15), rgba(250, 204, 21, 0.08));
+        color: rgb(161, 98, 7);
+        border: 1px solid rgba(250, 204, 21, 0.25);
+    }
+
+    i {
+        font-size: 0.85rem;
+    }
+}
+
+//==================================================
+// BOTONES DE ACCIÓN
+//==================================================
+
+.table-actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: all $transition-fast ease;
+    background: transparent;
+    color: $gray-dark;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: $shadow-sm;
+    }
+
+    &:active {
+        transform: translateY(0) scale(0.95);
+    }
+
+    &--view:hover {
+        background: linear-gradient(135deg, $blue-light, $blue);
+        color: $white;
+    }
+
+    &--edit:hover {
+        background: linear-gradient(135deg, $purple-light, $purple);
+        color: $white;
+    }
+
+    &--delete:hover {
+        background: linear-gradient(135deg, $red-light, $red);
+        color: $white;
+    }
+}
+
+//==================================================
+// AVATAR / INICIALES
+//==================================================
+
+.user-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.user-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: $radius-circle;
+    background: linear-gradient(135deg, $primary-light, $primary);
+    color: $white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.user-name {
+    font-weight: 600;
+    color: $text;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+//==================================================
+// PROGRESO / CUPO
+//==================================================
+
+.progress-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.progress-bar-bg {
+    display: flex;
+    width: 80px;
+    height: 6px;
+    background: $gray-light;
+    border-radius: $radius-pill;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    border-radius: $radius-pill;
+    transition: width $transition-slow ease;
+
+    &--high {
+        background: linear-gradient(90deg, $green, $green-dark);
+    }
+
+    &--medium {
+        background: linear-gradient(90deg, $yellow, $yellow-dark);
+    }
+
+    &--low {
+        background: linear-gradient(90deg, $red, $red-dark);
+    }
+}
+
+.progress-value {
+    font-family: $font-primary;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: $primary;
+    min-width: 32px;
+    flex-shrink: 0;
 }
 
 //==================================================
@@ -278,6 +557,7 @@
     align-items: center;
     justify-content: flex-end;
     padding-top: 0.5rem;
+    width: 100%;
 }
 
 .pagination {
@@ -304,7 +584,7 @@
         color: $primary;
         font-size: 1.1rem;
         cursor: pointer;
-        transition: background $transition-normal ease,transform $transition-normal ease;
+        transition: background $transition-normal ease, transform $transition-normal ease;
 
         &:hover {
             background: $gray-light;
@@ -347,9 +627,28 @@
 // RESPONSIVE
 //==================================================
 
+@media (max-width: 1024px) {
+    main {
+        padding: 1.5rem;
+    }
+
+    .table-layout {
+        padding: 1.5rem 0;
+    }
+
+    .table-card {
+        padding: 1.25rem;
+    }
+}
+
 @media (max-width: 768px) {
-    .table-page {
-        padding: 1.25rem 1rem;
+    main {
+        padding: 1rem;
+    }
+
+    .table-layout {
+        padding: 1rem 0;
+        gap: 1rem;
     }
 
     .table-title {
@@ -360,6 +659,10 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 0.75rem;
+    }
+
+    .table-header {
+        gap: 0.5rem;
     }
 
     .table-toolbar {
@@ -380,29 +683,87 @@
         border-radius: $radius-sm;
     }
 
-    .data-table th,
-    .data-table td {
-        padding: 0.7rem 0.75rem;
-        font-size: 0.82rem;
+    .table-head-cell,
+    .table-body-cell {
+        padding: 10px 6px;
+        font-size: 0.72rem;
+    }
+
+    .table-head-cell {
+        font-size: 0.68rem;
+        letter-spacing: 0.03em;
+    }
+
+    .table-body-cell {
+        height: 50px;
+    }
+
+    .badge {
+        padding: 3px 6px;
+        font-size: 0.65rem;
+        gap: 3px;
+
+        i {
+            font-size: 0.75rem;
+        }
+    }
+
+    .btn-action {
+        width: 26px;
+        height: 26px;
+        font-size: 0.8rem;
+    }
+
+    .user-avatar {
+        width: 26px;
+        height: 26px;
+        font-size: 0.65rem;
+    }
+
+    .progress-bar-bg {
+        width: 50px;
+    }
+
+    .progress-value {
+        font-size: 0.7rem;
     }
 
     .table-pagination {
         justify-content: center;
     }
+
+    .pagination-info {
+        font-size: 0.8rem;
+    }
+
+    .pagination-current,
+    .pagination-total {
+        min-width: 24px;
+        height: 24px;
+        font-size: 0.75rem;
+    }
+
+    .pagination-left i,
+    .pagination-right i {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
 }
 
 @media (max-width: 480px) {
-    .table-page {
-        padding: 1rem 0.75rem;
+    main {
+        padding: 0.75rem;
     }
 
     .table-title {
-        font-size: 1.35rem;
+        font-size: 1.25rem;
     }
 
     .table-add-button {
         width: 100%;
         padding: 0.6rem 1rem;
+        font-size: 0.85rem;
     }
 
     .table-toolbar {
@@ -420,9 +781,37 @@
         border-radius: $radius-lg;
     }
 
-    .data-table th,
-    .data-table td {
-        padding: 0.6rem 0.65rem;
-        font-size: 0.78rem;
+    .table-head-cell,
+    .table-body-cell {
+        padding: 8px 4px;
+        font-size: 0.68rem;
+    }
+
+    .data-table {
+        min-width: 700px;
+    }
+
+    .table-body-cell {
+        height: 45px;
+    }
+
+    .badge {
+        padding: 2px 5px;
+        font-size: 0.6rem;
+    }
+
+    .btn-action {
+        width: 24px;
+        height: 24px;
+        font-size: 0.75rem;
+    }
+
+    .progress-bar-bg {
+        width: 40px;
+        height: 5px;
+    }
+
+    .progress-value {
+        font-size: 0.65rem;
     }
 }

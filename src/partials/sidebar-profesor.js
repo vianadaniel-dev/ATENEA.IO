@@ -41,11 +41,11 @@ export function profesorSidebar() {
                         <div class="sidebar__link-wrapper-li"></div>
                     </li>
                 </a>
-                <a href="/profesor/curso-estudiantes.html">
+                <a href="/profesor/tareas.html">
                     <li class="sidebar__menu-item">
                         <div class="sidebar__link-wrapper">
-                            <i class="bx bx-reading"></i>
-                            <span class="sidebar__text">students</span>
+                            <i class="bx bx-task"></i>
+                            <span class="sidebar__text">tasks</span>
                         </div>
                         <div class="sidebar__link-wrapper-li"></div>
                     </li>

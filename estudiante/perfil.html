@@ -3,16 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atenea | Mi Perfil</title>
+    <title>Atenea | Perfil</title>
     <link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
     <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
     <div id="header"></div>
     <div id="sidebar"></div>
-    <main>
+    <main class="profile-page" id="profile-page">
+        <div class="profile-layout">
+            <div class="profile-content">
+                
+                <!-- Header del perfil -->
+                <div class="profile-header">
+                    <div class="profile-header-title">
+                        <span class="profile-title">
+                            mi perfil
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Tarjeta principal -->
+                <div class="profile-card">
+                    
+                    <!-- Sección superior: Avatar + Info básica -->
+                    <div class="profile-hero">
+                        <div class="profile-avatar-section">
+                            <div class="profile-avatar-container">
+                                <img src="../src/assets/images/perfil.svg" alt="Foto de perfil" class="profile-avatar">
+                            </div>
+                            <h2 class="profile-name">Juan Pérez</h2>
+                            <span class="profile-role badge badge--active">
+                                <i class="bx bx-user"></i> Estudiante
+                            </span>
+                        </div>
+
+                        <div class="profile-info-grid">
+                            <div class="profile-info-item">
+                                <i class="bx bx-envelope"></i>
+                                <div class="profile-info-content">
+                                    <span class="profile-info-label">Correo</span>
+                                    <span class="profile-info-value">juan.perez@email.com</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-item">
+                                <i class="bx bx-id-card"></i>
+                                <div class="profile-info-content">
+                                    <span class="profile-info-label">ID</span>
+                                    <span class="profile-info-value">#001</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-item">
+                                <i class="bx bx-calendar"></i>
+                                <div class="profile-info-content">
+                                    <span class="profile-info-label">Registro</span>
+                                    <span class="profile-info-value">16 de julio, 2026</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-item">
+                                <i class="bx bx-cake"></i>
+                                <div class="profile-info-content">
+                                    <span class="profile-info-label">Nacimiento</span>
+                                    <span class="profile-info-value">12 de marzo, 2010</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección de estadísticas (solo estudiante) -->
+                    <div class="profile-stats-section">
+                        <h3 class="profile-section-title">
+                            <i class="bx bx-chart"></i>
+                            Estadísticas
+                        </h3>
+                        <div class="profile-stats-grid">
+                            <div class="profile-stat-card">
+                                <div class="profile-stat-icon">
+                                    <i class="bx bx-star"></i>
+                                </div>
+                                <div class="profile-stat-content">
+                                    <span class="profile-stat-value">1,250</span>
+                                    <span class="profile-stat-label">Puntos totales</span>
+                                </div>
+                            </div>
+                            <div class="profile-stat-card">
+                                <div class="profile-stat-icon">
+                                    <i class="bx bx-book"></i>
+                                </div>
+                                <div class="profile-stat-content">
+                                    <span class="profile-stat-value">6</span>
+                                    <span class="profile-stat-label">Materias</span>
+                                </div>
+                            </div>
+                            <div class="profile-stat-card">
+                                <div class="profile-stat-icon">
+                                    <i class="bx bx-trophy"></i>
+                                </div>
+                                <div class="profile-stat-content">
+                                    <span class="profile-stat-value">#12</span>
+                                    <span class="profile-stat-label">Ranking</span>
+                                </div>
+                            </div>
+                            <div class="profile-stat-card">
+                                <div class="profile-stat-icon">
+                                    <i class="bx bx-check-circle"></i>
+                                </div>
+                                <div class="profile-stat-content">
+                                    <span class="profile-stat-value">95%</span>
+                                    <span class="profile-stat-label">Asistencia</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección de cursos/materias -->
+                    <div class="profile-courses-section">
+                        <h3 class="profile-section-title">
+                            <i class="bx bx-book-open"></i>
+                            Mis cursos
+                        </h3>
+                        <div class="profile-courses-list">
+                            <div class="profile-course-item">
+                                <div class="profile-course-info">
+                                    <span class="profile-course-name">9-A</span>
+                                    <span class="profile-course-period">2026-I</span>
+                                </div>
+                                <div class="profile-course-progress">
+                                    <div class="progress-bar-bg">
+                                        <div class="progress-bar-fill progress-bar-fill--high" style="width: 85%"></div>
+                                    </div>
+                                    <span class="progress-value">85%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección de acciones -->
+                    <div class="profile-actions">
+                        <button class="profile-btn profile-btn--edit">
+                            <i class="bx bx-edit"></i>
+                            Editar perfil
+                        </button>
+                        <button class="profile-btn profile-btn--password">
+                            <i class="bx bx-lock"></i>
+                            Cambiar contraseña
+                        </button>
+                        <button class="profile-btn profile-btn--danger">
+                            <i class="bx bx-log-out"></i>
+                            Cerrar sesión
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </main>
-    
     <script type="module" src="/src/pages/estudiante/perfil.js"></script>
     <script type="module" src="/src/main.js"></script>
 </body>

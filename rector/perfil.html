@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atenea | My Perfil</title>
+    <title>Atenea | Perfil</title>
     <link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
     <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
 </head>
@@ -11,8 +11,193 @@
     <div id="header"></div>
     <div id="sidebar"></div>
     <main>
+        <div class="profile-layout">
+            <div class="profile-content">
+                
+                <!-- Header del perfil -->
+                <div class="profile-header">
+                    <div class="profile-header-title">
+                        <span class="profile-title">
+                            mi perfil
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Tarjeta principal -->
+                <div class="profile-card">
+                    
+                    <!-- Sección superior: Avatar + Info básica -->
+                    <div class="profile-hero">
+                        <div class="profile-avatar-section">
+                            <div class="profile-avatar-container">
+                                <img src="../src/assets/images/perfil.svg" alt="Foto de perfil" class="profile-avatar">
+                            </div>
+                            <h2 class="profile-name">Carlos Mendoza</h2>
+                            <span class="profile-role badge badge--active">
+                                <i class="bx bx-shield"></i> Rector
+                            </span>
+                        </div>
+
+                        <div class="profile-info-grid">
+                            <div class="profile-info-item">
+                                <i class="bx bx-envelope"></i>
+                                <div class="profile-info-content">
+                                    <span class="profile-info-label">Correo</span>
+                                    <span class="profile-info-value">carlos.mendoza@atenea.edu</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-item">
+                                <i class="bx bx-id-card"></i>
+                                <div class="profile-info-content">
+                                    <span class="profile-info-label">ID</span>
+                                    <span class="profile-info-value">#R001</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-item">
+                                <i class="bx bx-calendar"></i>
+                                <div class="profile-info-content">
+                                    <span class="profile-info-label">Registro</span>
+                                    <span class="profile-info-value">10 de enero, 2020</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-item">
+                                <i class="bx bx-building"></i>
+                                <div class="profile-info-content">
+                                    <span class="profile-info-label">Institución</span>
+                                    <span class="profile-info-value">Atenea I.O.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección de estadísticas institucionales -->
+                    <div class="profile-stats-section">
+                        <h3 class="profile-section-title">
+                            <i class="bx bx-chart"></i>
+                            Estadísticas institucionales
+                        </h3>
+                        <div class="profile-stats-grid">
+                            <div class="profile-stat-card">
+                                <div class="profile-stat-icon">
+                                    <i class="bx bx-user"></i>
+                                </div>
+                                <div class="profile-stat-content">
+                                    <span class="profile-stat-value">1,247</span>
+                                    <span class="profile-stat-label">Estudiantes</span>
+                                </div>
+                            </div>
+                            <div class="profile-stat-card">
+                                <div class="profile-stat-icon">
+                                    <i class="bx bx-chalkboard"></i>
+                                </div>
+                                <div class="profile-stat-content">
+                                    <span class="profile-stat-value">68</span>
+                                    <span class="profile-stat-label">Profesores</span>
+                                </div>
+                            </div>
+                            <div class="profile-stat-card">
+                                <div class="profile-stat-icon">
+                                    <i class="bx bx-group"></i>
+                                </div>
+                                <div class="profile-stat-content">
+                                    <span class="profile-stat-value">45</span>
+                                    <span class="profile-stat-label">Cursos</span>
+                                </div>
+                            </div>
+                            <div class="profile-stat-card">
+                                <div class="profile-stat-icon">
+                                    <i class="bx bx-book"></i>
+                                </div>
+                                <div class="profile-stat-content">
+                                    <span class="profile-stat-value">24</span>
+                                    <span class="profile-stat-label">Materias</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección de actividad reciente -->
+                    <div class="profile-activity-section">
+                        <h3 class="profile-section-title">
+                            <i class="bx bx-time"></i>
+                            Actividad reciente
+                        </h3>
+                        <div class="profile-activity-list">
+                            <div class="profile-activity-item">
+                                <div class="profile-activity-icon">
+                                    <i class="bx bx-user-plus"></i>
+                                </div>
+                                <div class="profile-activity-content">
+                                    <span class="profile-activity-text">Nuevo estudiante registrado</span>
+                                    <span class="profile-activity-time">Hace 2 horas</span>
+                                </div>
+                            </div>
+                            <div class="profile-activity-item">
+                                <div class="profile-activity-icon">
+                                    <i class="bx bx-check-circle"></i>
+                                </div>
+                                <div class="profile-activity-content">
+                                    <span class="profile-activity-text">Calificaciones publicadas - 9-A</span>
+                                    <span class="profile-activity-time">Hace 5 horas</span>
+                                </div>
+                            </div>
+                            <div class="profile-activity-item">
+                                <div class="profile-activity-icon">
+                                    <i class="bx bx-bell"></i>
+                                </div>
+                                <div class="profile-activity-content">
+                                    <span class="profile-activity-text">Anuncio institucional enviado</span>
+                                    <span class="profile-activity-time">Hace 1 día</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección de acciones administrativas -->
+                    <div class="profile-admin-section">
+                        <h3 class="profile-section-title">
+                            <i class="bx bx-cog"></i>
+                            Acciones administrativas
+                        </h3>
+                        <div class="profile-admin-grid">
+                            <a href="./estudiantes.html" class="profile-admin-card">
+                                <i class="bx bx-user"></i>
+                                <span>Gestionar estudiantes</span>
+                            </a>
+                            <a href="./profesores.html" class="profile-admin-card">
+                                <i class="bx bx-chalkboard"></i>
+                                <span>Gestionar profesores</span>
+                            </a>
+                            <a href="./cursos.html" class="profile-admin-card">
+                                <i class="bx bx-group"></i>
+                                <span>Gestionar cursos</span>
+                            </a>
+                            <a href="./materias.html" class="profile-admin-card">
+                                <i class="bx bx-book"></i>
+                                <span>Gestionar materias</span>
+                            </a>
+                            <a href="./anuncios.html" class="profile-admin-card">
+                                <i class="bx bx-news"></i>
+                                <span>Crear anuncio</span>
+                            </a>
+                            <a href="./auditoria.html" class="profile-admin-card">
+                                <i class="bx bx-search-alt"></i>
+                                <span>Ver auditoría</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Sección de acciones -->
+                    <div class="profile-actions">
+                        <button class="profile-btn profile-btn--edit">
+                            <i class="bx bx-edit"></i>
+                            Editar perfil
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
-    
     <script type="module" src="/src/pages/rector/perfil.js"></script>
     <script type="module" src="/src/main.js"></script>
 </body>

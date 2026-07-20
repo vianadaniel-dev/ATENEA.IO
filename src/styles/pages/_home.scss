@@ -6,13 +6,17 @@
 //==================================================
 // HOME - HERO
 //==================================================
+main{
+    align-items: center;
+    justify-content: center;
+}
 
 .home-hero__container {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
     max-width: 1200px;
-    margin: 0 auto;
+    padding: 2rem 1rem;
 }
 
 .home-hero__banner {
@@ -22,20 +26,9 @@
     padding: 2rem 2.5rem;
     background: linear-gradient(135deg, $gradient-start, $primary-dark);
     border-radius: $radius-xl;
-    box-shadow: $shadow-lg;
+    box-shadow: $shadow-md;
     position: relative;
     overflow: hidden;
-
-    &::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -10%;
-        width: 300px;
-        height: 300px;
-        background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
-        pointer-events: none;
-    }
 }
 
 .home-hero__image-container {
@@ -53,11 +46,9 @@
 }
 
 .home-hero__image {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     object-fit: contain;
-    filter: brightness(0) invert(1);
-    opacity: 0.9;
 }
 
 .home-hero__content {
@@ -104,6 +95,8 @@
     transition: all $transition-normal ease;
     position: relative;
     overflow: hidden;
+    text-decoration: none;
+    color: $primary-dark;
 
     &::before {
         content: '';
@@ -147,7 +140,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 36px;
+    width: 36px;
     height: 36px;
     padding: 0 10px;
     background: linear-gradient(135deg, $primary-light, $primary);
@@ -155,8 +148,7 @@
     font-family: $font-secondary;
     font-size: 1.1rem;
     font-weight: 700;
-    border-radius: $radius-pill;
-    box-shadow: 0 2px 8px rgba(29, 21, 81, 0.2);
+    border-radius: $radius-md;
 }
 
 //==================================================

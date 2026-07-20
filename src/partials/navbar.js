@@ -1,18 +1,6 @@
 export function navbar() {
     return`
      <header id="navbar">
-        <div class="header__title">
-            <span class="header-page-title">
-                <a href="">
-                    Home
-                </a>
-            </span>
-            <span>></span>
-            <span class="header-page-title location">
-                Home
-            </span>
-        </div>
-
         <div class="header__user">
             <div class="header__balance">
                 <div class="header__balance-icon">

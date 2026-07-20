@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atenea | Profesorado</title>
+    <title>Atenea | Profesores</title>
     <link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
     <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
 </head>
@@ -29,47 +29,56 @@
 
                     <span class="table-total">
                         <span class="table-total-label">
-                            <i class="bx bx-user"></i>
+                            <i class="bx bx-chalkboard"></i>
                             profesores:
                         </span>
 
-                        0,000
+                        68
                     </span>
                 </div>
                 <div class="table-card">
                     <div class="table-toolbar">
 
                         <select class="table-filter">
-                            <option>all</option>
+                            <option>Estado</option>
+                            <option>Activo</option>
+                            <option>Inactivo</option>
                         </select>
 
                         <select class="table-filter">
-                            <option>all</option>
+                            <option>Especialidad</option>
+                            <option>Matemáticas</option>
+                            <option>Ciencias</option>
+                            <option>Lenguaje</option>
+                            <option>Historia</option>
                         </select>
 
                         <select class="table-filter">
-                            <option>all</option>
+                            <option>Cursos asignados</option>
+                            <option>1 o más</option>
+                            <option>Ninguno</option>
                         </select>
 
                         <select class="table-filter">
-                            <option>all</option>
+                            <option>Materia</option>
+                            <option>Álgebra</option>
+                            <option>Física</option>
+                            <option>Gramática</option>
                         </select>
 
                     </div>
                     <div class="table-wrapper">
-
- <div class="table-section">
+                        <div class="table-section">
                             <div class="table">
                                 <div class="table-container">
-                                    <table class="table-content">
-
+                                    <table class="data-table">
                                         <thead class="table-head">
                                             <tr class="table-head-row">
                                                 <th class="table-head-cell">ID</th>
-                                                <th class="table-head-cell">Nombre</th>
+                                                <th class="table-head-cell">Profesor</th>
                                                 <th class="table-head-cell">Correo</th>
-                                                <th class="table-head-cell">Periodo</th>
-                                                <th class="table-head-cell">Cupo</th>
+                                                <th class="table-head-cell">Especialidad</th>
+                                                <th class="table-head-cell">Cursos</th>
                                                 <th class="table-head-cell">Estado</th>
                                                 <th class="table-head-cell">Acciones</th>
                                             </tr>
@@ -77,21 +86,85 @@
 
                                         <tbody class="table-body" id="table-body">
                                             <tr class="table-body-row">
-                                                <td class="table-body-cell">#001</td>
-                                                <td class="table-body-cell">Juan Pérez</td>
-                                                <td class="table-body-cell">juan.perez@email.com</td>
-                                                <td class="table-body-cell">2025-I</td>
+                                                <td class="table-body-cell">#101</td>
                                                 <td class="table-body-cell">
-                                                    <div class="progress-wrapper">
-                                                        <div class="progress-bar-bg">
-                                                            <div class="progress-bar-fill progress-bar-fill--high" style="width: 65%"></div>
-                                                        </div>
-                                                        <span class="progress-value">65%</span>
+                                                    <div class="user-info">
+                                                        <div class="user-avatar">LM</div>
+                                                        <span class="user-name">Laura Martínez</span>
                                                     </div>
+                                                </td>
+                                                <td class="table-body-cell">laura.martinez@email.com</td>
+                                                <td class="table-body-cell">Matemáticas</td>
+                                                <td class="table-body-cell">
+                                                    <span class="courses-count">3</span>
                                                 </td>
                                                 <td class="table-body-cell">
                                                     <span class="badge badge--active">
                                                         <i class="bx bx-check-circle"></i> Activo
+                                                    </span>
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <div class="table-actions">
+                                                        <button class="btn-action btn-action--view" title="Ver">
+                                                            <i class="bx bx-show"></i>
+                                                        </button>
+                                                        <button class="btn-action btn-action--edit" title="Editar">
+                                                            <i class="bx bx-edit"></i>
+                                                        </button>
+                                                        <button class="btn-action btn-action--delete" title="Eliminar">
+                                                            <i class="bx bx-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="table-body-row">
+                                                <td class="table-body-cell">#102</td>
+                                                <td class="table-body-cell">
+                                                    <div class="user-info">
+                                                        <div class="user-avatar">RS</div>
+                                                        <span class="user-name">Roberto Sánchez</span>
+                                                    </div>
+                                                </td>
+                                                <td class="table-body-cell">roberto.sanchez@email.com</td>
+                                                <td class="table-body-cell">Ciencias Naturales</td>
+                                                <td class="table-body-cell">
+                                                    <span class="courses-count">5</span>
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <span class="badge badge--active">
+                                                        <i class="bx bx-check-circle"></i> Activo
+                                                    </span>
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <div class="table-actions">
+                                                        <button class="btn-action btn-action--view" title="Ver">
+                                                            <i class="bx bx-show"></i>
+                                                        </button>
+                                                        <button class="btn-action btn-action--edit" title="Editar">
+                                                            <i class="bx bx-edit"></i>
+                                                        </button>
+                                                        <button class="btn-action btn-action--delete" title="Eliminar">
+                                                            <i class="bx bx-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="table-body-row">
+                                                <td class="table-body-cell">#103</td>
+                                                <td class="table-body-cell">
+                                                    <div class="user-info">
+                                                        <div class="user-avatar">AL</div>
+                                                        <span class="user-name">Ana López</span>
+                                                    </div>
+                                                </td>
+                                                <td class="table-body-cell">ana.lopez@email.com</td>
+                                                <td class="table-body-cell">Lenguaje</td>
+                                                <td class="table-body-cell">
+                                                    <span class="courses-count courses-count--zero">0</span>
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <span class="badge badge--inactive">
+                                                        <i class="bx bx-x-circle"></i> Inactivo
                                                     </span>
                                                 </td>
                                                 <td class="table-body-cell">
@@ -127,16 +200,16 @@
 
                                 page
 
-                                <span class="pagination-current">0</span>
+                                <span class="pagination-current">1</span>
 
                                 of
 
-                                <span class="pagination-total">0</span>
+                                <span class="pagination-total">7</span>
 
                             </span>
                             <div class="pagination-right">
 
-                                <i class="bx bx-arrow-right-stroke"></i>
+                                <i class="bx bx-chevron-right"></i>
                                 <i class="bx bx-arrow-to-right-stroke"></i>
 
                             </div>

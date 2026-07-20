@@ -24,17 +24,8 @@ export function sidebarRector() {
                 <a href="/rector/dashboard.html">
                     <li class="sidebar__menu-item">
                         <div class="sidebar__link-wrapper">
-                            <i class="bx bx-grid-alt"></i>
-                            <span class="sidebar__text">dashboard</span>
-                        </div>
-                        <div class="sidebar__link-wrapper-li"></div>
-                    </li>
-                </a>
-                <a href="/rector/cursos.html">
-                    <li class="sidebar__menu-item">
-                        <div class="sidebar__link-wrapper">
-                            <i class="bx bx-book-open"></i>
-                            <span class="sidebar__text">courses</span>
+                            <i class="bx bx-home"></i>
+                            <span class="sidebar__text">Home</span>
                         </div>
                         <div class="sidebar__link-wrapper-li"></div>
                     </li>
@@ -42,7 +33,7 @@ export function sidebarRector() {
                 <a href="/rector/estudiantes.html">
                     <li class="sidebar__menu-item">
                         <div class="sidebar__link-wrapper">
-                            <i class="bx bx-user"></i>
+                            <i class="bx bx-education"></i>
                             <span class="sidebar__text">students</span>
                         </div>
                         <div class="sidebar__link-wrapper-li"></div>
@@ -51,17 +42,8 @@ export function sidebarRector() {
                 <a href="/rector/profesores.html">
                     <li class="sidebar__menu-item">
                         <div class="sidebar__link-wrapper">
-                            <i class="bx bx-chalkboard"></i>
+                            <i class="bx bx-face"></i>
                             <span class="sidebar__text">teachers</span>
-                        </div>
-                        <div class="sidebar__link-wrapper-li"></div>
-                    </li>
-                </a>
-                <a href="/rector/anuncios.html">
-                    <li class="sidebar__menu-item">
-                        <div class="sidebar__link-wrapper">
-                            <i class="bx bx-news"></i>
-                            <span class="sidebar__text">announcements</span>
                         </div>
                         <div class="sidebar__link-wrapper-li"></div>
                     </li>
@@ -69,17 +51,26 @@ export function sidebarRector() {
                 <a href="/rector/materias.html">
                     <li class="sidebar__menu-item">
                         <div class="sidebar__link-wrapper">
-                            <i class="bx bx-history"></i>
+                            <i class="bx bx-book"></i>
                             <span class="sidebar__text">school subjects</span>
                         </div>
                         <div class="sidebar__link-wrapper-li"></div>
                     </li>
                 </a>
-                <a href="/rector/canjes.html">
+                <a href="/rector/cursos.html">
                     <li class="sidebar__menu-item">
                         <div class="sidebar__link-wrapper">
-                            <i class="bx bx-gift"></i>
-                            <span class="sidebar__text">reward claims</span>
+                            <i class="bx bx-community"></i>
+                            <span class="sidebar__text">courses</span>
+                        </div>
+                        <div class="sidebar__link-wrapper-li"></div>
+                    </li>
+                </a>
+                <a href="/rector/anuncios.html">
+                    <li class="sidebar__menu-item">
+                        <div class="sidebar__link-wrapper">
+                            <i class="bx bx-megaphone"></i>
+                            <span class="sidebar__text">announcements</span>
                         </div>
                         <div class="sidebar__link-wrapper-li"></div>
                     </li>

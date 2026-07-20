@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atenea | Estudiantes</title>
+    <title>Atenea | Tareas</title>
     <link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
     <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
 </head>
@@ -16,24 +16,24 @@
                 <div class="table-header" id="table-header">
                     <div class="table-header-title">
                         <span class="table-title">
-                            estudiantes
+                            tareas
                         </span>
 
                         <div class="table-header-action">
                             <button class="table-add-button">
                                 <i class="bx bx-plus"></i>
-                                añadir estudiante
+                                crear tarea
                             </button>
                         </div>
                     </div>
 
                     <span class="table-total">
                         <span class="table-total-label">
-                            <i class="bx bx-user"></i>
-                            estudiantes:
+                            <i class="bx bx-task"></i>
+                            tareas:
                         </span>
 
-                        2,000
+                        24
                     </span>
                 </div>
                 <div class="table-card">
@@ -41,26 +41,29 @@
 
                         <select class="table-filter">
                             <option>Estado</option>
-                            <option>Activo</option>
-                            <option>Inactivo</option>
+                            <option>Abierta</option>
+                            <option>Cerrada</option>
                         </select>
 
                         <select class="table-filter">
                             <option>Curso</option>
                             <option>9-A</option>
                             <option>10-B</option>
+                            <option>11-A</option>
                         </select>
 
                         <select class="table-filter">
-                            <option>Periodo</option>
-                            <option>2026-I</option>
-                            <option>2026-II</option>
+                            <option>Materia</option>
+                            <option>Matemáticas</option>
+                            <option>Física</option>
+                            <option>Gramática</option>
                         </select>
 
                         <select class="table-filter">
-                            <option>Puntos</option>
-                            <option>Mayor a 500</option>
-                            <option>Menor a 100</option>
+                            <option>Fecha</option>
+                            <option>Esta semana</option>
+                            <option>Próxima semana</option>
+                            <option>Vencidas</option>
                         </select>
 
                     </div>
@@ -72,10 +75,10 @@
                                         <thead class="table-head">
                                             <tr class="table-head-row">
                                                 <th class="table-head-cell">ID</th>
-                                                <th class="table-head-cell">Estudiante</th>
-                                                <th class="table-head-cell">Correo</th>
+                                                <th class="table-head-cell">Título</th>
+                                                <th class="table-head-cell">Materia</th>
                                                 <th class="table-head-cell">Curso</th>
-                                                <th class="table-head-cell">Puntos</th>
+                                                <th class="table-head-cell">Entrega</th>
                                                 <th class="table-head-cell">Estado</th>
                                                 <th class="table-head-cell">Acciones</th>
                                             </tr>
@@ -83,27 +86,30 @@
 
                                         <tbody class="table-body" id="table-body">
                                             <tr class="table-body-row">
-                                                <td class="table-body-cell">#001</td>
+                                                <td class="table-body-cell">#401</td>
                                                 <td class="table-body-cell">
-                                                    <div class="user-info">
-                                                        <div class="user-avatar">JP</div>
-                                                        <span class="user-name">Juan Pérez</span>
+                                                    <div class="task-info">
+                                                        <i class="bx bx-file task-icon"></i>
+                                                        <span class="task-name">Ecuaciones cuadráticas</span>
                                                     </div>
                                                 </td>
-                                                <td class="table-body-cell">juan.perez@email.com</td>
+                                                <td class="table-body-cell">Matemáticas</td>
                                                 <td class="table-body-cell">9-A</td>
                                                 <td class="table-body-cell">
-                                                    <span class="points-value">1,250</span>
+                                                    <div class="task-deadline">
+                                                        <i class="bx bx-calendar"></i>
+                                                        <span>18 jul, 2026</span>
+                                                    </div>
                                                 </td>
                                                 <td class="table-body-cell">
                                                     <span class="badge badge--active">
-                                                        <i class="bx bx-check-circle"></i> Activo
+                                                        <i class="bx bx-check-circle"></i> Abierta
                                                     </span>
                                                 </td>
                                                 <td class="table-body-cell">
                                                     <div class="table-actions">
                                                         <button class="btn-action btn-action--view" title="Ver">
-                                                            <i class="bx bx-eye"></i>
+                                                            <i class="bx bx-show"></i>
                                                         </button>
                                                         <button class="btn-action btn-action--edit" title="Editar">
                                                             <i class="bx bx-edit"></i>
@@ -115,59 +121,65 @@
                                                 </td>
                                             </tr>
                                             <tr class="table-body-row">
-                                                <td class="table-body-cell">#002</td>
+                                                <td class="table-body-cell">#402</td>
                                                 <td class="table-body-cell">
-                                                    <div class="user-info">
-                                                        <div class="user-avatar">MG</div>
-                                                        <span class="user-name">María García</span>
+                                                    <div class="task-info">
+                                                        <i class="bx bx-file task-icon"></i>
+                                                        <span class="task-name">Leyes de Newton</span>
                                                     </div>
                                                 </td>
-                                                <td class="table-body-cell">maria.garcia@email.com</td>
+                                                <td class="table-body-cell">Física</td>
                                                 <td class="table-body-cell">10-B</td>
                                                 <td class="table-body-cell">
-                                                    <span class="points-value points-value--high">3,400</span>
-                                                </td>
-                                                <td class="table-body-cell">
-                                                    <span class="badge badge--active">
-                                                        <i class="bx bx-check-circle"></i> Activo
-                                                    </span>
-                                                </td>
-                                                <td class="table-body-cell">
-                                                    <div class="table-actions">
-                                                        <button class="btn-action btn-action--view" title="Ver">
-                                                            <i class="bx bx-eye"></i>
-                                                        </button>
-                                                        <button class="btn-action btn-action--edit" title="Editar">
-                                                            <i class="bx bx-edit"></i>
-                                                        </button>
-                                                        <button class="btn-action btn-action--delete" title="Eliminar">
-                                                            <i class="bx bx-trash"></i>
-                                                        </button>
+                                                    <div class="task-deadline task-deadline--urgent">
+                                                        <i class="bx bx-calendar"></i>
+                                                        <span>15 jul, 2026</span>
                                                     </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="table-body-row">
-                                                <td class="table-body-cell">#003</td>
-                                                <td class="table-body-cell">
-                                                    <div class="user-info">
-                                                        <div class="user-avatar">CR</div>
-                                                        <span class="user-name">Carlos Rodríguez</span>
-                                                    </div>
-                                                </td>
-                                                <td class="table-body-cell">carlos.rodriguez@email.com</td>
-                                                <td class="table-body-cell">8-C</td>
-                                                <td class="table-body-cell">
-                                                    <span class="points-value points-value--low">45</span>
                                                 </td>
                                                 <td class="table-body-cell">
                                                     <span class="badge badge--pending">
-                                                        <i class="bx bx-time"></i> Pendiente
+                                                        <i class="bx bx-time"></i> Por cerrar
                                                     </span>
                                                 </td>
                                                 <td class="table-body-cell">
                                                     <div class="table-actions">
                                                         <button class="btn-action btn-action--view" title="Ver">
-                                                            <i class="bx bx-eye"></i>
+                                                            <i class="bx bx-show"></i>
+                                                        </button>
+                                                        <button class="btn-action btn-action--edit" title="Editar">
+                                                            <i class="bx bx-edit"></i>
+                                                        </button>
+                                                        <button class="btn-action btn-action--delete" title="Eliminar">
+                                                            <i class="bx bx-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="table-body-row">
+                                                <td class="table-body-cell">#403</td>
+                                                <td class="table-body-cell">
+                                                    <div class="task-info">
+                                                        <i class="bx bx-file task-icon"></i>
+                                                        <span class="task-name">Análisis sintáctico</span>
+                                                    </div>
+                                                </td>
+                                                <td class="table-body-cell">Gramática</td>
+                                                <td class="table-body-cell">8-C</td>
+                                                <td class="table-body-cell">
+                                                    <div class="task-deadline task-deadline--expired">
+                                                        <i class="bx bx-calendar-x"></i>
+                                                        <span>10 jul, 2026</span>
+                                                    </div>
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <span class="badge badge--inactive">
+                                                        <i class="bx bx-x-circle"></i> Cerrada
+                                                    </span>
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <div class="table-actions">
+                                                        <button class="btn-action btn-action--view" title="Ver">
+                                                            <i class="bx bx-show"></i>
                                                         </button>
                                                         <button class="btn-action btn-action--edit" title="Editar">
                                                             <i class="bx bx-edit"></i>
@@ -201,7 +213,7 @@
 
                                 of
 
-                                <span class="pagination-total">200</span>
+                                <span class="pagination-total">3</span>
 
                             </span>
                             <div class="pagination-right">
@@ -216,7 +228,7 @@
             </div>
         </div>
     </main>
-    <script type="module" src="/src/pages/rector/estudiantes.js"></script>
+    <script type="module" src="/src/pages/profesor/tareas.js"></script>
     <script type="module" src="/src/main.js"></script>
 </body>
 </html>

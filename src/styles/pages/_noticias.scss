@@ -75,6 +75,7 @@
     border-radius: $radius-lg;
     overflow: hidden;
     box-shadow: $shadow-sm;
+    font-family: $font-primary;
     border: 1px solid $gray;
     transition: all $transition-normal ease;
     cursor: pointer;

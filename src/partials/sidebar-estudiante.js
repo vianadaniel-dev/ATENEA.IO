@@ -25,8 +25,8 @@ export function estudianteSidebar() {
                  <a href="/estudiante/dashboard.html">
                     <li class="sidebar__menu-item">
                         <div class="sidebar__link-wrapper">
-                            <i class="bx bx-grid-alt"></i>
-                            <span class="sidebar__text">dashboard</span>
+                            <i class="bx bx-home"></i>
+                            <span class="sidebar__text">Home</span>
                         </div>
                         <div class="sidebar__link-wrapper-li"></div>
                     </li>
@@ -43,17 +43,17 @@ export function estudianteSidebar() {
                 <a href="/estudiante/anuncios.html">
                     <li class="sidebar__menu-item">
                         <div class="sidebar__link-wrapper">
-                            <i class="bx bx-group"></i>
-                            <span class="sidebar__text">news</span>
+                            <i class="bx bx-megaphone"></i>
+                            <span class="sidebar__text">announcements</span>
                         </div>
                         <div class="sidebar__link-wrapper-li"></div>
                     </li>
                 </a>
-                <a href="/estudiante/boletin.html">
+                <a href="/estudiante/perfil.html">
                     <li class="sidebar__menu-item">
                         <div class="sidebar__link-wrapper">
-                            <i class="bx bx-clipboard"></i>
-                            <span class="sidebar__text">grades</span>
+                            <i class="bx bx-user-circle"></i>
+                            <span class="sidebar__text">profile</span>
                         </div>
                         <div class="sidebar__link-wrapper-li"></div>
                     </li>

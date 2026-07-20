@@ -1,206 +1,136 @@
-"use strict"; // Activa el modo estricto para evitar errores comunes en JavaScript.
 
-// ==========================
-// CONFIGURACIÓN GENERAL
-// ==========================
-
-// Clave utilizada para guardar la sesión en el localStorage.
 const STORAGE_KEY = "atenea.session";
 
-// Ruta a la página principal después del inicio de sesión.
 const REDIRECT_ROUTES = {
-  teacher: "profesor/dashboard.html",
-  student: "estudiante/dashboard.html",
-  admin: "rector/dashboard.html"
+  teacher: "/profesor/dashboard",
+  student: "/estudiante/dashboard",
+  admin: "/rector/dashboard"
 };
 
-// Tiempo de espera antes de redirigir (en milisegundos).
 const REDIRECT_DELAY = 1800;
-
-// Tiempo que permanece visible la notificación (toast).
 const TOAST_DURATION = 3000;
-
-
-// ==========================
-// USUARIOS SIMULADOS
-// ==========================
-// Base de datos temporal para pruebas.
 
 const ACCOUNTS = {
   "profesor@test.com": {
     password: "test123",
     role: "teacher",
-    message: "Successful access"
+    message: "Acceso exitoso"
   },
-
   "student@test.com": {
     password: "test123",
     role: "student",
-    message: "Welcome student, check your progress"
+    message: "Bienvenido estudiante, revisa tu progreso"
   },
-
   "admin@test.com": {
     password: "test123",
     role: "admin",
-    message: "Successful access"
+    message: "Acceso exitoso"
   },
 };
-
 
 // ==========================
 // ELEMENTOS DEL DOM
 // ==========================
 
-// Formulario de inicio de sesión.
 const form = document.getElementById("login-form");
-
-// Campo del correo electrónico.
 const emailInput = document.getElementById("login-username");
-
-// Campo de la contraseña.
 const passwordInput = document.getElementById("login-password");
-
-// Checkbox "Recordarme".
+const roleSelect = document.getElementById("login-role");      // 🆕 Ahora sí se usa
 const rememberInput = document.getElementById("login-remember");
 
-
 // ==========================
-// MOSTRAR NOTIFICACIONES
+// TOAST (CORREGIDO)
 // ==========================
-// Crea un mensaje flotante indicando éxito o error.
 
 const showToast = (message, type = "success") => {
+  // Eliminar toast anterior si existe
+  const existing = document.querySelector(".toast");
+  if (existing) existing.remove();
 
-  // Crear el elemento.
-  const toast = document.querySelector("mensaje_error");
-
-  // Asignar clases CSS.
+  // Crear elemento desde cero
+  const toast = document.createElement("div");
   toast.className = `toast toast--${type}`;
-
-  // Accesibilidad.
   toast.setAttribute("role", "status");
+  toast.setAttribute("aria-live", "polite");
+  
+  const icon = type === "success" ? "bx-check-circle" : "bx-x-circle";
+  toast.innerHTML = `<i class="bx ${icon}"></i><span>${message}</span>`;
 
-  // Texto del mensaje.
-  toast.innerHTML = `<i class="bx bx-info-octagon"></i><span>${message}</span>`;
-
-  // Agregar al documento.
   document.body.appendChild(toast);
 
-  // Mostrar con animación.
-  requestAnimationFrame(() =>
-    toast.classList.add("toast--visible")
-  );
+  // Forzar reflow para que la transición funcione
+  requestAnimationFrame(() => {
+    toast.classList.add("toast--visible");
+  });
 
-  // Ocultar después de unos segundos.
   setTimeout(() => {
-
     toast.classList.remove("toast--visible");
-
-    // Eliminar cuando termine la animación.
-    toast.addEventListener(
-      "transitionend",
-      () => toast.remove(),
-      { once: true }
-    );
-
+    toast.addEventListener("transitionend", () => toast.remove(), { once: true });
   }, TOAST_DURATION);
-
 };
 
-
 // ==========================
-// GUARDAR SESIÓN
+// SESIÓN
 // ==========================
-// Guarda los datos del usuario en localStorage.
 
-const saveSession = (email, role) =>
-
+const saveSession = (email, role) => {
   localStorage.setItem(
     STORAGE_KEY,
-    JSON.stringify({
-      email,
-      role,
-      remember: true
-    })
+    JSON.stringify({ email, role, remember: true })
   );
-
-
-// ==========================
-// RESTAURAR SESIÓN
-// ==========================
-// Recupera la sesión si el usuario marcó "Recordarme".
+};
 
 const restoreSession = () => {
-
-  // Leer información almacenada.
-  const session = JSON.parse(
-    localStorage.getItem(STORAGE_KEY) || "null"
-  );
-
-  // Si no existe una sesión válida, terminar.
+  const session = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
   if (!session?.remember) return;
-
-  // Restaurar correo.
+  
   emailInput.value = session.email;
-
-  // Marcar el checkbox.
   rememberInput.checked = true;
-
 };
 
-
 // ==========================
-// VALIDAR EL LOGIN
+// LOGIN
 // ==========================
-// Se ejecuta cuando el usuario envía el formulario.
 
 const handleSubmit = (event) => {
-
-  // Evita que el formulario recargue la página.
   event.preventDefault();
 
-  // Obtener el correo.
-  const email = emailInput.value
-    .trim()
-    .toLowerCase();
-
-  // Buscar el usuario.
+  const email = emailInput.value.trim().toLowerCase();
+  const password = passwordInput.value;
+  const selectedRole = roleSelect.value;                          // 🆕 Leer rol seleccionado
   const account = ACCOUNTS[email];
 
-  // Validar usuario y contraseña.
-  if (!account || passwordInput.value !== account.password) {
-
-    return showToast(
-      "Invalid credentials",
-      "error"
-    );
-
+  // Validaciones
+  if (!account) {
+    return showToast("Usuario no encontrado", "error");
   }
 
-  // Guardar sesión si el usuario lo solicitó.
-  rememberInput.checked
-    ? saveSession(email, account.role)
-    : localStorage.removeItem(STORAGE_KEY);
+  if (password !== account.password) {
+    return showToast("Contraseña incorrecta", "error");
+  }
 
-  // Mostrar mensaje de éxito.
-  showToast(account.message);
+  // 🆕 Validar que el rol seleccionado coincida (opcional, pero recomendado)
+  if (selectedRole && selectedRole !== account.role) {
+    return showToast("Rol seleccionado no coincide con el usuario", "error");
+  }
 
-  // Redirigir después del tiempo configurado.
+  // Guardar sesión
+  if (rememberInput.checked) {
+    saveSession(email, account.role);
+  } else {
+    localStorage.removeItem(STORAGE_KEY);
+  }
+
+  showToast(account.message, "success");
+
   setTimeout(() => {
-
     window.location.href = REDIRECT_ROUTES[account.role];
-
   }, REDIRECT_DELAY);
-
 };
-
 
 // ==========================
 // INICIALIZACIÓN
 // ==========================
 
-// Restaurar sesión guardada.
 restoreSession();
-
-// Escuchar el envío del formulario.
 form.addEventListener("submit", handleSubmit);

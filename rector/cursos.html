@@ -22,55 +22,61 @@
                         <div class="table-header-action">
                             <button class="table-add-button">
                                 <i class="bx bx-plus"></i>
-                                crear cursos
+                                crear curso
                             </button>
                         </div>
                     </div>
 
                     <span class="table-total">
                         <span class="table-total-label">
-                            <i class="bx bx-user"></i>
+                            <i class="bx bx-group"></i>
                             cursos:
                         </span>
-                        <span>
-                            0,000
-                        </span>
+
+                        45
                     </span>
                 </div>
                 <div class="table-card">
                     <div class="table-toolbar">
 
                         <select class="table-filter">
-                            <option>all</option>
+                            <option>Estado</option>
+                            <option>Activo</option>
+                            <option>Inactivo</option>
                         </select>
 
                         <select class="table-filter">
-                            <option>all</option>
+                            <option>Periodo</option>
+                            <option>2026-I</option>
+                            <option>2026-II</option>
                         </select>
 
                         <select class="table-filter">
-                            <option>all</option>
+                            <option>Sede</option>
+                            <option>Principal</option>
+                            <option>Norte</option>
+                            <option>Sur</option>
                         </select>
 
                         <select class="table-filter">
-                            <option>all</option>
+                            <option>Cupo</option>
+                            <option>Disponible</option>
+                            <option>Lleno</option>
                         </select>
 
                     </div>
                     <div class="table-wrapper">
-
- <div class="table-section">
+                        <div class="table-section">
                             <div class="table">
                                 <div class="table-container">
-                                    <table class="table-content">
-
+                                    <table class="data-table">
                                         <thead class="table-head">
                                             <tr class="table-head-row">
                                                 <th class="table-head-cell">ID</th>
-                                                <th class="table-head-cell">Nombre</th>
-                                                <th class="table-head-cell">Correo</th>
+                                                <th class="table-head-cell">Curso</th>
                                                 <th class="table-head-cell">Periodo</th>
                                                 <th class="table-head-cell">Cupo</th>
+                                                <th class="table-head-cell">Inscritos</th>
                                                 <th class="table-head-cell">Estado</th>
                                                 <th class="table-head-cell">Acciones</th>
                                             </tr>
@@ -78,21 +84,106 @@
 
                                         <tbody class="table-body" id="table-body">
                                             <tr class="table-body-row">
-                                                <td class="table-body-cell">#001</td>
-                                                <td class="table-body-cell">Juan Pérez</td>
-                                                <td class="table-body-cell">juan.perez@email.com</td>
-                                                <td class="table-body-cell">2025-I</td>
+                                                <td class="table-body-cell">#301</td>
+                                                <td class="table-body-cell">
+                                                    <div class="course-info">
+                                                        <i class="bx bx-book-open course-icon"></i>
+                                                        <span class="course-name">9-A</span>
+                                                    </div>
+                                                </td>
+                                                <td class="table-body-cell">2026-I</td>
                                                 <td class="table-body-cell">
                                                     <div class="progress-wrapper">
                                                         <div class="progress-bar-bg">
-                                                            <div class="progress-bar-fill progress-bar-fill--high" style="width: 85%"></div>
+                                                            <div class="progress-bar-fill progress-bar-fill--medium" style="width: 75%"></div>
                                                         </div>
-                                                        <span class="progress-value">85%</span>
+                                                        <span class="progress-value">75%</span>
                                                     </div>
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <span class="enrolled-count">23/30</span>
                                                 </td>
                                                 <td class="table-body-cell">
                                                     <span class="badge badge--active">
                                                         <i class="bx bx-check-circle"></i> Activo
+                                                    </span>
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <div class="table-actions">
+                                                        <button class="btn-action btn-action--view" title="Ver">
+                                                            <i class="bx bx-show"></i>
+                                                        </button>
+                                                        <button class="btn-action btn-action--edit" title="Editar">
+                                                            <i class="bx bx-edit"></i>
+                                                        </button>
+                                                        <button class="btn-action btn-action--delete" title="Eliminar">
+                                                            <i class="bx bx-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="table-body-row">
+                                                <td class="table-body-cell">#302</td>
+                                                <td class="table-body-cell">
+                                                    <div class="course-info">
+                                                        <i class="bx bx-book-open course-icon"></i>
+                                                        <span class="course-name">10-B</span>
+                                                    </div>
+                                                </td>
+                                                <td class="table-body-cell">2026-I</td>
+                                                <td class="table-body-cell">
+                                                    <div class="progress-wrapper">
+                                                        <div class="progress-bar-bg">
+                                                            <div class="progress-bar-fill progress-bar-fill--high" style="width: 100%"></div>
+                                                        </div>
+                                                        <span class="progress-value">100%</span>
+                                                    </div>
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <span class="enrolled-count enrolled-count--full">30/30</span>
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <span class="badge badge--active">
+                                                        <i class="bx bx-check-circle"></i> Activo
+                                                    </span>
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <div class="table-actions">
+                                                        <button class="btn-action btn-action--view" title="Ver">
+                                                            <i class="bx bx-show"></i>
+                                                        </button>
+                                                        <button class="btn-action btn-action--edit" title="Editar">
+                                                            <i class="bx bx-edit"></i>
+                                                        </button>
+                                                        <button class="btn-action btn-action--delete" title="Eliminar">
+                                                            <i class="bx bx-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="table-body-row">
+                                                <td class="table-body-cell">#303</td>
+                                                <td class="table-body-cell">
+                                                    <div class="course-info">
+                                                        <i class="bx bx-book-open course-icon"></i>
+                                                        <span class="course-name">8-C</span>
+                                                    </div>
+                                                </td>
+                                                <td class="table-body-cell">2026-II</td>
+                                                <td class="table-body-cell">
+                                                    <div class="progress-wrapper">
+                                                        <div class="progress-bar-bg">
+                                                            <div class="progress-bar-fill progress-bar-fill--low" style="width: 20%"></div>
+                                                        </div>
+                                                        <span class="progress-value">20%</span>
+                                                    </div>
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <span class="enrolled-count">6/30</span>
+                                                </td>
+                                                <td class="table-body-cell">
+                                                    <span class="badge badge--pending">
+                                                        <i class="bx bx-time"></i> Pendiente
                                                     </span>
                                                 </td>
                                                 <td class="table-body-cell">
@@ -128,16 +219,16 @@
 
                                 page
 
-                                <span class="pagination-current">0</span>
+                                <span class="pagination-current">1</span>
 
                                 of
 
-                                <span class="pagination-total">0</span>
+                                <span class="pagination-total">5</span>
 
                             </span>
                             <div class="pagination-right">
 
-                                <i class="bx bx-arrow-right-stroke"></i>
+                                <i class="bx bx-chevron-right"></i>
                                 <i class="bx bx-arrow-to-right-stroke"></i>
 
                             </div>
