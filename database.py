@@ -1,7 +1,7 @@
 import psycopg2
 from psycopg2.pool import ThreadedConnectionPool
 from psycopg2.extras import RealDictCursor
-from api import DATABASE_URL
+from config import DATABASE_URL
 
 # Initialize a Threaded Connection Pool to share connections safely across threads
 try:
