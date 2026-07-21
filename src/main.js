@@ -1,4 +1,4 @@
-import "./styles/main.scss";
+import "styles/main.scss";
 import { navbar } from "../partials/navbar.js";
 import { initSidebar } from "layout.js";
 initSidebar();
